@@ -1,0 +1,188 @@
+\documentclass[a4paper,12pt]{article}
+
+\usepackage{amsmath,amsfonts,mathtools}
+\usepackage{amsthm, amssymb}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+% Personal definitions
+\newcommand{\lra}{\ensuremath{\longrightarrow{}}}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\renewcommand{\qedsymbol}{\rule{0.7em}{0.7em}}
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+% Theorem commands
+\newtheorem{lem}{Lemma}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+
+% Set spacing
+\setenumerate{itemsep=1.5pt,parsep=1.5pt,topsep=0.5pt}
+\setlist{itemsep=1.5pt,parsep=1.5pt,leftmargin=1pt}
+\setitemize{itemsep=1.5pt,parsep=1.5pt,topsep=0.5pt}
+
+% set 1" margins on 8.5" x 11" paper
+% top left is measured from 1", 1"
+\topmargin       0in
+\oddsidemargin   0in
+\evensidemargin  0in
+\headheight      0in
+\headsep         0in
+\topskip         0in
+\textheight      9in
+\textwidth       6.5in
+
+\begin{document}
+\title{Quantum Physics I Notes}
+\author{Sean Wu}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+% set spacing
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
+\section{Lec 1: Superposition Intuition}
+\begin{itemize}
+  \item Physical processes in the lab are unpredictable, nondeterminate, random
+  \item Probability forced by observation
+
+\begin{description}
+  \item[Uncertainty Principle:] For incompatible properties, you cannot have an object w/ defined values for both properties at the same time
+\end{description}
+
+  \item ex. position and momentum
+  \item If one property is determined, the object is in superposition of values for the other property
+
+  \item Quantum effects negligible for large objects
+  \item Quantum effects only significant for small objects w/ small energies
+  \item ex. atoms, electrons, molecules
+\end{itemize}
+
+\section{Lec 2: Physical Effects explained by Quantum Mechanics but not Classical Mechanics}
+
+\begin{enumerate}
+  \item Atoms exist
+  \item Randomness exists
+  \item Atomic Spectra are discrete and have structure
+  \item Photoelectric effect
+  \item Electron Diffraction
+  \item Bell's Poor Inequality
+\end{enumerate}
+
+\subsection{Atoms exist}
+\begin{itemize}
+  \item $e^{-}$ orbiting nucleus in Bohr atom is an accelerating charged particle and so emits light (loses energy)
+  \item Thus Bohr atom doesn't work classically because it collapses as the electron spirals around nucleus while releasing energy by radiation
+\end{itemize}
+
+\subsection{Randomness exists}
+\begin{itemize}
+  \item Self explanatory
+\end{itemize}
+
+
+\subsection{Atomic Spectra}
+\begin{align}
+  \frac{1}{\lambda} = R \cdot \Big(\frac{1}{n_1^2} -\frac{1}{n_2^2}\Big) \text{ for } n_i \in \mathbb{Z}, n_2 > n_1
+\end{align}
+\begin{itemize}
+  \item $R$ is the Rydberg constant which depends on the element but is independent of the emission series
+  \item This eqn shows that the atomic spectra are discrete and have structure, but classical mechanics doesn't have discrete energy levels (no energy quantization)
+\end{itemize}
+
+\subsection{Photoelectric Effect}
+\begin{description}
+  \item[$V_0$: ] Stopping voltage req to stop $e^{-}$ from being released by photoelectric effect
+  \item[$I$: ] Current generated in circuit
+\end{description}
+
+\begin{center}
+  \begin{tabular}{|l|l|}
+   \hline
+   Prediction & Result \\
+   \hline
+   \tabitem More intense beam $\implies$ $e^{-}$ w/ higher KE & \tabitem  Same KE regardless of intensity\\
+
+   \tabitem  $V_0$ $\propto$ $I$ & \tabitem $V_0$ indep of intensity\\
+
+   \tabitem $V_0$ indep of frequnecy $\nu$ & \tabitem  $V_0$ $\propto$ $\nu$\\
+
+   \hline
+  \end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item Rate of $e^{-}$ release depends on intensity
+  \item But for $\nu < \frac{W}{h}$ (less than critical frequency), no $e^{-}$ released regardless of intensity (not enough energy)
+  \item Einstein's explanation: Light comes in chunks with defined energy $E = h\nu$
+  \begin{align}
+    KE = h\nu -W
+  \end{align}
+  where $W$ is the work required to remove the $e^{-}$
+  \item Recall $E = pc$  and $c = \lambda\nu$
+
+  \begin{align}
+    \therefore{}\quad &p = \frac{h}{\lambda}
+  \end{align}
+
+  \item This implies that the discrete packets of light w/ wavelength $\lambda$ have momentum $p$ by above eqn (wave-particle duality)
+\end{itemize}
+
+\subsubsection{Waves vs Particles}
+\begin{itemize}
+  \item Waves can interfere with themselves (Young's Double Slit)
+  \item Waves are \textbf{not localized}; particles are
+  \item An interference pattern (wave) implies that \textbf{amplitudes} but intensities do not
+  \item Classical particles can pass through either top or bottom slit
+  \item Passing classical particles through double slit leads to 2 peaks near the 2 openings
+\end{itemize}
+
+\begin{itemize}
+  \item $e^{-}$ can interfere with themselves (wave behaviour) in double slit
+  \item Each $e^{-}$ takes superposition of the possible paths; We don't know if it took the top or bottom bath
+  \item An $e^{-}$ is neither strictly a particle nor strictly a wave
+\end{itemize}
+
+
+\subsubsection{Light comes in chunks}
+\begin{itemize}
+  \item Light has an energy and momentum
+  \begin{align}
+    E &= h\nu \\
+    p &= \frac{h}{\lambda}
+  \end{align}
+\end{itemize}
+
+\subsection{Electron Diffraction}
+\begin{itemize}
+  \item Bragg's Law
+  \begin{align}
+    \frac{1}{\lambda} &= \frac{n}{2dsin\theta} \\
+    p &= \frac{h}{\lambda}
+  \end{align}
+\end{itemize}
+
+\subsection{Bell's Inequality}
+\begin{itemize}
+  \item For 3 binary properties A, B, C, \textbf{Bell's Inequality} states
+  \begin{align}
+    N(A,\overline{B}) + N(B, \overline{C}) \geq N(A, \overline{C})
+  \end{align}
+  where $N(X,Y)$ is the number of objects with properties X and Y
+  \item $e^{-}$ have 3 binary properties (angular momentum about x-, y-, and z-axes)
+  \item However, it violates Bell's Inequality
+  \begin{align}
+    N(\uparrow_0, \downarrow_{\theta}) + N(\uparrow_{\theta}, \downarrow_{2\theta}) \leq N(\uparrow_0, \downarrow_{2\theta})
+  \end{align}
+  \item Can't add probabilities classically with basic addition
+\end{itemize}
+
+
+
+\end{document}
