@@ -183,6 +183,166 @@
   \item Can't add probabilities classically with basic addition
 \end{itemize}
 
+\section{Lec 3: The Wave Function}
+
+\subsection{de Broglie Relations}
+\begin{equation}
+  \begin{aligned}
+    E &\sim \hbar & \quad\quad &E = h\nu \\
+    p &= \hbar k  & \quad\quad &p = \frac{h}{\lambda}
+  \end{aligned}
+\end{equation}
+
+\begin{align}
+  \hbar = \frac{h}{2\pi} \quad\quad  \omega = 2\pi\nu \quad\quad k = \frac{2\pi}{\lambda}
+\end{align}
+
+\begin{description}
+  \item[$\omega$ :] angular frequency [rad/s]
+  \item[$k$ :] wavenumber [rad/m]
+\end{description}
+
+
+\subsection{Systems in Classical Mechanics vs Quantum Mechanics}
+\begin{itemize}
+  \item In \textbf{Classical Mechanics}, an object's state is fully defined by its position and momentum vectors $\{\vect{x}, \vect{p}\}$
+  \item All other properties can be found using $\vect{x}$ and $\vect{p}$
+  \item ex. energy $E(\vect{x}, \vect{p})$ and angular momentum $\vect{L}(\vect{x}, \vect{p})$
+  \item But in \textbf{Quantum Mechanics} (real life), there is uncertainty (Uncertainty Principle)
+  \begin{align}
+    \Delta \vect{x} \Delta \vect{p} \gtrsim \hbar
+  \end{align}
+\end{itemize}
+
+\subsection{Quantum Mechanics Postulates}
+\begin{enumerate}
+  \item The state of a quantum object is \textbf{completely} specified by a wavefunction $\Psi(x)$
+  \item $\mathbb{P} = |\Psi(x)|^2$ determines the probability density that the object in state $\Psi(x)$ will be found at $x$
+  \begin{itemize}
+    \item i.e. probability that upon measurement, the object is found at position $x$
+  \end{itemize}
+  \item Given two possible wavefunctions (or states) of a quantum system corresponding to distinct wavefunctions $\Psi_1(x)$ and $\Psi_2(x)$, the system can \textbf{also} be in a \textbf{superposition} of $\Psi_1(x)$ and $\Psi_2(x)$
+  \begin{align}
+    \Psi(x) = \alpha\Psi_1(x) + \beta\Psi_2(x) \quad \alpha, \beta \in \mathbb{C}
+  \end{align}
+  such that $\Psi(x)$ is properly normalized
+  \begin{itemize}
+    \item Wavefunction can be expressed as a linear combination of 2 possible wavefunctions (superposition)
+    \item i.e. superposition of 2 quantum states results in another valid quantum state
+  \end{itemize}
+\end{enumerate}
+
+\subsection{The Wavefunction $\Psi(x)$}
+\begin{itemize}
+  \item Wavefunction $\Psi(x)$ is a complex function and \textbf{must} be single valued and continuous
+  \item The probability $|\Psi(x)|^2$ is always real and nonnegative
+  \item Probability density means
+
+  \begin{align}
+    \mathbb{P}(x, x+dx) = \mathbb{P}(x)dx = |\Psi(x)|^2dx
+  \end{align}
+
+  \item Units of wavefunction are $[\Psi(x)] = \frac{1}{\sqrt{L}}$
+  \item Recall that for complex numbers,
+
+  \begin{align}
+    |\beta|^2 = \beta^* \beta \\
+    |e^{i\alpha}|^2 = e^{i\alpha}e^{-i\alpha} = 1
+  \end{align}
+
+\subsection{Normalization of Wavefunctions}
+
+  \item Probability must be \textbf{normalized} such that the sum of probabilities is 1 over an interval
+
+  \begin{align}
+    \int_{All} \mathbb{P}(x)dx = \int_{All} |\Psi(x)|^2dx = 1
+  \end{align}
+
+  \item If wave function is not normalized, then use
+
+  \begin{align}
+    \mathbb{P}(x) = \frac{|\Psi(x)|^2}{\int_{All} |\Psi(x)|^2dx}
+  \end{align}
+
+\end{itemize}
+
+\subsection{Plane Waves}
+\begin{itemize}
+  \item de Broglie says a particle with energy $E \sim \hbar \omega$ and momentum $p = \hbar k$ has a plane wave wavefunction
+  \item General plane wave:
+
+  \begin{align}
+    \Psi(x) = e^{i(kx-wt)}
+  \end{align}
+  \item Note: plane wave is a complex function (need to remember that there is an imaginary component)
+  \item But not all wavefunctions are plane waves; some are well localized
+\end{itemize}
+
+\subsection{Superposition of 2 waves}
+\begin{itemize}
+  \item Using the rule $|\beta|^2 = \beta^* \beta$, the probability with superposition is:
+  \begin{align}
+    \mathbb{P} &= |\alpha\Psi_1 + \beta\Psi_2|^2 = (\alpha^*\Psi_1^* + \beta^*\Psi_2^*)(\alpha\Psi_1 + \beta\Psi_2) \\ &=|\alpha|^2|\Psi_1|^2 + |\beta|^2|\Psi_2|^2 + \alpha^*\Psi_1^* \beta\Psi_2 + \alpha\Psi_1 \beta^*\Psi_2^* \\
+    &= \mathbb{P}_1 + \mathbb{P}_2 + \alpha^*\Psi_1^* \beta\Psi_2 + \alpha\Psi_1 \beta^*\Psi_2^*
+  \end{align}
+  where $\alpha^*\Psi_1^* \beta\Psi_2 + \alpha\Psi_1 \beta^*\Psi_2^*$ are the \textbf{interference terms}
+
+  \item The first term in the interference terms is the conjugate of the 2\textsuperscript{nd} term
+  \item Therefore the interference term is real but not necessarily nonnegative, so the overall probability will still be real
+  \item Note: Superposition principle and interpretation of probability as $|\Psi(x)|^2$ gives correction to classical probability (the interference terms)
+  \item Shows that probabilities don't add as they do classically in Bell's Inequality (i.e. probability of both is \textbf{not} the sum of the individual probabilities)
+\end{itemize}
+
+\textbf{Wavefunctions add; probabilities do not}
+
+\subsection{Superposition of many waves}
+\begin{itemize}
+  \item As you add more plane waves to a superposition, the wavefunction and probability distribution become more localized (i.e. $\Delta x$ decreases)
+  \item For lots of plane waves, get a very narrow probability distribution and wavefunction
+  \item There will be very few peaks, so particle is very likely to be found at those positions: $\Delta x \sim \text{small}$
+  \item But that requires a superposition of many momenta (each plane wave has a different $\lambda$ and $p = \frac{h}{\lambda}$) so $\Delta p \sim \text{large}$ as required by the Uncertainty Principle
+
+\end{itemize}
+
+\subsubsection{Fourier Transforms for wave functions}
+\begin{thm}
+  Any well behaved $f(x)$ can be built by superimposing enough plane waves $e^{ikx}$
+
+  \begin{align}
+    f(x) = \frac{1}{\sqrt{2\pi}} \int^{\infty}_{-\infty}\widetilde{f}(x) e^{ikx} dk
+  \end{align}
+\end{thm}
+where $\widetilde{f}(x)$ gives the amplitude of the plane wave with wavelength $\lambda = \frac{2\pi}{k}$
+
+\begin{itemize}
+  \item Every mode has a definite wavelength $\lambda = \frac{2\pi}{k}$
+  \item Note: Fourier Transform coefficients of $x$ are all equivalent
+  \item Can use Inverse Fourier Transform to get $\widetilde{f}(x)$ from $f(x)$
+  \begin{align}
+    \widetilde{f}(k) = \frac{1}{2\pi} \int^{\infty}_{-\infty}f(x) e^{-ikx} dx
+  \end{align}
+\end{itemize}
+
+\begin{itemize}
+  \item Physics Version: any $\Psi(x)$ can be expressed as the superposition of states with definite momentum $p = \hbar k$
+  \begin{align}
+    \Psi(x) = \frac{1}{\sqrt{2\pi}} \int^{\infty}_{-\infty}\widetilde{\Psi}(x) e^{ikx} dk
+  \end{align}
+  \item The Fourier Transform associates a magnitude and phase for each possible wave vector
+  \item Note: if the wavefunction is well localized to a position, the Fourier Transform is not well localized ($\therefore$ not having definite momentum)
+  \item Similarly, if there is definite momentum, position is not well defined, but the Fourier Transform will have a single peak (position very localized)
+
+\end{itemize}
+
+
+
+\subsection{Wavefunction Examples}
+
+\section{Aside: More about Fourier Transforms}
+
+
+
+
 
 
 \end{document}
