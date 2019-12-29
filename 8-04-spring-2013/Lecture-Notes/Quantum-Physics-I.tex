@@ -4,6 +4,7 @@
 \usepackage{amsthm, amssymb}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{float}
 \usepackage{enumitem}
 
 % Personal definitions
@@ -309,7 +310,7 @@
   Any well behaved $f(x)$ can be built by superimposing enough plane waves $e^{ikx}$
 
   \begin{align}
-    f(x) = \frac{1}{\sqrt{2\pi}} \int^{\infty}_{-\infty}\widetilde{f}(x) e^{ikx} dk
+    f(x) = \frac{1}{\sqrt{2\pi}} \int^{\infty}_{-\infty}\widetilde{f}(k) e^{ikx} dk
   \end{align}
 \end{thm}
 where $\widetilde{f}(x)$ gives the amplitude of the plane wave with wavelength $\lambda = \frac{2\pi}{k}$
@@ -317,9 +318,9 @@ where $\widetilde{f}(x)$ gives the amplitude of the plane wave with wavelength $
 \begin{itemize}
   \item Every mode has a definite wavelength $\lambda = \frac{2\pi}{k}$
   \item Note: Fourier Transform coefficients of $x$ are all equivalent
-  \item Can use Inverse Fourier Transform to get $\widetilde{f}(x)$ from $f(x)$
+  \item Can use Inverse Fourier Transform to get $\widetilde{f}(k)$ from $f(x)$
   \begin{align}
-    \widetilde{f}(k) = \frac{1}{2\pi} \int^{\infty}_{-\infty}f(x) e^{-ikx} dx
+    \widetilde{f}(k) = \frac{1}{\sqrt{2\pi}} \int^{\infty}_{-\infty}f(x) e^{-ikx} dx
   \end{align}
 \end{itemize}
 
@@ -340,8 +341,85 @@ where $\widetilde{f}(x)$ gives the amplitude of the plane wave with wavelength $
 
 \section{Aside: More about Fourier Transforms}
 
+\subsection{Fourier Series}
+\begin{itemize}
+  \item Can represent any periodic function $f(x)$ with a Fourier series
+
+  \begin{align}
+    f(x) = \frac{1}{2}a_0 + \sum^{\infty}_{n=1} a_n cos(nx) + \sum^{\infty}_{n=1} b_n sin(nx)
+  \end{align}
 
 
+  \begin{figure}[H]
+    \centering
+    \includegraphics[width=140mm, scale=0.5]{images/sawtooth.pdf}
+    \caption{Graph of a periodic sawtooth function in the real x-space}
+    \label{Basic-Sawtooth}
+  \end{figure}
+
+
+\subsection{Fourier k-space (Frequency domain)}
+
+  \item Can also describe the Fourier representation by plotting the strength of each sine/cosine term as a function of frequency/wavenumber (k), $\widetilde{f}(k)$
+  \item Frequency representation is obtained by applying the Fourier Transform to the original function in the time domain
+
+  \begin{itemize}
+    \item Wavenumber used as dependent variable on x-axis
+    \item Fourier coefficients $a_n$ or $b_n$ are then used as the amplitude of each wavenumber
+  \end{itemize}
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=140mm, scale=0.5]{images/sawtooth-k-space.pdf}
+  \caption{Graph of a periodic sawtooth function in Fourier k-space}
+  \label{Sawtooth-k-space}
+\end{figure}
+
+\begin{itemize}
+  \item For the Fourier Transform of the sawtooth function, the k-space graph has discrete nonzero values for only specific wavenumbers, which means that "in-between" frequencies/wavenumbers are not needed
+  \item Note: amplitude of the function is large for small wavenumbers $k$ and decreases for larger $k$
+  \item Therefore, high frequency terms can be considered negligible (can approximate Fourier series with the first few terms)
+\end{itemize}
+
+\subsection{How Period Length affects the Fourier Transform}
+
+\begin{itemize}
+  \item Can represent any function in the "real x-space" (wiggly function) or in the "Fourier k-space" (spiky function)
+  \item The shorter the period of the original function, the sparser the Fourier representation; i.e. less wavenumbers required (Red sawtooth function)
+  \item The longer the period, the denser the Fourier representation (Blue sawtooth function)
+  \begin{itemize}
+    \item The main contributing wavenumbers are condensed centrally closer to the small k-values
+    \item Since $k = \frac{2\pi}{\lambda} = \frac{2\pi}{c T}$, $k \sim \frac{1}{T}$
+    \item So if the original function has a longer period $T$, its Fourier series needs sinusoids with longer periods (smaller $k$)
+    \item i.e. the more "stretched out" a function is in the real space (longer period), the more centralized/"squished" it is in the Fourier space
+  \end{itemize}
+  \item Note: "periodic" functions with infinite period are aperiodic functions (never repeats itself)
+  \item As the period approaches infinity, spikes in the k-space get infinitely squished together and form a continuous function
+  \item Therefore, while a periodic function can be represented by a discrete set of sines and cosines (only some wavenumbers), an aperiodic function (most functions) can only be formed from a \textbf{continuous} sum of sines and cosines (include all intermediate wavenumbers)
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=140mm, scale=0.5]{images/sawtooth-comparison.pdf}
+  \caption{Graph of 2 sawtooth functions with different periods. The blue function has a longer period, while the red function has a shorter period.}
+  \label{Sawtooth-k-space}
+\end{figure}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=140mm, scale=0.5]{images/sawtooth-comparison-real-space.pdf}
+  \caption{Graph of 2 sawtooth functions approximated with the first few terms of their Fourier series (real space)}
+  \label{Sawtooth-comparison}
+\end{figure}
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=140mm, scale=0.5]{images/sawtooth-comparison-k-space.pdf}
+  \caption{Graph of 2 sawtooth functions in Fourier k-space}
+  \label{Sawtooth-comparison}
+\end{figure}
 
 
 
