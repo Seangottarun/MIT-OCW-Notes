@@ -2,9 +2,11 @@
 
 \usepackage{amsmath,amsfonts,mathtools}
 \usepackage{amsthm, amssymb}
+\usepackage{pgfplots}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{float}
+\usepackage{subcaption}
 \usepackage{enumitem}
 
 % Personal definitions
@@ -17,6 +19,14 @@
 \newtheorem{lem}{Lemma}
 \newtheorem{thm}{Theorem}
 \newtheorem{defn}{Definition}
+
+% Define a Gaussian function for plotting graphs
+\pgfmathdeclarefunction{gauss}{2}{%
+  \pgfmathparse{1/(#2*sqrt(2*pi))*exp(-((x-#1)^2)/(2*#2^2))}%
+}
+
+% Set version of pgfplots
+\pgfplotsset{compat=1.16}
 
 % Set spacing
 \setenumerate{itemsep=1.5pt,parsep=1.5pt,topsep=0.5pt}
@@ -335,9 +345,545 @@ where $\widetilde{f}(x)$ gives the amplitude of the plane wave with wavelength $
 
 \end{itemize}
 
+\subsection{Probability density for Wavenumber/Momentum}
+
+\begin{itemize}
+  \item Similar to probability density for position $x$, the probability density for momentum $p$/wavenumber $k$ is given by the norm squared of the wavefunction in the k-space
+  \begin{align}
+    \mathbb{P}(k) = |\Psi(k)|^2
+  \end{align}
+\end{itemize}
+
 
 
 \subsection{Wavefunction Examples}
+
+\subsubsection{Gaussian Wavefunctions}
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{align}
+    \Psi(x) = \frac{1}{0.5 \sqrt{2\pi}}exp\Big(-\frac{(x+3)^2}{2\cdot 0.5}\Big)
+  \end{align}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\Psi)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={-3},
+    xticklabels={$x_1$},
+    ytick=\empty]
+    \addplot[color=blue]{gauss(-3,0.5)};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Ex. Gaussian Wavefunction}
+%
+\begin{align}
+  x &\sim x_1  \\
+  \Delta x &\sim \text{small}
+\end{align}
+%
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{align}
+    \Psi(x) = \frac{1}{0.5 \sqrt{2\pi}}exp\Big(-\frac{(x-2.5)^2}{2\cdot 0.5}\Big)
+  \end{align}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\Psi)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={2.5},
+    xticklabels={$x_2$},
+    ytick=\empty]
+    \addplot[color=red]{gauss(2.5,0.5)};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Ex. Gaussian Wavefunction }
+%
+\begin{align}
+  x &\sim x_2  \\
+  \Delta x &\sim \text{small}
+\end{align}
+%
+\end{minipage}
+\end{center}
+
+\begin{itemize}
+  \item For both Gaussian wavefunctions above, there is no definite wavelength, so $\Delta p \sim {large}$
+\end{itemize}
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(x)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={-3},
+    xticklabels={$x_1$},
+    ytick=\empty]
+    \addplot[color=blue]{gauss(-3,0.5)^2};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density}
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(x)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={2.5},
+    xticklabels={$x_2$},
+    ytick=\empty]
+    \addplot[color=red]{gauss(2.5,0.5)^2};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density}
+\end{minipage}
+\end{center}
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\widetilde{\Psi}(k))$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick=\empty]
+    \addplot[color=blue]{cos(deg(3*x))};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Wavefunction in k-space}
+%
+\begin{align}
+  p &\sim \text{???} \\
+  \Delta p &\sim {large}
+\end{align}
+%
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\widetilde{\Psi}(k))$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick=\empty]
+    \addplot[color=red]{cos(deg(6*x))};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Wavefunction in k-space}
+%
+\begin{align}
+  p &\sim \text{???} \\
+  \Delta p &\sim {large}
+\end{align}
+%
+\end{minipage}
+\end{center}
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(k)$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick={1},
+    yticklabels={1}]
+    \addplot[color=blue]{1};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density of wavefunction having specific wavenumbers $k$}
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(k)$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick={1},
+    yticklabels={1}]
+    \addplot[color=red]{1};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density of wavefunction having specific wavenumbers $k$}
+\end{minipage}
+\end{center}
+
+\subsubsection{Plane Waves (Complex Exponential Form)}
+
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{align}
+    \Psi(x) = -e^{i k_1 x}
+  \end{align}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\Psi)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick=\empty]
+    \addplot[color=blue]{-cos(deg(x))};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Ex. Plane Wavefunction}
+%
+\begin{align}
+  x &\sim \text{???} \\
+  \Delta x &\sim \text{large} \\
+\end{align}
+%
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{align}
+    \Psi(x) = e^{i k_2 x}
+  \end{align}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\Psi)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick=\empty]
+    \addplot[color=red]{cos(deg(5*x))};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Ex. Plane Wavefunction }
+%
+\begin{align}
+  x &\sim \text{???}  \\
+  \Delta x &\sim \text{large}
+\end{align}
+%
+\end{minipage}
+\end{center}
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(x)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick={1},
+    yticklabels={1}]
+    \addplot[color=blue]{1};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density}
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(x)$,
+    xlabel = $x$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick=\empty,
+    ytick={1},
+    yticklabels={1}]
+    \addplot[color=red]{1};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density}
+\end{minipage}
+\end{center}
+
+\begin{itemize}
+  \item Note: wavefunction is not properly normalized
+  \item Particle can be anywhere ($\Delta x \sim \text{large}$)
+  \item But $\Psi(x)$ has a very defined wavelength and wavenumber, so the particle has a defined momentum $p = \hbar k$
+\end{itemize}
+
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\widetilde{\Psi}(k))$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={-1},
+    xticklabels={$k_1$},
+    ytick=\empty]
+    \addplot[color=blue]{gauss(-1,0.5)};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Wavefunction in k-space}
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{R}\text{e}(\widetilde{\Psi}(k))$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={3},
+    xticklabels={$k_2$},
+    ytick=\empty]
+    \addplot[color=red]{gauss(3,0.5)};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Wavefunction in k-space}
+\end{minipage}
+\end{center}
+
+\begin{center}
+
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(k)$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={-1},
+    xticklabels={$k_1$},
+    ytick=\empty]
+    \addplot[color=blue]{gauss(-1,0.5)^2};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density of wavefunction having specific wavenumbers $k$}
+%
+\begin{align}
+  p &\sim \hbar k_1 \\
+  \Delta p &\sim {small}
+\end{align}
+%
+\end{minipage}
+%
+\begin{minipage}{.47\textwidth}
+  \begin{tikzpicture}
+  \begin{axis}[
+    every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+    axis lines=middle,
+    ylabel = $\mathbb{P}(k)$,
+    xlabel = $k$,
+    x label style={at=(current axis.right of origin), anchor=west},
+    y label style={at=(current axis.above origin), anchor=south},
+    xtick={3},
+    xticklabels={$k_2$},
+    ytick=\empty]
+    \addplot[color=red]{gauss(3,0.5)^2};
+  \end{axis}
+\end{tikzpicture}
+\captionof{figure}{Probability density of wavefunction having specific wavenumbers $k$}
+%
+\begin{align}
+  p &\sim \hbar k_2 \\
+  \Delta p &\sim {small}
+\end{align}
+%
+\end{minipage}
+\end{center}
+
+
+\subsubsection{Superposition of 2 Wavefunctions}
+
+\begin{center}
+
+  \begin{minipage}{.47\textwidth}
+    \begin{align}
+      \Psi(x) = \frac{1}{4}\frac{1}{0.5 \sqrt{2\pi}}exp\Big(-\frac{(x+3)^2}{2\cdot 0.5}\Big) \\
+       + \frac{3}{4}\frac{1}{0.5 \sqrt{2\pi}}exp\Big(-\frac{(x-2.5)^2}{2\cdot 0.5}\Big)
+    \end{align}
+    \begin{tikzpicture}
+    \begin{axis}[
+      every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+      axis lines=middle,
+      ylabel = $\mathbb{R}\text{e}(\Psi)$,
+      xlabel = $x$,
+      x label style={at=(current axis.right of origin), anchor=west},
+      y label style={at=(current axis.above origin), anchor=south},
+      xtick={-3,1,2.5},
+      xticklabels={$x_1$,$x_{avg}$,$x_2$},
+      ytick=\empty]
+      \addplot[color=blue]{0.25*gauss(-3,0.5)+ gauss(2.5,0.5)};
+    \end{axis}
+  \end{tikzpicture}
+  \captionof{figure}{Ex. Superposition of 2 Gaussian Wavefunctions}
+  %
+  \begin{align}
+    x &\sim \text{in betw } x_1 \text{ and } x_2 \text{ on avg}  \\
+    \Delta x &\sim (x_1 - x_2)
+  \end{align}
+  %
+  \end{minipage}
+  %
+  \begin{minipage}{.47\textwidth}
+    \begin{align}
+      \Psi(x) &= e^{i k_1 x} + e^{i k_2 x} \\ &= -e^{ix} + 0.25e^{5ix}
+    \end{align}
+    \begin{tikzpicture}
+    \begin{axis}[
+      every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+      axis lines=middle,
+      ylabel = $\mathbb{R}\text{e}(\Psi)$,
+      xlabel = $x$,
+      x label style={at=(current axis.right of origin), anchor=west},
+      y label style={at=(current axis.above origin), anchor=south},
+      xtick=\empty,
+      ytick=\empty]
+      \addplot[color=red]{-cos(deg(x))+0.25*cos(deg(5*x))};
+    \end{axis}
+  \end{tikzpicture}
+  \captionof{figure}{Ex. Superpositions of 2 Plane Wavefunctions}
+  %
+  \begin{align}
+    x &\sim \text{some info}  \\
+    \Delta x &\sim \text{huge}
+  \end{align}
+  %
+  \end{minipage}
+  \end{center}
+
+\begin{center}
+  \begin{minipage}{.47\textwidth}
+    \begin{tikzpicture}
+    \begin{axis}[
+      every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+      axis lines=middle,
+      ylabel = $\mathbb{P}(x)$,
+      xlabel = $x$,
+      x label style={at=(current axis.right of origin), anchor=west},
+      y label style={at=(current axis.above origin), anchor=south},
+      xtick={-3,1,2.5},
+      xticklabels={$x_1$,$x_{avg}$,$x_2$},
+      ytick=\empty]
+      \addplot[color=blue]{(0.25*gauss(-3,0.5)+gauss(2.5,0.5))^2};
+    \end{axis}
+  \end{tikzpicture}
+  \captionof{figure}{Probability density}
+  \end{minipage}
+  %
+  \begin{minipage}{.47\textwidth}
+    \begin{tikzpicture}
+    \begin{axis}[
+      every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+      axis lines=middle,
+      ylabel = $\mathbb{P}(x)$,
+      xlabel = $x$,
+      x label style={at=(current axis.right of origin), anchor=west},
+      y label style={at=(current axis.above origin), anchor=south},
+      xtick=\empty,
+      ytick=\empty]
+      \addplot[color=red]{17/16 -0.5*cos(deg(4*x))};
+    \end{axis}
+  \end{tikzpicture}
+  \captionof{figure}{Probability density}
+  \end{minipage}
+  \end{center}
+
+  \begin{center}
+
+  \begin{minipage}{.47\textwidth}
+    \begin{align}
+      \Psi(x) &= e^{i k x_1} + e^{i k x_2} \\ &= e^{ix} + 0.3e^{5ix}
+    \end{align}
+    \begin{tikzpicture}
+    \begin{axis}[
+      every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+      axis lines=middle,
+      ylabel = $\mathbb{R}\text{e}(\widetilde{\Psi}(k))$,
+      xlabel = $k$,
+      x label style={at=(current axis.right of origin), anchor=west},
+      y label style={at=(current axis.above origin), anchor=south},
+      xtick=\empty,
+      ytick=\empty]
+      \addplot[color=blue]{cos(deg(x)) + 0.3*cos(deg(5*x))};
+    \end{axis}
+  \end{tikzpicture}
+  \captionof{figure}{Wavefunction in k-space}
+  \end{minipage}
+  %
+  \begin{minipage}{.47\textwidth}
+    \begin{align}
+      \Psi(x) = \frac{1}{4}\frac{1}{0.5 \sqrt{2\pi}}exp\Big(-\frac{(x+3)^2}{2\cdot 0.5}\Big) \\
+       + \frac{1}{0.5 \sqrt{2\pi}}exp\Big(-\frac{(x-2.5)^2}{2\cdot 0.5}\Big)
+    \end{align}
+    \begin{tikzpicture}
+    \begin{axis}[
+      every axis plot post/.append style={mark=none,domain=-5:5,samples=50,smooth}, % All plots: from -10:10, 50 samples, smooth, no marks
+      axis lines=middle,
+      ylabel = $\mathbb{R}\text{e}(\widetilde{\Psi}(k))$,
+      xlabel = $k$,
+      x label style={at=(current axis.right of origin), anchor=west},
+      y label style={at=(current axis.above origin), anchor=south},
+      xtick={-3, 2.5},
+      xticklabels={$k_1$,$k_2$},
+      ytick=\empty]
+      \addplot[color=red]{0.25*gauss(-3,0.5)+gauss(2.5,0.5};
+    \end{axis}
+  \end{tikzpicture}
+  \captionof{figure}{Wavefunction in k-space}
+  \end{minipage}
+\end{center}
+
 
 \section{Aside: More about Fourier Transforms}
 
@@ -403,14 +949,14 @@ where $\widetilde{f}(x)$ gives the amplitude of the plane wave with wavelength $
   \centering
   \includegraphics[width=140mm, scale=0.5]{images/sawtooth-comparison.pdf}
   \caption{Graph of 2 sawtooth functions with different periods. The blue function has a longer period, while the red function has a shorter period.}
-  \label{Sawtooth-k-space}
+  \label{Sawtooth-comparison}
 \end{figure}
 
 \begin{figure}[H]
   \centering
   \includegraphics[width=140mm, scale=0.5]{images/sawtooth-comparison-real-space.pdf}
   \caption{Graph of 2 sawtooth functions approximated with the first few terms of their Fourier series (real space)}
-  \label{Sawtooth-comparison}
+  \label{Sawtooth-comparison-real-space}
 \end{figure}
 
 
@@ -418,7 +964,7 @@ where $\widetilde{f}(x)$ gives the amplitude of the plane wave with wavelength $
   \centering
   \includegraphics[width=140mm, scale=0.5]{images/sawtooth-comparison-k-space.pdf}
   \caption{Graph of 2 sawtooth functions in Fourier k-space}
-  \label{Sawtooth-comparison}
+  \label{Sawtooth-comparison-k-space}
 \end{figure}
 
 
