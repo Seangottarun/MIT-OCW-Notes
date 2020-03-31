@@ -1,0 +1,279 @@
+\documentclass[letterpaper,12pt]{article}
+
+\usepackage{amsmath,amsfonts,mathtools}
+\usepackage{amsthm}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+% For displaying code
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{orangered}{rgb}{1,0.27,0}
+
+% Settings for displaying code
+\lstset{ %
+    language=Bash,
+    aboveskip=3mm,
+    belowskip=3mm,
+    basicstyle={\small\ttfamily},
+    commentstyle=\color{dkgreen},
+    frame=single,
+    numbers=none,
+    numberstyle=\tiny\color{gray},
+    stringstyle=\color{mauve},
+    keywordstyle=\color{blue},
+    showstringspaces=false,
+    morekeywords={ls, which, version, rm, rmdir, sudo, su, $, man, tail, tee, xdg, open}
+}
+
+% Personal definitions
+\newcommand{\lra}{\ensuremath{\longrightarrow{}}}
+\newcommand{\vect}[1]{\mathbf{#1}}
+\renewcommand{\qedsymbol}{\rule{0.7em}{0.7em}}
+\newcommand{\tabitem}{~~\llap{\textbullet}~~}
+
+% Theorem commands
+\newtheorem{lem}{Lemma}
+\newtheorem{thm}{Theorem}
+\newtheorem{defn}{Definition}
+
+% Set spacing
+\setenumerate{itemsep=1.5pt,parsep=1.5pt,topsep=0.5pt}
+\setlist{itemsep=1.5pt,parsep=1.5pt,leftmargin=1pt}
+\setitemize{itemsep=1.5pt,parsep=1.5pt,topsep=0.5pt}
+
+% set 1" margins on 8.5" x 11" paper
+% top left is measured from 1", 1"
+\topmargin       0in
+\oddsidemargin   0in
+\evensidemargin  0in
+\headheight      0in
+\headsep         0in
+\topskip         0in
+\textheight      9in
+\textwidth       6.5in
+
+\begin{document}
+\title{Missing Semester of CS Notes}
+\author{Sean Wu}
+\date{\today}
+\maketitle
+
+\tableofcontents
+
+\pagebreak
+
+% set spacing
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
+\section{The Shell - Bash}
+
+\subsection{Paths}
+
+\begin{itemize}
+ \item Cmd line arguments separated by whitespace
+ \item Use quotes \lstinline{" "} or escape the space \lstinline{\ }
+
+       \begin{description}
+        \item[environment variable:] variable set whenever shell starts (not every run of shell)
+       \end{description}
+
+ \item ex. home dir, username, \lstinline{PATH} variable
+\end{itemize}
+
+\begin{lstlisting}
+echo $PATH # all file paths that Bash will search for programs
+# OUTPUT: colon-separated list
+\end{lstlisting}
+
+\begin{itemize}
+ \item Whenever name of program (ex. \lstinline{echo}) is typed, Bash will search through this list in \lstinline{PATH} , looking in each directory for the program matching the command
+\end{itemize}
+
+\begin{lstlisting}
+which echo # tells you where file for command is located (ex. echo)
+\end{lstlisting}
+
+\begin{description}
+ \item[paths:] way to name location of file on computer
+\end{description}
+
+\begin{itemize}
+ \item Paths separated by forward slashes \lstinline{/} for Unix and backslashes \lstinline{\} for Windows
+\end{itemize}
+
+\begin{description}
+ \item[/] root; top of file system
+\end{description}
+
+\begin{itemize}
+ \item On Unix, everything is under the root \lstinline{/} namespace
+       \begin{itemize}
+        \item i.e. all absolute paths start with \lstinline{/}
+       \end{itemize}
+ \item On Windows, there is one root for every partition
+ \item ex. \lstinline{C:\}, \lstinline{D:\}
+ \item i.e. separate file system path hierarchies for each drive
+\end{itemize}
+
+\begin{description}
+ \item[absolute path:] fully determines location of file
+ \item[relative path:] path relative to your current working directory
+ \item[.] current directory
+ \item[..] parent directory
+ \item[\textasciitilde] home directory
+ \item[-] directory you were just in
+\end{description}
+
+\subsection{Flags and Options}
+
+\begin{itemize}
+ \item Flags and options specified after the program name
+ \item The short form is usually with single slashes \lstinline{-<char>} and the long form is usually with double dashes \lstinline{--<word>}
+ \item ex. \lstinline{-v} and \lstinline{--version} tell you the version of the program
+ \item ex. \lstinline{-h} and \lstinline{--help} give you a quick help guide for the program
+ \item Running command with \lstinline{--help} flag gives you the \lstinline{usage} in the following format
+\end{itemize}
+
+\begin{lstlisting}
+  usage: ls [OPTION] ... [FILE] ...
+  # [] means optional
+  # ... means 1 or more of the previous thing
+\end{lstlisting}
+
+\begin{description}
+ \item[flag:] doesn't take a value
+ \item[option:] takes a value
+\end{description}
+
+\subsection{File Permissions}
+\begin{itemize}
+ \item Get file permissions by running \lstinline{ls -a}
+ \item Permissions specified in 3 groups of 3 (r, w, x)
+       \begin{enumerate}
+        \item 1st group of 3 permissions is for owner of file
+        \item 2nd group of 3 permissions is for the group of people owning the file
+        \item 3rd group of 3 permissions is for everyone else
+       \end{enumerate}
+ \item Note: if you have write access on a file but read access on a directory, you cannot directly delete a file (can only empty it)
+\end{itemize}
+
+\textbf{For files:}
+\begin{description}
+ \item[-] don't have that permission
+ \item[r] read access
+ \item[w] write access
+ \item[x] execute acess
+\end{description}
+
+\textbf{For folders:}
+\begin{description}
+ \item[-] don't have that permission
+ \item[r] can see files inside directory
+ \item[w] can rename, create, remove files
+ \item[x] can search this directory (i.e. enter directory with \lstinline{cd})
+\end{description}
+
+\subsection{Deleting things}
+\begin{itemize}
+ \item \lstinline{rm} removes a file
+ \item By default, \lstinline{rm} is \textbf{not} recursive on Unix (i.e. cannot remove a directory)
+ \item Add a \lstinline{-r} (recursive) flag to delete a directory
+ \item Recursive delete removes everything udner the path you give it
+\end{itemize}
+
+\begin{itemize}
+ \item \lstinline{rmdir} deletes a directory only if it is empty (a safe delete)
+ \item \lstinline{cmd L} clears terminal output to previous mark
+ \item \lstinline{cmd K} clears terminal to start
+\end{itemize}
+
+
+\subsection{Input and Output Streams}
+\begin{itemize}
+ \item Each program has 2 primary streams
+       \begin{enumerate}
+        \item Input stream: terminal by default
+        \item Output stream: terminal by default
+       \end{enumerate}
+\end{itemize}
+
+\begin{description}
+ \item[<] rewire input of previous program to be the contents of this file on the right
+ \item[>] rewire output of previous program into this file
+ \item[>>] appends to the end of a file instead of overwriting
+\end{description}
+
+\begin{lstlisting}
+  echo hello > hello.txt # writes string "hello" into file hello.txt
+\end{lstlisting}
+
+\begin{description}
+ \item[|] pipe; takes the output of program on left and makes it the input of the program on the right.  \textbf{Input program does not know about output program and vice versa} . The programs just read and write to those spots.
+\end{description}
+
+\subsection{Root User (Unix)}
+\begin{itemize}
+ \item Acts like admin user on Windows
+ \item Has user id 0
+ \item Has all permissions (Superuser)
+ \item \lstinline{sudo} does the following command as superuser (root user)
+\end{itemize}
+
+\begin{description}
+ \item[kernel:] core of computer
+ \item[sysf:] file system for kernel parameters of computer
+\end{description}
+
+\begin{itemize}
+ \item Need to be admin to change kernel params of a computer
+ \item Note: if using \lstinline{sudo} with pipes and redirects, \lstinline{sudo} only applies to one portion (because input and output programs don't know about each other)
+ \item \lstinline{$} indicates that you are \textbf{not} running as root
+ \item \lstinline{#} indicates that you are running as root
+\end{itemize}
+
+\begin{lstlisting}
+  sudo echo 500 > brightness
+  # does not work because brightness doesn't know about sudo
+\end{lstlisting}
+
+\begin{itemize}
+ \item \lstinline{sudo su} gives you a shell as superuser (shell runs as root now)
+ \item \lstinline{exit} allows you to exit out of superuser shell mode
+\end{itemize}
+
+
+
+\subsection{Misc. Helpful Commands}
+
+\begin{itemize}
+ \item \lstinline{man} gives you the manual pages for a program
+ \item \lstinline{tail} gives you the last n lines of a file
+\end{itemize}
+
+\begin{lstlisting}
+  tail -n5 # gives you the last 5 lines of a file
+\end{lstlisting}
+
+\begin{itemize}
+ \item \lstinline{tee} writes to output and to temrinal output
+\end{itemize}
+
+\begin{lstlisting}
+  echo 1000 | sudo tee brightness # changes brightness
+  # Note: this can be run without using superuser terminal
+\end{lstlisting}
+
+\begin{itemize}
+ \item \lstinline{xdg-open} opens file (Linux)
+ \item \lstinline{open} opens file (macOS)
+\end{itemize}
+
+
+\end{document}

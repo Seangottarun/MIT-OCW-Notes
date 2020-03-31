@@ -11,3 +11,7 @@ Current courses:
 1. 8.04 Spring 2013 - Quantum Physics I with Allan Adams
 - [MIT OCW Course](https://ocw.mit.edu/courses/physics/8-04-quantum-physics-i-spring-2013/)
 - [YouTube Lecture Series](https://www.youtube.com/watch?v=lZ3bPUKo5zc&list=PLUl4u3cNGP61-9PEhRognw5vryrSEVLPr)
+
+2. The Missing Semester of Your CS Education
+- [MIT OCW Course](https://missing.csail.mit.edu/)
+- [YouTube Lecture Series](https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J)
