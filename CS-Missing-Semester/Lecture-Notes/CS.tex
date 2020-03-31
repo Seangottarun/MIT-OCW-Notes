@@ -16,19 +16,66 @@
 \definecolor{orangered}{rgb}{1,0.27,0}
 
 % Settings for displaying code
-\lstset{ %
-    language=Bash,
-    aboveskip=3mm,
-    belowskip=3mm,
-    basicstyle={\small\ttfamily},
-    commentstyle=\color{dkgreen},
-    frame=single,
-    numbers=none,
-    numberstyle=\tiny\color{gray},
-    stringstyle=\color{mauve},
-    keywordstyle=\color{blue},
-    showstringspaces=false,
-    morekeywords={ls, which, version, rm, rmdir, sudo, su, $, man, tail, tee, xdg, open}
+\lstset{%
+  language=bash,
+  aboveskip=3mm,
+  belowskip=3mm,
+  basicstyle={\small\ttfamily},
+  commentstyle=\color{dkgreen},
+  frame=single,
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  stringstyle=\color{mauve},
+  keywordstyle=\color{orangered},
+  emphstyle=\color{blue},
+  showstringspaces=false,
+  otherkeywords={=, +, [, ], (, ), \{, \}, *},
+  % bash commands from:
+  %http://www.math.montana.edu/Rweb/Rhelp/00Index.html
+  emph={addgroup,adduser,alias,
+  ant,
+  apropos,apt-get,aptitude,aspell,awk,
+  basename,bash,bc,bg,break,builtin,bzip2,cal,case,cat,cd,cfdisk,chgrp,
+  chkconfig,chmod,chown,chroot,cksum,clear,cmp,comm,command,continue,
+  cp,cron,crontab,csplit,cut,date,dc,dd,ddrescue,declare,df,diff,diff3,
+  dig,dir,dircolors,dirname,dirs,dmesg,du,echo,egrep,eject,enable,env,
+  ethtool,eval,exec,exit,expand,expect,export,expr,false,fdformat,
+  fdisk,fg,fgrep,file,find,fmt,fold,for,format,free,fsck,ftp,function,
+  fuser,gawk,getopts,
+  git,
+  grep,groups,gzip,
+  gunzip,
+  ,hash,head,help,history,hostname,
+  id,if,ifconfig,ifdown,ifup,import,install,
+  java, java6, java_cur
+  join,kill,killall,less,
+  let,ln,local,locate,logname,logout,look,lpc,lpr,lprint,lprintd,
+  lprintq,lprm,ls,lsof,make,man,mkdir,mkfifo,mkisofs,mknod,mmv,more,
+  mount,mtools,mtr,mv,
+  mysql,
+  netstat,nice,nl,nohup,notify-send,
+  noweb,noweave,
+  nslookup,op,
+  open,passwd,paste,pathchk,ping,pkill,popd,pr,printcap,printenv,
+  printf,ps,pushd,pwd,quota,quotacheck,quotactl,ram,rcp,read,
+  readarray,readonly,reboot,remsync,rename,renice,return,rev,rm,rmdir,
+  rsync,scp,screen,sdiff,sed,select,seq,set,sftp,shift,shopt,shutdown,
+  sleep,slocate,sort,source,split,ssh,strace,su,sudo,sum,
+  svn, svn2git,
+  symlink,sync,
+  tail,tar,tee,test,time,times,top,touch,tr,traceroute,trap,true,
+  tsort,tty,type,ulimit,umask,umount,unalias,uname,unexpand,uniq,
+  units,
+  unrar,
+  unset,unshar,until,useradd,usermod,users,uudecode,uuencode,
+  vdir,vi,vmstat,watch,wc,Wget,whereis,which,while,who,whoami,write,
+  zcat, xdg, version},
+}
+
+
+\newcommand*{\lstitem}[1]{
+  \setbox0\hbox{\lstinline{#1}}
+  \item[\usebox0]
 }
 
 % Personal definitions
@@ -88,12 +135,12 @@
 \end{itemize}
 
 \begin{lstlisting}
-echo $PATH # all file paths that Bash will search for programs
+echo $PATH # all file paths that bash will search for programs
 # OUTPUT: colon-separated list
 \end{lstlisting}
 
 \begin{itemize}
- \item Whenever name of program (ex. \lstinline{echo}) is typed, Bash will search through this list in \lstinline{PATH} , looking in each directory for the program matching the command
+ \item Whenever name of program (ex. \lstinline{echo}) is typed, bash will search through this list in \lstinline{PATH} , looking in each directory for the program matching the command
 \end{itemize}
 
 \begin{lstlisting}
@@ -148,8 +195,8 @@ which echo # tells you where file for command is located (ex. echo)
 \end{lstlisting}
 
 \begin{description}
- \item[flag:] doesn't take a value
- \item[option:] takes a value
+ \item[flag:] doesn't take a value (usually)
+ \item[option:] takes a value (usually)
 \end{description}
 
 \subsection{File Permissions}
@@ -181,19 +228,21 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \subsection{Deleting things}
+\begin{description}
+ \lstitem{rm}: removes a file
+\end{description}
+
 \begin{itemize}
- \item \lstinline{rm} removes a file
  \item By default, \lstinline{rm} is \textbf{not} recursive on Unix (i.e. cannot remove a directory)
  \item Add a \lstinline{-r} (recursive) flag to delete a directory
- \item Recursive delete removes everything udner the path you give it
+ \item Recursive delete removes everything under the path you give it
 \end{itemize}
 
-\begin{itemize}
- \item \lstinline{rmdir} deletes a directory only if it is empty (a safe delete)
- \item \lstinline{cmd L} clears terminal output to previous mark
- \item \lstinline{cmd K} clears terminal to start
-\end{itemize}
-
+\begin{description}
+ \lstitem{rmdir}: deletes a directory only if it is empty (a safe delete)
+ \lstitem{cmd L}: clears terminal output to previous mark
+ \lstitem{cmd K}: clears terminal to start
+\end{description}
 
 \subsection{Input and Output Streams}
 \begin{itemize}
@@ -205,9 +254,9 @@ which echo # tells you where file for command is located (ex. echo)
 \end{itemize}
 
 \begin{description}
- \item[<] rewire input of previous program to be the contents of this file on the right
- \item[>] rewire output of previous program into this file
- \item[>>] appends to the end of a file instead of overwriting
+ \lstitem{<}: rewire input of previous program to be the contents of this file on the right
+ \lstitem{>}: rewire output of previous program into this file
+ \lstitem{>>}: appends to the end of a file instead of overwriting
 \end{description}
 
 \begin{lstlisting}
@@ -215,7 +264,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{lstlisting}
 
 \begin{description}
- \item[|] pipe; takes the output of program on left and makes it the input of the program on the right.  \textbf{Input program does not know about output program and vice versa} . The programs just read and write to those spots.
+ \lstitem{|}: a \textbf{pipe}; takes the output of program on left and makes it the input of the program on the right. \textbf{Input program does not know about output program and vice versa} . The programs just read and write to those spots.
 \end{description}
 
 \subsection{Root User (Unix)}
@@ -223,57 +272,60 @@ which echo # tells you where file for command is located (ex. echo)
  \item Acts like admin user on Windows
  \item Has user id 0
  \item Has all permissions (Superuser)
- \item \lstinline{sudo} does the following command as superuser (root user)
 \end{itemize}
 
 \begin{description}
+ \lstitem{sudo}: does the following command as superuser (root user)
  \item[kernel:] core of computer
- \item[sysf:] file system for kernel parameters of computer
+       \lstitem{sysfs}: file system for kernel parameters of computer
 \end{description}
 
 \begin{itemize}
  \item Need to be admin to change kernel params of a computer
  \item Note: if using \lstinline{sudo} with pipes and redirects, \lstinline{sudo} only applies to one portion (because input and output programs don't know about each other)
- \item \lstinline{$} indicates that you are \textbf{not} running as root
- \item \lstinline{#} indicates that you are running as root
 \end{itemize}
+
+\begin{description}
+ \lstitem{\$} indicates that you are \textbf{not} running as root
+ \lstitem{#} indicates that you are running as root
+\end{description}
 
 \begin{lstlisting}
   sudo echo 500 > brightness
   # does not work because brightness doesn't know about sudo
 \end{lstlisting}
 
-\begin{itemize}
- \item \lstinline{sudo su} gives you a shell as superuser (shell runs as root now)
- \item \lstinline{exit} allows you to exit out of superuser shell mode
-\end{itemize}
+\begin{description}
+ \lstitem{sudo su} gives you a shell as superuser (shell runs as root now)
+ \lstitem{exit} allows you to exit out of superuser shell mode
+\end{description}
 
 
 
 \subsection{Misc. Helpful Commands}
 
-\begin{itemize}
- \item \lstinline{man} gives you the manual pages for a program
- \item \lstinline{tail} gives you the last n lines of a file
-\end{itemize}
+\begin{description}
+ \lstitem{man} gives you the manual pages for a program
+ \lstitem{tail} gives you the last n lines of a file
+\end{description}
 
 \begin{lstlisting}
   tail -n5 # gives you the last 5 lines of a file
 \end{lstlisting}
 
-\begin{itemize}
- \item \lstinline{tee} writes to output and to temrinal output
-\end{itemize}
+\begin{description}
+ \lstitem{tee} writes to output and to terminal output
+\end{description}
 
 \begin{lstlisting}
   echo 1000 | sudo tee brightness # changes brightness
   # Note: this can be run without using superuser terminal
 \end{lstlisting}
 
-\begin{itemize}
- \item \lstinline{xdg-open} opens file (Linux)
- \item \lstinline{open} opens file (macOS)
-\end{itemize}
+\begin{description}
+ \lstitem{xdg-open} opens file (Linux)
+ \lstitem{open} opens file (macOS)
+\end{description}
 
 
 \end{document}
