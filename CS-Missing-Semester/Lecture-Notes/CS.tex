@@ -132,6 +132,7 @@
        \end{description}
 
  \item ex. home dir, username, \lstinline{PATH} variable
+ \item Comments in Bash start with \lstinline{#}
 \end{itemize}
 
 \begin{lstlisting}
@@ -225,6 +226,10 @@ which echo # tells you where file for command is located (ex. echo)
  \item[r] can see files inside directory
  \item[w] can rename, create, remove files
  \item[x] can search this directory (i.e. enter directory with \lstinline{cd})
+\end{description}
+
+\begin{description}
+ \lstitem{chmod}: command to change file modes or Access Control Lists (i.e. change permissions)
 \end{description}
 
 \subsection{Deleting things}
@@ -327,5 +332,22 @@ which echo # tells you where file for command is located (ex. echo)
  \lstitem{open} opens file (macOS)
 \end{description}
 
+\subsection{Executable and Unix Shebang}
+\begin{description}
+ \item[shebang: ] a character sequence involving \lstinline{#!} at the beginning of a script
+\end{description}
+
+\begin{itemize}
+ \item A shebang \lstinline{#!} indicates that a file is an executable in Unix
+\end{itemize}
+
+\begin{lstlisting}
+  #!/bin/sh
+  curl --head --silent https://missing.csail.mit.edu
+
+  # First line indicates that program loader should run the
+  # program /bin/sh, passing path/to/script (name of this file)
+  # as the first argument.
+\end{lstlisting}
 
 \end{document}
