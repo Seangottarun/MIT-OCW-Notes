@@ -132,7 +132,7 @@
        \end{description}
 
  \item ex. home dir, username, \lstinline{PATH} variable
- \item Comments in Bash start with \lstinline{#}
+ \item Comments in bash start with \lstinline{#}
 \end{itemize}
 
 \begin{lstlisting}
@@ -153,7 +153,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{itemize}
- \item Paths separated by forward slashes \lstinline{/} for Unix and backslashes \lstinline{\} for Windows
+ \item Paths separated by forward slashes \lstinline{/} for UNIX and backslashes \lstinline{\} for Windows
 \end{itemize}
 
 \begin{description}
@@ -161,7 +161,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{itemize}
- \item On Unix, everything is under the root \lstinline{/} namespace
+ \item On UNIX, everything is under the root \lstinline{/} namespace
        \begin{itemize}
         \item i.e. all absolute paths start with \lstinline{/}
        \end{itemize}
@@ -238,7 +238,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{itemize}
- \item By default, \lstinline{rm} is \textbf{not} recursive on Unix (i.e. cannot remove a directory)
+ \item By default, \lstinline{rm} is \textbf{not} recursive on UNIX (i.e. cannot remove a directory)
  \item Add a \lstinline{-r} (recursive) flag to delete a directory
  \item Recursive delete removes everything under the path you give it
 \end{itemize}
@@ -272,7 +272,7 @@ which echo # tells you where file for command is located (ex. echo)
  \lstitem{|}: a \textbf{pipe}; takes the output of program on left and makes it the input of the program on the right. \textbf{Input program does not know about output program and vice versa} . The programs just read and write to those spots.
 \end{description}
 
-\subsection{Root User (Unix)}
+\subsection{Root User (UNIX)}
 \begin{itemize}
  \item Acts like admin user on Windows
  \item Has user id 0
@@ -332,13 +332,13 @@ which echo # tells you where file for command is located (ex. echo)
  \lstitem{open} opens file (macOS)
 \end{description}
 
-\subsection{Executable and Unix Shebang}
+\subsection{Executable and UNIX Shebang}
 \begin{description}
  \item[shebang: ] a character sequence involving \lstinline{#!} at the beginning of a script
 \end{description}
 
 \begin{itemize}
- \item A shebang \lstinline{#!} indicates that a file is an executable in Unix
+ \item A shebang \lstinline{#!} indicates that a file is an executable in UNIX
 \end{itemize}
 
 \begin{lstlisting}
@@ -349,5 +349,386 @@ which echo # tells you where file for command is located (ex. echo)
   # program /bin/sh, passing path/to/script (name of this file)
   # as the first argument.
 \end{lstlisting}
+
+\section{Shell Tools and Scripting}
+
+\subsection{Defining Variables}
+
+\begin{lstlisting}
+  foo=bar # make var foo store the value bar
+  echo $foo # OUTPUT: bar (the value of the foo)
+  foo = bar # will not work bec of spaces
+  # interprets as foo being the command with = and bar being args
+  # Note: spaces reserved in bash for separating CLI args
+\end{lstlisting}
+
+\subsection{Defining Strings}
+
+\begin{lstlisting}
+  echo "Hello" # OUTPUT: Hello
+  echo 'World' # OUTPUT: World (literal string for '')
+  # Note: for literal strings, double "" and single quotes ''
+  # are equivalent
+\end{lstlisting}
+
+\begin{lstlisting}
+  echo "value is $foo" # OUTPUT: value is bar
+  # variable $foo will be expanded in string for double quotes ""
+  echo 'value is $foo' # OUTPUT: value is $foo
+  # outputs string characters as displayed for single quotes ''
+  # doesn't expand $foo
+\end{lstlisting}
+
+\subsection{Defining Functions}
+\begin{lstlisting}
+  # mcd.sh, a command to make a new dir and switch to it
+  mcd () {
+    mkdir -p "$1" # $1 is a special var for 1st CLI arg
+    cd "$1"
+  }
+\end{lstlisting}
+
+\begin{lstlisting}
+  source mcd.sh # executes the script mcd.sh
+  # new mcd function has been defined in shell
+  # can now do
+  mcd test
+\end{lstlisting}
+
+\subsection{Special Bash Variables}
+\begin{description}
+ \lstitem{$0}: name of script
+ \lstitem{$1}: 1\textsuperscript{st} CLI arg
+ \lstitem{$2 to $9}: 2\textsuperscript{nd} to 9\textsuperscript{th} arg
+ \lstitem{$@}: expands to all args
+ \lstitem{$#}: number of args given to current command
+ \lstitem{$?}: gets error code from previous command
+ \lstitem{$_}: last arg of previous command
+ \lstitem{!!}: \textbf{bang bang}; Entire last command, including arguments. Usually used when you don't have permission (expands to previous command)
+ \lstitem{$$}: Process Identification number for the current script
+\end{description}
+
+\begin{lstlisting}
+  mkdir /mnt/new # Permission denied
+  sudo !! # becomes equivalent to
+  sudo mkdir /mnt/new
+\end{lstlisting}
+
+\subsection{Commands and Exit Codes}
+
+\begin{itemize}
+ \item Commands often return output using \lstinline{STDOUT}, errors through \lstinline{STDERR} and a Return Code to report errors in a more script friendly manner
+ \item Return code or exit status are used by scripts/commands to communicate how execution went
+\end{itemize}
+
+\begin{description}
+ \lstitem{0}: no issue; everything went OK
+ \lstitem{1} or any number: error or issue with running command
+\end{description}
+
+\begin{lstlisting}
+  echo "Hello" # OUTPUT: Hello
+  echo $? # OUTPUT: 0
+\end{lstlisting}
+
+\begin{lstlisting}
+  grep foobar mcd.sh # no output
+  echo $? # OUTPUT: 1
+  # bash tried to search for foobar string in mcd script but it
+  # wasn't there (an error occurred)
+\end{lstlisting}
+
+\subsection{Boolean Logic}
+
+\begin{itemize}
+ \item Note: \lstinline{true} and \lstinline{false} always have \lstinline{0} and \lstinline{1} error codes
+\end{itemize}
+
+\begin{lstlisting}
+  true
+  echo $? # OUTPUT: 0
+  false
+  echo $? # OUTPUT: 1
+\end{lstlisting}
+
+\subsection{Logical Operators}
+\begin{itemize}
+ \item Exit codes can be used to conditionally execute commands using \lstinline{&&} and \lstinline{||}
+\end{itemize}
+
+\begin{description}
+ \lstitem{||}: \textbf{OR operator}; executes 1\textsuperscript{st} commmand and if it fails, it executes the (i.e. 1st command did not have a 0 error code) 2\textsuperscript{nd} command
+ \lstitem{&&}: \textbf{AND operator}; will only execute the 2\textsuperscript{nd} command if the 1\textsuperscript{st} one runs w/out error codes (i.e. 1st command had a 0 error code)
+\end{description}
+
+\begin{lstlisting}
+  false || echo "oops fail" # OUTPUT: oops fail
+  # bash ran 2nd command bec the 1st command has an error code of 1
+  true || echo "Will not be printed" # no output
+  # bash didn't run the 2nd command bec the 1st command has an
+  # error code of 0
+\end{lstlisting}
+
+\begin{lstlisting}
+  true && echo "Things went well" # OUTPUT: Things went well
+  false && echo "This will not print"
+\end{lstlisting}
+
+\begin{description}
+ \lstitem{;} can concatenate commands in the same line with a semicolon \lstinline{;}
+\end{description}
+
+\begin{lstlisting}
+  false; echo "This always prints" # OUTPUT: This always prints
+\end{lstlisting}
+
+\subsection{Command Substitution}
+
+\begin{itemize}
+ \item Command substitution is used to get the output of a command as a variable
+\end{itemize}
+
+\begin{description}
+ \lstitem{$(cmd)}: will execute \lstinline{cmd}, get the output of the command (stored in a \textbf{variable}) and substitute it in place.
+\end{description}
+
+\begin{lstlisting}
+  foo=$(pwd) # gets output of pwd and stores it in foo variable
+  echo $foo
+\end{lstlisting}
+
+\begin{lstlisting}
+  echo "We are in $(pwd)" # OUTPUT: We are in /Users/admin/Documents
+  # Note: $(pwd) is expanded because we are using double quotes ""
+\end{lstlisting}
+
+\subsection{Process Substitution}
+
+\begin{itemize}
+ \item Process substitution is useful when commands expect values to be passed by file instead of by STDIN
+\end{itemize}
+
+\begin{description}
+ \lstitem{<(cmd)}: will execute \lstinline{cmd} and place the output in a \textbf{temporary file} and substitute the \lstinline{<()} with that file’s name
+\end{description}
+
+\begin{lstlisting}
+  cat <(ls) <(ls ..) # OUTPUT: prints files in current dir and then
+  # files in parent dir
+  # ls-ing both current and parent directories and then storing
+  #output in temp file using process substitution <(cmd)
+  # cat then reads the output of the temp file
+\end{lstlisting}
+
+\begin{description}
+ \lstitem{/dev/null}: special UNIX null register used to discard data that we do not care about
+ \lstitem{>}: redirects standard output \lstinline{STDOUT}
+ \lstitem{2>}: redirects standard error \lstinline{STDERR}
+\end{description}
+
+\begin{lstlisting}
+  #!/bin/bash
+
+  echo "Starting program at $(date)" # Date will be substituted
+
+  echo "Running program $0 with $# arguments with pid $$"
+
+  for file in $@; do
+      grep foobar $file > /dev/null 2> /dev/null
+      # When pattern is not found, grep has exit status 1
+      # We redirect STDOUT and STDERR to a null register since we do
+      # not care about them
+      if [[ $? -ne 0 ]]; then
+          echo "File $file does not have any foobar, adding one"
+          echo "# foobar" >> "$file"
+          # appends # foobar to end of file as a comment
+      fi
+  done
+\end{lstlisting}
+
+\begin{itemize}
+ \item To see equality test flags, run \lstinline{man test}
+ \item When performing comparisons in bash try to use double brackets \lstinline{[[ ]]} in favor of simple brackets \lstinline{[ ]}. Chances of making mistakes are lower although it won’t be portable to \lstinline{sh}
+\end{itemize}
+
+\subsection{Manipulating Files}
+\begin{description}
+ \lstitem{*} \textbf{globbing}; 0 or multiple character wildcard. When used with partial file name will expand to all files matching that pattern
+ \lstitem{?} single character wildcard; only replaces 1 character (not 0 or more like with globbing)
+ \lstitem{\{\}} used when you have a common substring that you want to expand automatically. Like for writing files with similar names but different extensions
+\end{description}
+
+\begin{lstlisting}
+  ls *.sh # lists all files with .sh extension
+\end{lstlisting}
+
+\begin{lstlisting}
+  # given files foo, foo1, foo2, foo10 and bar
+  rm foo? # deletes foo1 and foo2
+  rm foo* # deletes all except for bar
+\end{lstlisting}
+
+\begin{lstlisting}
+  convert image.png image.jpg
+  convert image.{png,jpg} # equivalent to above line
+  # Rememeber: NO SPACES or else bash treats them as separate args
+\end{lstlisting}
+
+\begin{lstlisting}
+  touch foo{,1,2,10}
+  touch foo foo1 foo2 foo10
+\end{lstlisting}
+
+\begin{lstlisting}
+  # can also combine everything and at multiple levels
+  touch project{1,2}/src/test{1,2,3}.py
+
+  # globbing techniques can also be combined like this
+  mv *{.py,.sh} folder
+  # Will move all *.py and *.sh files
+\end{lstlisting}
+
+\begin{description}
+ \lstitem{..} expands into a range. \lstinline{1..5} \lra \lstinline{1,2,3,4,5}
+\end{description}
+
+\begin{lstlisting}
+  touch {foo,bar}/{a..j}
+  # expands into foo/a to foo/j and same with bar/a and bar/j
+  diff <(ls foo) <(ls bar) # compares output of 2 ls commands
+\end{lstlisting}
+
+\subsection{Bash and Python Scripting}
+
+\begin{description}
+ \lstitem{#!} \textbf{shebang}; indicates that file is an executable and specifies which interpreter to use
+\end{description}
+
+\begin{itemize}
+ \item Can add shebang to python to make it executable from the shell
+\end{itemize}
+
+\begin{lstlisting}
+  #!/usr/local/bin/python
+  # above line tells shell to use python as the interpreter
+  import sys
+  for arg in reversed(sys.argv[1:]):
+    print(arg)
+\end{lstlisting}
+
+\begin{lstlisting}
+  # can run above python file script.py as executable in shell
+  ./script.py a b c # a,b,c are arguments passed to the script
+\end{lstlisting}
+
+\begin{lstlisting}
+  # to avoid assuming where python is located, we can use the
+  # env command in python file
+
+  #!/usr/local/bin/env python
+  # give python as argument to env command
+  # output of env (location of python) becomes the interpreter
+  # specified by the shebang
+  import sys
+  for arg in reversed(sys.argv[1:]):
+    print(arg)
+\end{lstlisting}
+
+\begin{description}
+ \lstitem{shellcheck}: useful CLI program to debug shell scripts; native shell doesn't give much useful error/debug statements
+ \lstitem{tldr}: useful CLI program to get short documentation and examples for commands instead of using \lstinline{man}
+\end{description}
+
+\subsection{Shell Functions vs Scripts}
+\begin{enumerate}
+ \item Functions have to be in the same language as the shell, while scripts can be written in any language (ex. \lstinline{python})
+       \begin{itemize}
+        \item This is why including a shebang for scripts is important
+       \end{itemize}
+ \item Functions are loaded once when their definition is read. Scripts are loaded every time they are executed.
+       \begin{itemize}
+        \item This makes functions slightly faster to load but whenever you change them you will have to reload their definition
+       \end{itemize}
+ \item  Functions are executed in the current shell environment whereas scripts execute in their own process
+       \begin{itemize}
+        \item Thus, functions can modify environment variables, e.g. change your current directory, whereas scripts can’t.
+       \end{itemize}
+ \item Scripts will be passed by value environment variables that have been exported using \lstinline{export}
+\end{enumerate}
+
+\subsection{Finding Files}
+
+\begin{description}
+ \lstitem{find} UNIX CLI tool that recursively searches thru all the files that match a certain pattern
+ \lstitem{locate} uses a database updated using \lstinline{cron} that is a a faster way of searching for files. To manually update database, run \lstinline{updatedb} (Linux) or \lstinline{sudo /usr/libexec/locate.updatedb} from root \lstinline{/} for MacOS
+\end{description}
+
+\begin{itemize}
+ \item Tradeoff between \lstinline{find} and \lstinline{locate} is \textbf{speed vs freshness}
+ \item Database may contain out of date info and needs to be updated
+\end{itemize}
+
+\begin{lstlisting}
+  # Find all directories named src
+  find . -name src -type d
+  # Find all python files with a folder named test in their path
+  find . -path '**/test/**/*.py' -type f
+  # Find all files modified in the last day
+  find . -mtime -1
+  # Find all zip files with size in range 500k to 10M
+  find . -size +500k -size -10M -name '*.tar.gz'
+\end{lstlisting}
+
+\begin{lstlisting}
+  # Delete all files with .tmp extension
+  find . -name '*.tmp' -exec rm {} \;
+  # Find all PNG files and convert them to JPG
+  find . -name '*.png' -exec convert {} {.}.jpg \;
+\end{lstlisting}
+
+\subsection{Searching Within Files}
+\begin{description}
+ \lstitem{grep} UNIX CLI tool used for searching or matching patterns from input text
+ \lstitem{rg} \textbf{ripgrep}; a CLI tool that improves \lstinline{grep} by ignoring .git folders, using multi CPU support, etc.
+\end{description}
+
+Useful \lstinline{grep} and \lstinline{rg} flags
+\begin{description}
+ \lstitem{-C n} gives n lines of \textbf{C}ontext around the matched string
+ \lstitem{-v} in\textbf{v}erts the match, i.e. print all lines that do not match the pattern
+ \lstitem{-R} \textbf{R}ecursively go into directories and look for text files for the matching string.
+\end{description}
+
+\begin{lstlisting}
+  # Find all python files where I used the requests library
+  rg -t py 'import requests'
+  # Find all files (including hidden files) without a shebang line
+  rg -u --files-without-match "^#!"
+  # Find all matches of foo and print the following 5 lines
+  rg foo -A 5
+  # Print statistics of matches (# of matched lines and files )
+  rg --stats PATTERN
+\end{lstlisting}
+
+\subsection{Searching Previous Shell History}
+
+\begin{description}
+ \lstitem{up arrow}: goes through previous commands line by line. Inefficient for very old commands
+ \lstitem{history}: command that prints out most recent commands
+ \lstitem{ctrl r}: backwards search fo previous command history and execute in place. Repetitive typing of \lstinline{ctrl r}  will give you next previous command
+\end{description}
+
+\begin{lstlisting}
+  history 1 # prints all results since beginning of time
+  history 1 | grep convert
+  # search all history for commands using convert
+\end{lstlisting}
+
+
+\subsection{Directory Structure}
+\begin{description}
+ \lstitem{tree}: pretty prints the directory structure
+\end{description}
+
 
 \end{document}
