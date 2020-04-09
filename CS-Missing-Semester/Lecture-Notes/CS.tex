@@ -332,6 +332,27 @@ which echo # tells you where file for command is located (ex. echo)
  \lstitem{open} opens file (macOS)
 \end{description}
 
+\begin{description}
+  \lstitem{source} reads and executes commands from the file specified as its argument in the current shell environment. Useful to load functions, variables and configuration files into shell scripts. It has a synonym in \lstinline{.} (period).
+\end{description}
+
+\begin{lstlisting}
+  . filename [arguments]
+  source filename [arguments]
+\end{lstlisting}
+
+\begin{lstlisting}
+  # Note that ./ and source are not the same
+  ./script
+  # runs the script as an executable file, launching a new shell to
+  # run it
+
+  source script
+  # reads and executes commands from filename in the current shell
+  # environment
+  # Note: ./script is not . script, but . script == source script
+\end{lstlisting}
+
 \subsection{Executable and UNIX Shebang}
 \begin{description}
  \item[shebang: ] a character sequence involving \lstinline{#!} at the beginning of a script
@@ -548,7 +569,7 @@ which echo # tells you where file for command is located (ex. echo)
 
 \begin{itemize}
  \item To see equality test flags, run \lstinline{man test}
- \item When performing comparisons in bash try to use double brackets \lstinline{[[ ]]} in favor of simple brackets \lstinline{[ ]}. Chances of making mistakes are lower although it won’t be portable to \lstinline{sh}
+ \item When performing comparisons in bash try to use double brackets \lstinline{[[ ]]} in favour of simple brackets \lstinline{[ ]}. Chances of making mistakes are lower although it won’t be portable to \lstinline{sh}
 \end{itemize}
 
 \subsection{Manipulating Files}
@@ -571,7 +592,7 @@ which echo # tells you where file for command is located (ex. echo)
 \begin{lstlisting}
   convert image.png image.jpg
   convert image.{png,jpg} # equivalent to above line
-  # Rememeber: NO SPACES or else bash treats them as separate args
+  # Remember: NO SPACES or else bash treats them as separate args
 \end{lstlisting}
 
 \begin{lstlisting}
