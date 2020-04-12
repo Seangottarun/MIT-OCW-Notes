@@ -333,7 +333,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{description}
-  \lstitem{source} reads and executes commands from the file specified as its argument in the current shell environment. Useful to load functions, variables and configuration files into shell scripts. It has a synonym in \lstinline{.} (period).
+ \lstitem{source} reads and executes commands from the file specified as its argument in the current shell environment. Useful to load functions, variables and configuration files into shell scripts. It has a synonym in \lstinline{.} (period).
 \end{description}
 
 \begin{lstlisting}
@@ -750,6 +750,163 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \begin{description}
  \lstitem{tree}: pretty prints the directory structure
 \end{description}
+
+\section{Vim Text Editor}
+
+\subsection{Vim philosohpy}
+\begin{itemize}
+ \item Vim is a \textbf{modal} editor (multiple operating modes for inserting text vs manipulating text)
+ \item Vim interface is like a programming language: keystrokes are commands and these commands can be composable
+ \item Vim avoids use of mouse and arrow keys to speed up workflow; all vim functionality available from keyboard
+\end{itemize}
+
+\subsection{Modal Editing}
+\begin{itemize}
+ \item Starts off in \textbf{normal mode}
+\end{itemize}
+
+\begin{description}
+ \lstitem{<ESC>} \textbf{Normal}; for moving around a file and making edits
+ \lstitem{i} \textbf{Insert}; for inserting text
+ \lstitem{R} \textbf{Replace}; for replacing text
+ \lstitem{v, V, or <C-v>} \textbf{Visual (plain, line, or block)}; for selecting blocks of text
+ \lstitem{:} \textbf{Command-line}; for running a command
+\end{description}
+
+
+\begin{itemize}
+ \item Note: \lstinline{<C-v>} means Ctrl-v
+ \item Note: keystrokes have different meanings in different modes
+ \item Vim shows current mode in bottom left
+ \item Usually use normal or insert mode
+\end{itemize}
+
+\subsection{Vim buffers, tabs, and windows}
+\begin{itemize}
+ \item Vim maintains a set of open files called \textbf{buffers}
+ \item A Vim session has a number of tabs, each with a number of windows (split panes)
+ \item Each window shows only 1 buffer
+ \item Note: a window is only a \textit{view}
+ \item A given buffer may be open in \textit{multiple} windows (even in same tab)
+\end{itemize}
+
+\subsection{Command-line}
+\begin{itemize}
+ \item Enter command mode by typing \lstinline{:} in normal mode
+\end{itemize}
+
+\begin{description}
+ \lstitem{:q} quit (close window)
+ \lstitem{:qa} close all windows and quit
+ \lstitem{:w} save ("write")
+ \lstitem{:wq} save and quit
+ \lstitem{:e {name of file}} open file for editing
+ \lstitem{:ls} show open buffers
+ \lstitem{:help {topic}} open help
+ \lstitem{:help :w} opens help for \lstinline{:w} command
+ \lstitem{:help w} opens help for the \lstinline{w} movement
+\end{description}
+
+\subsection{Movement Commands}
+\begin{itemize}
+ \item Spend most of the time in normal mode using movement commands (aka "nouns") to navigate the buffer
+ \item Movements in Vim are also called “nouns”, because they refer to chunks of text.
+\end{itemize}
+
+\begin{description}
+ \item[Basic movement] \lstinline{hjkl} (left, down, up, right)
+ \item[Words] \lstinline{w} (next word) \lstinline{b} (beginning of word), \lstinline{e} (end of word)
+ \item[Lines] \lstinline{0} (beginning of line), \lstinline{^} (first non-blank character), \lstinline{$} (end of line)
+ \item{Screen} \lstinline{H} (top of screen), \lstinline{M} (middle of screen), \lstinline{L} (bottom of screen)
+ \item[Scroll] \lstinline{Ctrl-u} (up), \lstinline{Ctrl-d} (down)
+ \item[File] \lstinline{gg} (beginning of file), \lstinline{G} (end of file)
+ \item[Line numbers] \lstinline|:{number}<CR>| or \lstinline|{number}G| (line {number})
+ \item[Editing parentheses and brackets] \lstinline{\%} Jumps between matching brackets (),[]
+ \item[Find] \lstinline|f{character}|, \lstinline|t{character}|, \lstinline|F{character}|, \lstinline|T{character}| find/to forward/backward {character} on the current line \lstinline{,} or \lstinline{;} for navigating matches
+ \item[Search]: \lstinline|/{regex}|, \lstinline{n} or \lstinline{N} for navigating matches
+\end{description}
+
+\subsection{Text Selection}
+\begin{itemize}
+ \item Visual modes
+       \begin{enumerate}
+        \item Visual
+        \item Visual Line
+        \item Visual Block
+       \end{enumerate}
+ \item Can use movement keys in these modes to select text
+\end{itemize}
+
+\subsection{Editing}
+\begin{itemize}
+ \item Vim's editing commands are also called "verbs" because verbs act on nouns
+\end{itemize}
+
+\begin{description}
+ \lstitem{i} enter insert mode
+ \lstitem{o or O} insert line below/above
+ \lstitem{d\{motion\}} delete {motion}
+ \lstitem{dw} delete word
+ \lstitem{d$} delete to end of line
+ \lstitem{d0} delete to beginning of line
+ \lstitem{c\{motion\}} change {motion}; like \lstinline|d{motion}| followed by \lstinline{i}
+ \lstitem{cw} change word
+ \lstitem{x} delete character (equal do \lstitem{dl})
+ \lstitem{s} substitute character (equal to \lstitem{xi})
+ \lstitem{u} undo
+ \lstitem{<C-r>} redo
+ \lstitem{y} to copy / “yank”
+ \lstitem{p} paste
+ \lstitem{\~} flips the case of a character
+\end{description}
+
+\subsection{Repeated Actions with Counts}
+\begin{itemize}
+ \item Can combine nouns (movement command) and verbs (editing command) with a count
+ \item Performs a given action a number of times
+\end{itemize}
+
+\begin{description}
+ \lstitem{3w} move 3 words forward
+ \lstitem{5j} move 5 lines down
+ \lstitem{7dw} delete 7 words
+\end{description}
+
+\begin{itemize}
+ \item Note: repeating a character twice applies that command to a whole line
+ \item ex. \lstinline{dd} deletes a whole line
+\end{itemize}
+
+\subsection{Modifiers}
+\begin{itemize}
+ \item Can use modifiers to change meaning of a noun (movment command)
+ \item ex. the \lstinline{i} modifier means "inner" or "inside" and the \lstinline{a} modifier means "around"
+\end{itemize}
+
+\begin{description}
+ \lstitem{ci(} change the contents inside the current pair of parentheses
+ \lstitem{ci[} change the contents inside the current pair of square brackets
+ \lstitem{da'} delete a single-quoted string, including the surrounding single quotes
+\end{description}
+
+\subsection{Search and Replace}
+\begin{description}
+ \lstitem{:s} substitute
+ \lstitem{\%s/foo/bar/g} replace foo with bar globally in file
+ \lstitem{\%s/\[.*\](\(.*\))/\1/g} replace named Markdown links with plain URLs
+\end{description}
+
+\subsection{Multiple Windows}
+\begin{description}
+ \lstitem{:sp or :vsp} to split windows
+ \lstitem{:tabnew} new tab
+\end{description}
+
+\begin{itemize}
+ \item Can have multiple views of the same buffer.
+\end{itemize}
+
+
 
 
 \end{document}
