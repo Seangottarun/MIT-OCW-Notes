@@ -906,7 +906,169 @@ Useful \lstinline{grep} and \lstinline{rg} flags
  \item Can have multiple views of the same buffer.
 \end{itemize}
 
+\section{Data Wrangling}
+\begin{description}
+ \lstitem{journalctl}: view system logs
+ \lstitem{ssh}: access computers remotely through commmand-line
+ \lstitem{sed}: stream editor; make changes to stream. Usually use it to run  replacement commands on input stream
+ \lstitem{less}: pager to scroll through output and view data
+\end{description}
+
+\begin{itemize}
+ \item Can specify which commands to run on server when using \lstinline{ssh} by using single quotes \lstinline{''}
+\end{itemize}
+
+\begin{lstlisting}
+  # Read server logs to see who is trying to log in
+  # This command uses pipes to stream a remote file through grep
+  # on local computer
+  ssh myserver journalctl | grep sshd
+
+  # This does filtering on the server and then displays data locally
+  # with the pager
+  ssh myserver 'journalctl | grep sshd | grep "Disconnected from"'
+   | less
+\end{lstlisting}
+
+\subsection{RegEx}
+
+\begin{lstlisting}
+  ssh myserver journalctl
+   | grep sshd
+   | grep "Disconnected from"
+   | sed 's/.*Disconnected from //'
+  # This uses the s substitution command for sed with regex (regular
+  # expressions)
+\end{lstlisting}
+
+\begin{description}
+ \lstitem{s/REGEX/Substitution/} \textbf{substitution} command in \lstinline{sed}, where \lstinline{REGEX} is the regular expression you want to search for and \lstinline{SUBSTITUTION} is the text you want to substitute matching text for
+\end{description}
+
+\begin{itemize}
+ \item Regular expressions are usually surrounded by \lstinline{/}
+ \item Note: to use \lstinline{sed} with modern regex (no escaping of characters with \lstinline{\}), use \lstinline{sed -E}
+\end{itemize}
+
+\begin{description}
+ \lstitem{.} means “any single character” except newline
+ \lstitem{*} zero or more of the preceding match
+ \lstitem{+} one or more of the preceding match
+ \lstitem{?} zero or one of the preceding pattern; i.e. prevents regex from greedy matching as many occurrences as possible
+ \lstitem{[]} one of many characters (specified inside square brackets \lstinline{[]})
+ \lstitem{[abc]} selects any one character of a, b, and c
+ \lstitem{-} used to specify a range of characters
+ \lstitem{[0-9]} selects any one number between 0 and 9
+ \lstitem{(RX1|RX2)} either something that matches \lstinline{RX1} or \lstinline{RX2}
+ \lstitem{^} matches the start of the line
+ \lstitem{$} matches the end of the line
+\end{description}
+
+\begin{lstlisting}
+  /.*Disconnected from /
+  # matches any text starting with any number of characters
+  # (.*) followed by the literal string "Disconnected from "
+\end{lstlisting}
+
+\begin{itemize}
+ \item Note: \lstinline{*} and \lstinline{+} are by default "greedy" (will match as many occurrences as possible)
+ \item To avoid that, suffix \lstinline{*} and \lstinline{+}  with \lstinline{?} like \lstinline{*?} or \lstinline{+?} (not supported in \lstinline{sed})
+ \item Recommended: use a regex debugger online to make sure the regex does what you want
+ \item Recommended: use \lstinline{^} and \lstinline{$} to specify the beginning and end of the line to prevent users from doing weird stuff
+\end{itemize}
+
+\begin{lstlisting}
+  | sed -E 's/.*Disconnected from (invalid |authenticating )?user
+  .* [^ ]+ port [0-9]+( \[preauth\])?$//'
+  # matches any text starting with any number of characters (.*)
+  # followed by the literal string "Disconnected from "
+  # then matches any of the user variants followed by matching any
+  # single word ([^ ]+), i.e. any non-empty sequence of
+  # nonspace characters, then the word "port" with some digits, then
+  # possibly the suffix [preauth], and finally the end of the line
+  # Note: square brackets [] are special characters in regex
+  # so we have to escape them
+\end{lstlisting}
+
+\begin{itemize}
+ \item Use \textbf{capture groups} in regex to store strings for use later
+\end{itemize}
+
+\begin{description}
+ \lstitem{()} any text matched by a regex surrounded by parentheses is stored in a numbered capture group. Available for substitution as \lstinline{\1}, \lstinline{\2}, \lstinline{\3}, etc
+\end{description}
+
+\begin{lstlisting}
+  | sed -E 's/.*Disconnected from (invalid |authenticating )?user
+  (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
+  # does same matching as before but replaces each line with
+  # the 2nd capture group \2
+  # i.e. any text after user (.*), which is the username
+\end{lstlisting}
+
+\subsection{Useful Data Wrangling Commands}
+\begin{description}
+ \lstitem{wc} wordcount program
+ \lstitem{wc -l} gives number of lines
+ \lstitem{sort} sorts lines of input (in ascending order by default)
+ \lstitem{uniq} outputs the unique lines for a sorted list of lines
+ \lstitem{uniq -c} outputs unique lines for a sorted list of lines with the number of occurrences
+ \lstitem{sort -nk1,1} sorts numerically (\lstinline{n}), for a white space separated column (\lstinline{k}), starting and ending at the 1st column (\lstinline{1,1})
+ \lstitem{awk} column based stream editor; operates on whitespaced separated columns
+ \lstitem{paste} paste lines together with a delimiter
+ \lstitem{bc} basic calculator; takes input from STDIN (use pipes)
+ \lstitem{xargs} takes lines of input and turns them into arguments
+ \lstitem{-} tells program to use STDIN or STDOUT instead of a given file; replaces a file argument (usually used with pipes)
+\end{description}
+
+\begin{lstlisting}
+  ssh myserver journalctl
+   | grep sshd
+   | grep "Disconnected from"
+   | sed -E 's/.*Disconnected from (invalid |authenticating )?user
+    (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
+   | sort | uniq -c
+
+  # takes usernames from before and sorts them (ascending
+  # alphabetically), but only keeps the unique ones and adds
+  # a count of occurrences
+\end{lstlisting}
+
+\begin{lstlisting}
+  ssh myserver journalctl
+   | grep sshd
+   | grep "Disconnected from"
+   | sed -E 's/.*Disconnected from (invalid |authenticating )?user
+    (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
+   | sort | uniq -c
+   | sort -nk1,1 | tail -n10
+
+  # takes the alphabetically sorted list of unique usernames
+  # then sorts them again numerically based on the number of
+  # occurrences by using sort -nk1,1
+  # i.e. sort by only the first whitespace-separated column up to
+  # the 1st column
+  # tail then gives the last ones (the most common ones since sort
+  # is ascending)
+\end{lstlisting}
+
+\begin{lstlisting}
+  rustup toolchain list | grep nightly | grep -vE "nightly-x86"
+   | sed 's/-x86.*//' | xargs rustup toolchain uninstall
+  # uses xargs to pass certain versions as arguments to the rust
+  # uninstallation program
+\end{lstlisting}
 
 
+\begin{lstlisting}
+  ffmpeg -loglevel panic -i /dev/video0 -frames 1 -f image2 -
+   | convert - -colorspace gray -
+   | gzip
+   | ssh mymachine 'gzip -d | tee copy.jpg | env DISPLAY=:0 feh -'
+  # pipes useful to binary data
+  # here we used ffmpeg to capture webcam image, convert it
+  # to grayscale, compress it, send it to a remote machine over SSH,
+  # decompress it there, make a copy, and then display it locally
+\end{lstlisting}
 
 \end{document}
