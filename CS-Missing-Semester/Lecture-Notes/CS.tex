@@ -957,6 +957,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
  \lstitem{?} zero or one of the preceding pattern; i.e. prevents regex from greedy matching as many occurrences as possible
  \lstitem{[]} one of many characters (specified inside square brackets \lstinline{[]})
  \lstitem{[abc]} selects any one character of a, b, and c
+ \lstitem{[^abc]} selects any character that is \textbf{not} abc. The use of \lstinline{^} in square brackets \lstinline{[^]} means to exclude those characters in the match
  \lstitem{-} used to specify a range of characters
  \lstitem{[0-9]} selects any one number between 0 and 9
  \lstitem{(RX1|RX2)} either something that matches \lstinline{RX1} or \lstinline{RX2}
