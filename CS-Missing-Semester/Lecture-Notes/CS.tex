@@ -5,6 +5,7 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{enumitem}
+\usepackage{float}
 
 % For displaying code
 \usepackage{listings}
@@ -72,6 +73,10 @@
   zcat, xdg, version},
 }
 
+% Display tildes nicely
+\lstset{
+    literate={~} {$\sim$}{1}
+}
 
 \newcommand*{\lstitem}[1]{
   \setbox0\hbox{\lstinline{#1}}
@@ -1071,5 +1076,461 @@ Useful \lstinline{grep} and \lstinline{rg} flags
   # to grayscale, compress it, send it to a remote machine over SSH,
   # decompress it there, make a copy, and then display it locally
 \end{lstlisting}
+
+\section{Command-line Environment}
+
+\subsection{Job Control and Processes}
+\begin{itemize}
+ \item The shell uses a UNIX communication mechanism called a \textbf{signal} to communicate info to a process
+ \item When a process receives a signal, it stops its execution, deals with the signal, and potentially changes the flow of execution based on the info that the signal delivered
+\end{itemize}
+
+\begin{description}
+ \lstitem{sleep} takes an integer argument specify the number of seconds that the process will "sleep"
+ \lstitem{ctrl-C} \^{}C stops execution of a process  by sending a SIGINT signal to tell the process to stop itself. The process is then ended.
+ \lstitem{ctrl-Z} \^{}Z suspends the terminal by sending the process a SIGTSTP signal. The process is then stopped and put in the background, but its execution can be continued later
+ \lstitem{ctrl-\\} quits execution of a process by sending a SIGQUIT signal
+ \lstitem{man signal} gives list of UNIX signals and their numbered identifiers
+ \lstitem{kill -TERM <PID>} sends a SIGTERM signal to the process with process id \lstinline{<PID>} to ask process to exit gracefully
+\end{description}
+
+\subsection{Common Unix Signals}
+
+\begin{description}
+ \lstitem{SIGINT}: signal sent by terminal to \textit{interrupt} execution of a process (i.e. \textit{software interrupt})
+ \lstitem{SIGQUIT}: signal sent by terminal to \textit{quit} execution of a program
+ \lstitem{SIGHUP}: signal to indicate terminal \textit{hangup}
+ \lstitem{SIGSTOP}: pauses execution of a process to \textit{stop}
+ \lstitem{SIGTSTP}: sends a \textit{terminal stop} (i.e. the terminal's version of \lstinline{SIGSTOP})
+ \lstitem{SIGCONT}: \textit{continues} execution of a stopped program at a later point in time
+ \lstitem{SIGKILL}: causes a process to terminate \underline{immediately} (i.e. \textit{kill} the process). Unlike SIGINT, this signal cannot be caught or ignored because the receiving process cannot do any clean-up after receiving this signal
+ \lstitem{SIGTERM}: a more generic signal to ask process to exit gracefully. Sent using \lstinline{kill} command
+\end{description}
+
+\begin{itemize}
+ \item if there are still things running in your terminal when you close it, the program sends a SIGHUP to all processes to tel them to stop (i.e. had a hang-up in the command line communication)
+ \item Can change the default behaviour of process upon receiving signals by using handlers in the program
+\end{itemize}
+
+\begin{description}
+ \item[handler] captures signal and adds extra behaviour
+ \item[orphan process] when a process has other small children processes that it started, using SIGKILL to kill the 1st parent process will leave the child process still running (but without the parent). May lead to weird behaviour.
+\end{description}
+
+
+\begin{lstlisting}[language=python]
+  #!/usr/bin/env python
+  import signal, time
+
+  def handler(signum, time):
+    print("\nI got a SIGINT, but I am not stopping")
+    # handler captures SIGINT and ignores it
+    # i.e no longer stops execution and continues running
+
+  signal.signal(signal.SIGINT, handler)
+  i = 0
+  while True:
+    time.sleep(.1)
+    print("\r{}".format(i), end="")
+    i += 1
+
+  # to actually stop this program, we need to use a SIGQUIT signal
+  # by typing ctrl-\
+\end{lstlisting}
+
+\begin{lstlisting}
+  # if we run that program and send SIGINT twice, nothing happens
+  # it only stops when we give it SIGQUIT
+
+  $ python sigint.py
+  24^C
+  I got a SIGINT, but I am not stopping
+  26^C
+  I got a SIGINT, but I am not stopping
+  30^\[1]    39913 quit       python sigint.py
+\end{lstlisting}
+
+\begin{itemize}
+ \item \lstinline{SIGINT} is like a "user-initiated happy termination" while \lstinline{SIGQUIT} is like a "user-initiated unhappy termination" (both can be caught or ignored)
+ \item \lstinline{SIGTERM} terminates the process, gracefully or not, but allows it a chance to clean up (can be caught or ignored)
+ \item \lstinline{SIGKILL} kills the process immediately and is a last resort (process cannot catch signal or clean up)
+\end{itemize}
+
+\subsection{Pausing and Background Processes}
+\begin{description}
+ \lstitem{fg} continues a paused job in the foreground
+ \lstitem{bg} continues a paused job in the background
+ \lstitem{jobs} lists unfinished jobs associated with current terminal session
+ \lstitem{pgrep} finds process id (PID) of running jobs
+ \lstitem{nohup} a wrapper for a command to ignore \lstinline{SIGHUP}. Allows a process to continue running when shell closed (useful when working on remote machine in case you disconnect)
+ \lstitem{disown} removes a process form the shell's job contorl and allows it to ignore \lstinline{SIGHUP}
+\end{description}
+
+\begin{itemize}
+ \item Can refer to unfinished jobs using their pid or with a percent sign \% and their job number
+ \item Can refer to last backgrounded job with \lstinline{$!} environment variable
+ \item Adding an ampersand \& suffix in a command will run the command in the background (will still use STDOUT but will give you the prompt back)
+ \item To background an already running program, you can do \lstinline{ctrl-Z} followed by \lstinline{bg}
+ \item Note: backgrounded processes are still children processes of the terminal and will die if you close the terminal (terminal sends a \lstinline{SIGHUP} signal)
+\end{itemize}
+
+\begin{lstlisting}
+  # example of jobs and foreground/background processes
+  $ sleep 1000
+  ^Z
+  [1]  + 18653 suspended  sleep 1000
+
+  $ nohup sleep 2000 &
+  [2] 18745
+  appending output to nohup.out
+
+  $ jobs
+  [1]  + suspended  sleep 1000
+  [2]  - running    nohup sleep 2000
+
+  $ bg %1 # run process 1 in the background
+  [1]  - 18653 continued  sleep 1000
+
+  $ jobs
+  [1]  - running    sleep 1000
+  [2]  + running    nohup sleep 2000
+
+  $ kill -STOP %1 # stop process 1
+  [1]  + 18653 suspended (signal)  sleep 1000
+
+  $ jobs
+  [1]  + suspended (signal)  sleep 1000
+  [2]  - running    nohup sleep 2000
+
+  $ kill -SIGHUP %1
+  [1]  + 18653 hangup     sleep 1000
+
+  $ jobs
+  [2]  + running    nohup sleep 2000
+
+  $ kill -SIGHUP %2
+
+  $ jobs
+  [2]  + running    nohup sleep 2000
+
+  $ kill %2
+  [2]  + 18745 terminated  nohup sleep 2000
+
+  $ jobs
+
+\end{lstlisting}
+
+
+\subsection{Terminal Multiplexers - tmux}
+
+\begin{description}
+ \lstitem{tmux} terminal multiplexer that allows you to multiplex terminal windows using panes and tabs so that you can interact with multiple shell sessions
+\end{description}
+
+\begin{itemize}
+ \item \lstinline{tmux} lets you manage shell sessions and is useful for remote machines since it eliminates the need to use \lstinline{nohup}
+ \item \lstinline{tmux} uses keybindings of the form \lstinline{<C-b> x} (\lstinline{ctrl-b} release and another button \lstinline{x})
+ \item Note: often remap \lstinline{<C-b>} to \lstinline{<C-a>} because it's faster and more ergonomic
+\end{itemize}
+
+\subsubsection{Sessions}
+\begin{description}
+ \item[session] an independent workspace with one or more windows
+       \lstitem{tmux} starts a new session
+       \lstitem{tmux new -s NAME} starts a session with that name
+       \lstitem{tmux ls} lists the current sessions
+       \lstitem{<C-b> d} detaches the current session
+       \lstitem{tmux a} attaches the last session. You can use -t flag to specify which session to attach
+\end{description}
+
+\subsubsection{Windows}
+
+\begin{description}
+ \item[window] equivalent to tabs in editors or browsers
+       \lstitem{C-b> c} creates a new window. To close it you can just terminate the shells doing \lstinline{<C-d>}
+       \lstitem{<C-b> N} go to the N th window
+       \lstitem{<C-b> p} goes to the previous window
+       \lstitem{<C-b> n} goes to the next window
+       \lstitem{<C-b> ,} rename the current window
+       \lstitem{<C-b> w} list current windows
+\end{description}
+
+\subsubsection{Panes}
+\begin{description}
+ \item[pane] like vim splits, pane lets you have multiple shells in the same visual display
+       \lstitem{<C-b> "} split the current pane horizontally
+       \lstitem{<C-b> \%} split the current pane vertically
+       \lstitem{<C-b> <direction>} move to the pane in the specified direction. Direction here means arrow keys.
+       \lstitem{<C-b> z} toggle zoom for the current pane
+       \lstitem{<C-b> [} start scrollback. You can then press \lstinline{<space>} to start a selection and \lstinline{<enter>} to copy that selection
+       \lstitem{<C-b> <space>} cycle through pane arrangements
+\end{description}
+
+\subsection{Aliases}
+\begin{description}
+  \item[shell alias] a short form for another command that your shell will replace automatically for you
+  \lstitem{alias alias_name="command_to_alias arg1 arg2"} command to create an alias. Note no spaces around equal sign \lstinline{=} because \lstinline{alias} only takes a single argument
+\end{description}
+
+\begin{lstlisting}
+# Make shorthands for common flags
+alias ll="ls -lh"
+
+# Save a lot of typing for common commands
+alias gs="git status"
+alias gc="git commit"
+alias v="vim"
+
+# Save you from mistyping
+alias sl=ls
+
+# Overwrite existing commands for better defaults
+alias mv="mv -i"           # -i prompts before overwrite
+alias mkdir="mkdir -p"     # -p make parent dirs as needed
+alias df="df -h"           # -h prints human readable format
+
+# Alias can be composed
+alias la="ls -A"
+alias lla="la -l"
+
+# To ignore an alias run it prepended with \
+\ls
+# Or disable an alias altogether with unalias
+unalias la
+
+# To get an alias definition just call it with alias
+alias ll
+# Will print ll='ls -lh'
+\end{lstlisting}
+
+\begin{itemize}
+  \item Note: aliases do not persist shell sessions by default
+  \item Need to add an alias to shell startup files like \lstinline{.bashrc} or \lstinline{.zshrc} to have it persist
+\end{itemize}
+
+\subsection{Dotfiles}
+
+\begin{description}
+  \item[dotfile] plain-text file whose file name starts with a \lstinline{.} (so that they are hidden in the directory listing \lstinline{ls} by default). Used to configure many programs (ex. \lstinline{~/.vimrc})
+  \item[symlink] symbolic link a path to another path using \lstinline{ln}. Kinda like a pointer where you can specify one path that links to the path where the file actually is
+\end{description}
+
+\begin{lstlisting}
+  # create a symlink
+  ln -s path/to/file/you/want /symbolic/path/you/want
+\end{lstlisting}
+
+\begin{itemize}
+  \item Shells are configured with dotfiles (ex. \lstinline{.bashrc}, \lstinline{.bash_profile}, \lstinline{.zshrc}) and reads these files to load its configuration on startup
+  \item Can store environment variables in dotfiles
+  \item Can add commands that you want to run on startup or modifications to your \lstinline{PATH} environment variable (usually required by programs so that their binaries can be found)
+  \item For better organization, it's recommended to organize dotfiles in their own folder (under version control) and symlinked into place using a script
+  \item This is done for easy installation on new machines, portability, synchronization, and change tracking
+  \item Note: dotfiles need to be in home directory \lstinline{~/} (or use symlinks)
+\end{itemize}
+
+\subsubsection{Portability}
+
+\begin{itemize}
+  \item Dotfile configurations may not work on all machines (ex. diff OS or shells)
+  \item Can then make specific configurations using if-statements (if supported by config file)
+\end{itemize}
+
+\begin{lstlisting}
+  if [[ "$(uname)" == "Linux" ]]; then {do_something}; fi
+
+  # Check before using shell-specific features
+  if [[ "$SHELL" == "zsh" ]]; then {do_something}; fi
+
+  # You can also make it machine-specific
+  if [[ "$(hostname)" == "myServer" ]]; then {do_something};
+\end{lstlisting}
+
+\begin{itemize}
+  \item If supported, also use includes for machine-specific settings (stored in another file)
+\end{itemize}
+
+\begin{lstlisting}
+  [include]
+    path = ~/.gitconfig_local
+\end{lstlisting}
+
+\begin{itemize}
+  \item Can also share configurations across different programs
+  \item ex. making both \lstinline{bash} and \lstinline{zsh} share the same set of aliases in \lstinline{.aliases}
+\end{itemize}
+
+\begin{lstlisting}
+  # Test if ~/.aliases exists and source it
+  if [ -f ~/.aliases ]; then
+    source ~/.aliases
+  fi
+\end{lstlisting}
+
+\subsection{Remote Machines}
+
+\begin{description}
+  \lstitem{ssh} Secure Shell (SSH) used to interact with a remote server/computer
+\end{description}
+
+\begin{lstlisting}
+  # ssh into a server by running either
+  ssh user@IP # ssh as user into server specified by this IP
+  ssh user@URL # ssh as user into server specified by  this URL
+
+  # Examples
+  ssh foo@bar.mit.edu # user is foo, server is the URL
+  ssh foobar@192.168.1.42 # user is foobar, server is the IP
+\end{lstlisting}
+
+\subsubsection{Executing Commands}
+\begin{itemize}
+  \item Can run commands directly with \lstinline{ssh}
+  \item Also works with pipes to redirect input and output with local programs
+\end{itemize}
+
+\begin{lstlisting}
+  # execute ls in the home folder of foobar
+  ssh foobar@server ls
+
+  # grep locally the remote output of ls
+  ssh foobar@server ls | grep PATTERN
+
+  # grep remotely the local output of ls
+  ls | ssh foobar@server grep PATTERN
+\end{lstlisting}
+
+\subsubsection{SSH Keys}
+
+\begin{itemize}
+  \item Key-based authentication uses public-key cryptography to authenticate you to the server
+  \item Allows you to avoid entering password every time
+  \item Note: the secret private key (often \lstinline{~/.ssh/id_rsa} and more recently \lstinline{~/.ssh/id_ed25519}) is basically your password so treat it like so
+\end{itemize}
+
+\subsubsection{Key generation}
+
+\begin{description}
+  \lstitem{ssh-keygen} Generates a public and private key pair
+  \lstitem{ssh-agent} lets you skip typing your passphrase every time
+\end{description}
+
+\begin{lstlisting}
+  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519
+\end{lstlisting}
+
+\begin{itemize}
+  \item Recommended: use a passphrase to avoid someone who gets your private key to access authorized servers
+\end{itemize}
+
+\begin{lstlisting}
+  # check if you have a passphrase and valid it
+  ssh-keygen -y -f /path/to/key
+\end{lstlisting}
+
+\subsubsection{Key based authentication}
+\begin{itemize}
+  \item \lstinline{ssh} will look into \lstinline{.ssh/authorized_keys} (on the remote sever side) to determine which clients it should let in
+\end{itemize}
+
+\begin{lstlisting}
+  # copy over your public key to .ssh/authorized_keys
+  # on the remote server
+  cat .ssh/id_ed25519.pub
+    | ssh foobar@remote 'cat >> ~/.ssh/authorized_keys'
+
+  # can also use ssh-copy-id if available
+  ssh-copy-id -i .ssh/id_ed25519.pub foobar@remote
+\end{lstlisting}
+
+\subsubsection{Copying files over SSH}
+\begin{description}
+  \lstitem{ssh+tee} use \lstinline{ssh} command execution and STDIN input. \lstinline{tree} then writes output from STDIN into a file
+  \lstitem{scp} secure copy command useful for copying large amounts of files/directories (recurses over paths)
+  \lstitem{rsync} improves upon \lstinline{scp} by detecting identical files in local and remote to avoid duplicate copying. Provides more control over symlinks, permission, and extra features like \lstinline{--partial} flag to resume a previously interrupted copy
+\end{description}
+
+\begin{lstlisting}
+  # Copy a local file into a remote server file called serverfile
+  # using ssh+tee
+  cat localfile | ssh remote_server tee serverfile.
+
+  # Copy a local file into a remote server file
+  scp path/to/local_file remote_host:path/to/remote_file
+\end{lstlisting}
+
+\subsubsection{Port Forwarding}
+\begin{itemize}
+  \item Often have software that listens to specific ports in a machine to function
+  \item ex. \lstinline{jupyter notebook}
+  \item For local machines, you can just type the port \lstinline{localhost:PORT} or \lstinline{127.0.0.1:PORT}
+  \item For remote servers, you need port forwarding (either Local Port Forwarding or Remote Port Forwarding)
+\end{itemize}
+
+\begin{description}
+  \item[local port forwarding]: link a port in your local machine to the remote port for a service (forward local port)
+  \item[remote port forwarding]: link a remote port to the local port for a service (forward remote port)
+\end{description}
+
+\begin{itemize}
+  \item Usually use local port forwarding (ex. \lstinline{jupyter notebook})
+\end{itemize}
+
+\begin{lstlisting}
+  # Execute jupyter notebook in remote server (listens to port 8888)
+  # Want to interact with jupyter notebook locally so forward
+  # the local port 9999 to the remote port 8888
+  ssh -L 9999:localhost:8888 foobar@remote_server
+  # Then navigate to localhost:9999 on local machine to use notebook
+\end{lstlisting}
+
+\subsubsection{Local Port Forwarding}
+
+\begin{figure}[H]
+  \includegraphics[width=160mm, scale=0.75]{pictures/local-port-forwarding.png}
+  \caption{Local Port Forwarding}
+\end{figure}
+
+\subsubsection{Remote Port Forwarding}
+\begin{figure}[H]
+  \includegraphics[width=160mm, scale=0.75]{pictures/remote-port-forwarding.png}
+  \caption{Remote Port Forwarding}
+\end{figure}
+
+\subsubsection{SSH Configuration}
+
+\begin{description}
+  \lstitem{\~/.ssh/config} Dotfile used to configure \lstinline{ssh}. Also readable by other programs like \lstinline{scp}, \lstinline{rsync}, etc that can convert the settings into the corresponding flags
+  \lstitem{/etc/ssh/sshd_config} Used for server side configuration. Can make changes like disabling password authentication, changing ssh ports, enabling X11 forwarding, etc. Can also specify config settings on a per user basis
+\end{description}
+
+\begin{itemize}
+  \item Note: \lstinline{~/.ssh/config} has some potentially private info that you might not want to share with other people
+\end{itemize}
+
+\subsubsection{Miscellaneous SSH Stuff}
+
+\begin{description}
+  \lstitem{mosh} mobile shell that improves upon \lstinline{ssh} by allowing roaming connections, intermittent connectivity, and providing intelligent local echo
+  \lstitem{sshfs} mounts a folder on a remote server locally, allowing you to use a local editor
+\end{description}
+
+\subsection{Bash vs Zsh}
+\begin{itemize}
+  \item \lstinline{bash} is the most common shell and is the default option on most shells
+\end{itemize}
+
+\begin{description}
+  \lstitem{zsh} a superset of \lstinline{bash} that provides extra features like
+\end{description}
+
+\begin{itemize}
+  \item Smarter globbing, \lstinline{**}
+  \item Inline globbing/wildcard expansion
+  \item Spelling correction
+  \item Better tab completion/selection
+  \item Path expansion (\lstinline{cd /u/lo/b} expands to \lstinline{/usr/local/bin})
+\end{itemize}
+
 
 \end{document}
