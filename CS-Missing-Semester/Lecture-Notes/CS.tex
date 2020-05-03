@@ -1268,8 +1268,8 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 
 \subsection{Aliases}
 \begin{description}
-  \item[shell alias] a short form for another command that your shell will replace automatically for you
-  \lstitem{alias alias_name="command_to_alias arg1 arg2"} command to create an alias. Note no spaces around equal sign \lstinline{=} because \lstinline{alias} only takes a single argument
+ \item[shell alias] a short form for another command that your shell will replace automatically for you
+       \lstitem{alias alias_name="command_to_alias arg1 arg2"} command to create an alias. Note no spaces around equal sign \lstinline{=} because \lstinline{alias} only takes a single argument
 \end{description}
 
 \begin{lstlisting}
@@ -1304,15 +1304,15 @@ alias ll
 \end{lstlisting}
 
 \begin{itemize}
-  \item Note: aliases do not persist shell sessions by default
-  \item Need to add an alias to shell startup files like \lstinline{.bashrc} or \lstinline{.zshrc} to have it persist
+ \item Note: aliases do not persist shell sessions by default
+ \item Need to add an alias to shell startup files like \lstinline{.bashrc} or \lstinline{.zshrc} to have it persist
 \end{itemize}
 
 \subsection{Dotfiles}
 
 \begin{description}
-  \item[dotfile] plain-text file whose file name starts with a \lstinline{.} (so that they are hidden in the directory listing \lstinline{ls} by default). Used to configure many programs (ex. \lstinline{~/.vimrc})
-  \item[symlink] symbolic link a path to another path using \lstinline{ln}. Kinda like a pointer where you can specify one path that links to the path where the file actually is
+ \item[dotfile] plain-text file whose file name starts with a \lstinline{.} (so that they are hidden in the directory listing \lstinline{ls} by default). Used to configure many programs (ex. \lstinline{~/.vimrc})
+ \item[symlink] symbolic link a path to another path using \lstinline{ln}. Kinda like a pointer where you can specify one path that links to the path where the file actually is
 \end{description}
 
 \begin{lstlisting}
@@ -1321,19 +1321,19 @@ alias ll
 \end{lstlisting}
 
 \begin{itemize}
-  \item Shells are configured with dotfiles (ex. \lstinline{.bashrc}, \lstinline{.bash_profile}, \lstinline{.zshrc}) and reads these files to load its configuration on startup
-  \item Can store environment variables in dotfiles
-  \item Can add commands that you want to run on startup or modifications to your \lstinline{PATH} environment variable (usually required by programs so that their binaries can be found)
-  \item For better organization, it's recommended to organize dotfiles in their own folder (under version control) and symlinked into place using a script
-  \item This is done for easy installation on new machines, portability, synchronization, and change tracking
-  \item Note: dotfiles need to be in home directory \lstinline{~/} (or use symlinks)
+ \item Shells are configured with dotfiles (ex. \lstinline{.bashrc}, \lstinline{.bash_profile}, \lstinline{.zshrc}) and reads these files to load its configuration on startup
+ \item Can store environment variables in dotfiles
+ \item Can add commands that you want to run on startup or modifications to your \lstinline{PATH} environment variable (usually required by programs so that their binaries can be found)
+ \item For better organization, it's recommended to organize dotfiles in their own folder (under version control) and symlinked into place using a script
+ \item This is done for easy installation on new machines, portability, synchronization, and change tracking
+ \item Note: dotfiles need to be in home directory \lstinline{~/} (or use symlinks)
 \end{itemize}
 
 \subsubsection{Portability}
 
 \begin{itemize}
-  \item Dotfile configurations may not work on all machines (ex. diff OS or shells)
-  \item Can then make specific configurations using if-statements (if supported by config file)
+ \item Dotfile configurations may not work on all machines (ex. diff OS or shells)
+ \item Can then make specific configurations using if-statements (if supported by config file)
 \end{itemize}
 
 \begin{lstlisting}
@@ -1347,7 +1347,7 @@ alias ll
 \end{lstlisting}
 
 \begin{itemize}
-  \item If supported, also use includes for machine-specific settings (stored in another file)
+ \item If supported, also use includes for machine-specific settings (stored in another file)
 \end{itemize}
 
 \begin{lstlisting}
@@ -1356,8 +1356,8 @@ alias ll
 \end{lstlisting}
 
 \begin{itemize}
-  \item Can also share configurations across different programs
-  \item ex. making both \lstinline{bash} and \lstinline{zsh} share the same set of aliases in \lstinline{.aliases}
+ \item Can also share configurations across different programs
+ \item ex. making both \lstinline{bash} and \lstinline{zsh} share the same set of aliases in \lstinline{.aliases}
 \end{itemize}
 
 \begin{lstlisting}
@@ -1370,7 +1370,7 @@ alias ll
 \subsection{Remote Machines}
 
 \begin{description}
-  \lstitem{ssh} Secure Shell (SSH) used to interact with a remote server/computer
+ \lstitem{ssh} Secure Shell (SSH) used to interact with a remote server/computer
 \end{description}
 
 \begin{lstlisting}
@@ -1385,8 +1385,8 @@ alias ll
 
 \subsubsection{Executing Commands}
 \begin{itemize}
-  \item Can run commands directly with \lstinline{ssh}
-  \item Also works with pipes to redirect input and output with local programs
+ \item Can run commands directly with \lstinline{ssh}
+ \item Also works with pipes to redirect input and output with local programs
 \end{itemize}
 
 \begin{lstlisting}
@@ -1403,16 +1403,16 @@ alias ll
 \subsubsection{SSH Keys}
 
 \begin{itemize}
-  \item Key-based authentication uses public-key cryptography to authenticate you to the server
-  \item Allows you to avoid entering password every time
-  \item Note: the secret private key (often \lstinline{~/.ssh/id_rsa} and more recently \lstinline{~/.ssh/id_ed25519}) is basically your password so treat it like so
+ \item Key-based authentication uses public-key cryptography to authenticate you to the server
+ \item Allows you to avoid entering password every time
+ \item Note: the secret private key (often \lstinline{~/.ssh/id_rsa} and more recently \lstinline{~/.ssh/id_ed25519}) is basically your password so treat it like so
 \end{itemize}
 
 \subsubsection{Key generation}
 
 \begin{description}
-  \lstitem{ssh-keygen} Generates a public and private key pair
-  \lstitem{ssh-agent} lets you skip typing your passphrase every time
+ \lstitem{ssh-keygen} Generates a public and private key pair
+ \lstitem{ssh-agent} lets you skip typing your passphrase every time
 \end{description}
 
 \begin{lstlisting}
@@ -1420,7 +1420,7 @@ alias ll
 \end{lstlisting}
 
 \begin{itemize}
-  \item Recommended: use a passphrase to avoid someone who gets your private key to access authorized servers
+ \item Recommended: use a passphrase to avoid someone who gets your private key to access authorized servers
 \end{itemize}
 
 \begin{lstlisting}
@@ -1430,7 +1430,7 @@ alias ll
 
 \subsubsection{Key based authentication}
 \begin{itemize}
-  \item \lstinline{ssh} will look into \lstinline{.ssh/authorized_keys} (on the remote sever side) to determine which clients it should let in
+ \item \lstinline{ssh} will look into \lstinline{.ssh/authorized_keys} (on the remote sever side) to determine which clients it should let in
 \end{itemize}
 
 \begin{lstlisting}
@@ -1445,9 +1445,9 @@ alias ll
 
 \subsubsection{Copying files over SSH}
 \begin{description}
-  \lstitem{ssh+tee} use \lstinline{ssh} command execution and STDIN input. \lstinline{tree} then writes output from STDIN into a file
-  \lstitem{scp} secure copy command useful for copying large amounts of files/directories (recurses over paths)
-  \lstitem{rsync} improves upon \lstinline{scp} by detecting identical files in local and remote to avoid duplicate copying. Provides more control over symlinks, permission, and extra features like \lstinline{--partial} flag to resume a previously interrupted copy
+ \lstitem{ssh+tee} use \lstinline{ssh} command execution and STDIN input. \lstinline{tree} then writes output from STDIN into a file
+ \lstitem{scp} secure copy command useful for copying large amounts of files/directories (recurses over paths)
+ \lstitem{rsync} improves upon \lstinline{scp} by detecting identical files in local and remote to avoid duplicate copying. Provides more control over symlinks, permission, and extra features like \lstinline{--partial} flag to resume a previously interrupted copy
 \end{description}
 
 \begin{lstlisting}
@@ -1461,19 +1461,19 @@ alias ll
 
 \subsubsection{Port Forwarding}
 \begin{itemize}
-  \item Often have software that listens to specific ports in a machine to function
-  \item ex. \lstinline{jupyter notebook}
-  \item For local machines, you can just type the port \lstinline{localhost:PORT} or \lstinline{127.0.0.1:PORT}
-  \item For remote servers, you need port forwarding (either Local Port Forwarding or Remote Port Forwarding)
+ \item Often have software that listens to specific ports in a machine to function
+ \item ex. \lstinline{jupyter notebook}
+ \item For local machines, you can just type the port \lstinline{localhost:PORT} or \lstinline{127.0.0.1:PORT}
+ \item For remote servers, you need port forwarding (either Local Port Forwarding or Remote Port Forwarding)
 \end{itemize}
 
 \begin{description}
-  \item[local port forwarding]: link a port in your local machine to the remote port for a service (forward local port)
-  \item[remote port forwarding]: link a remote port to the local port for a service (forward remote port)
+ \item[local port forwarding]: link a port in your local machine to the remote port for a service (forward local port)
+ \item[remote port forwarding]: link a remote port to the local port for a service (forward remote port)
 \end{description}
 
 \begin{itemize}
-  \item Usually use local port forwarding (ex. \lstinline{jupyter notebook})
+ \item Usually use local port forwarding (ex. \lstinline{jupyter notebook})
 \end{itemize}
 
 \begin{lstlisting}
@@ -1487,50 +1487,299 @@ alias ll
 \subsubsection{Local Port Forwarding}
 
 \begin{figure}[H]
-  \includegraphics[width=160mm, scale=0.75]{pictures/local-port-forwarding.png}
-  \caption{Local Port Forwarding}
+ \includegraphics[width=160mm, scale=0.75]{pictures/local-port-forwarding.png}
+ \caption{Local Port Forwarding}
 \end{figure}
 
 \subsubsection{Remote Port Forwarding}
 \begin{figure}[H]
-  \includegraphics[width=160mm, scale=0.75]{pictures/remote-port-forwarding.png}
-  \caption{Remote Port Forwarding}
+ \includegraphics[width=160mm, scale=0.75]{pictures/remote-port-forwarding.png}
+ \caption{Remote Port Forwarding}
 \end{figure}
 
 \subsubsection{SSH Configuration}
 
 \begin{description}
-  \lstitem{\~/.ssh/config} Dotfile used to configure \lstinline{ssh}. Also readable by other programs like \lstinline{scp}, \lstinline{rsync}, etc that can convert the settings into the corresponding flags
-  \lstitem{/etc/ssh/sshd_config} Used for server side configuration. Can make changes like disabling password authentication, changing ssh ports, enabling X11 forwarding, etc. Can also specify config settings on a per user basis
+ \lstitem{\~/.ssh/config} Dotfile used to configure \lstinline{ssh}. Also readable by other programs like \lstinline{scp}, \lstinline{rsync}, etc that can convert the settings into the corresponding flags
+ \lstitem{/etc/ssh/sshd_config} Used for server side configuration. Can make changes like disabling password authentication, changing ssh ports, enabling X11 forwarding, etc. Can also specify config settings on a per user basis
 \end{description}
 
 \begin{itemize}
-  \item Note: \lstinline{~/.ssh/config} has some potentially private info that you might not want to share with other people
+ \item Note: \lstinline{~/.ssh/config} has some potentially private info that you might not want to share with other people
 \end{itemize}
 
 \subsubsection{Miscellaneous SSH Stuff}
 
 \begin{description}
-  \lstitem{mosh} mobile shell that improves upon \lstinline{ssh} by allowing roaming connections, intermittent connectivity, and providing intelligent local echo
-  \lstitem{sshfs} mounts a folder on a remote server locally, allowing you to use a local editor
+ \lstitem{mosh} mobile shell that improves upon \lstinline{ssh} by allowing roaming connections, intermittent connectivity, and providing intelligent local echo
+ \lstitem{sshfs} mounts a folder on a remote server locally, allowing you to use a local editor
 \end{description}
 
 \subsection{Bash vs Zsh}
 \begin{itemize}
-  \item \lstinline{bash} is the most common shell and is the default option on most shells
+ \item \lstinline{bash} is the most common shell and is the default option on most shells
 \end{itemize}
 
 \begin{description}
-  \lstitem{zsh} a superset of \lstinline{bash} that provides extra features like
+ \lstitem{zsh} a superset of \lstinline{bash} that provides extra features like
 \end{description}
 
 \begin{itemize}
-  \item Smarter globbing, \lstinline{**}
-  \item Inline globbing/wildcard expansion
-  \item Spelling correction
-  \item Better tab completion/selection
-  \item Path expansion (\lstinline{cd /u/lo/b} expands to \lstinline{/usr/local/bin})
+ \item Smarter globbing, \lstinline{**}
+ \item Inline globbing/wildcard expansion
+ \item Spelling correction
+ \item Better tab completion/selection
+ \item Path expansion (\lstinline{cd /u/lo/b} expands to \lstinline{/usr/local/bin})
 \end{itemize}
+
+\section{Version Control (Git)}
+
+\subsection{Version Control Systems}
+\begin{description}
+ \item[Version Control Systems (VCS)]: tools to track changes to source code; maintain history of changes and improve collaboration
+\end{description}
+
+\subsection{Git's Data Model}
+
+\subsubsection{Snapshots (commits)}
+\begin{itemize}
+ \item Git models history of a collection of files and folders inside a top-level directory as a series of snapshots (commits)
+\end{itemize}
+
+\begin{description}
+ \item[blob]: a file in Git
+ \item[tree]: a directory; maps names to blobs or trees (directories can contain other directories)
+ \item[commit]: a snapshot of the top-level tree being tracked
+\end{description}
+
+\begin{lstlisting}
+  <root> (tree) # top level directory
+  |
+  +- foo (tree)
+  |  |
+  |  + bar.txt (blob, contents = "hello world")
+  |
+  +- baz.txt (blob, contents = "git is wonderful")
+\end{lstlisting}
+
+\subsubsection{Git's model of history}
+\begin{itemize}
+ \item Git models history as a directed acyclic graph (DAG) of snapshots
+ \item i.e. each snapshot in Git refers to a set of "parents" (older snapshots before it)
+ \item Snapshots can have multiple parents (a set of parents) because a snapshot might descend from multiple parents
+ \item ex. combining (merging) two parallel branches of development (2 parents)
+\end{itemize}
+
+
+\begin{lstlisting}
+  # example of branching (newer commits on the right)
+  o <-- o <-- o <-- o
+            ^
+             \
+              --- o <-- o
+\end{lstlisting}
+
+\begin{itemize}
+ \item The circle \lstinline{o}'s refer to individual commits (snapshots of entire tree)
+ \item Note: the arrows point to the parent of each commit (i.e. the previous commits) and the newer commits are on the right
+ \item After third commit, the history branches into 2 separate branches (ex. 2 separate features independently developed in parallel)
+ \item Can later merge parallel branches to create a new snapshot with both features
+\end{itemize}
+
+\begin{lstlisting}
+  # merging parallel branches in Git
+  o <-- o <-- o <-- o <---- o
+            ^            /
+             \          v
+              --- o <-- o
+\end{lstlisting}
+
+\begin{itemize}
+ \item Git commits are immutable
+ \item i.e. "edits" to the commit history actually add new commits instead of changing old commits
+ \item References are then updated to point to new ones
+\end{itemize}
+
+
+\subsubsection{Data Model in pseudocode}
+
+\begin{lstlisting}[language=c++]
+  // a file is a bunch of bytes
+  type blob = array<byte>
+
+  // a directory contains named files and directories
+  type tree = map<string, tree | file>
+
+  // a commit has parents, metadata, and the top-level tree
+  type commit = struct {
+    parent: array<commit>
+    author: string
+    message: string
+    snapshot: tree
+  }
+\end{lstlisting}
+
+
+\subsubsection{Objects and content-addressing}
+\begin{description}
+ \item[object] a blob, tree, or commit
+\end{description}
+
+\begin{lstlisting}[language=c++]
+  type object = blob | tree | commit
+  // these objects are all content-addressed and given a SHA-1 hash
+\end{lstlisting}
+
+\begin{itemize}
+ \item In Git's data store, all objects are content-addressable by their SHA-1 hash (160-bit string or 40 chars of hexadecimal)
+\end{itemize}
+
+\begin{lstlisting}
+  objects = map<string, object>
+
+  def store(object):
+    id = sha1(object)
+    objects[id] = object
+
+  def load(id):
+    return objects[id]
+\end{lstlisting}
+
+\begin{itemize}
+ \item Since blobs, trees, and commits are all objects they can reference other objects by their hash
+ \item i.e. don't have to contain the on-disk representation of the referenced object
+\end{itemize}
+
+\begin{description}
+ \lstitem{git cat-file -p <SHA-1 hash>} visualizes the object pointed to by the hash
+\end{description}
+
+\subsubsection{References}
+\begin{itemize}
+ \item All snapshots can be identified by their SHA-1 hash but for convenience, can make human-readable references
+\end{itemize}
+
+\begin{description}
+ \item[references]: human-readable pointers to commits (mutable)
+       \lstitem{master}: a reference that usually points to the latest commit in the main development branch. Created by default when you init a git repo
+       \lstitem{HEAD}: a reference that points to "where we currently are" in history. Allows you compare current position with other snapshots in history
+\end{description}
+
+\begin{itemize}
+ \item Note: references are mutable (can point to other objects) but objects are immutable
+ \item Can't change where hashes point to because the hash is determined from the object (which is immutable)
+\end{itemize}
+
+\begin{lstlisting}
+  references = map<string, string>
+
+  def update_reference(name, id):
+    references[name] = id
+
+  def read_reference(name):
+    return references[name]
+
+  def load_reference(name_or_id):
+    if name_or_id in references:
+        return load(references[name_or_id])
+    else:
+        return load(name_or_id)
+\end{lstlisting}
+
+\subsubsection{Repositories}
+\begin{description}
+ \item[repository] data storing \lstinline{objects} and \lstinline{references}
+\end{description}
+
+\begin{itemize}
+ \item On disk, Git only stores objects and references
+ \item All \lstinline{git} commands manipulate the commit DAG by adding objects and adding/updating references
+\end{itemize}
+
+\subsection{Staging Area}
+\begin{description}
+ \item[staging area] allows you to specify which code changes should be included in the next commit
+\end{description}
+
+\subsection{Git Command-Line Interface}
+
+\subsubsection{Basics}
+\begin{description}
+ \lstitem{git help <command>} get help for a git command
+ \lstitem{git init} creates a new git repo, with data stored in the .git directory
+ \lstitem{git status} tells you what’s going on
+ \lstitem{git add <filename>} adds files to staging area for next commit
+ \lstitem{git commit} creates a new commit
+ Write good commit messages!
+ \lstitem{git log} shows a flattened log of history
+ \lstitem{git log --all --graph --decorate --oneline} visualizes history as a DAG
+ \lstitem{git diff <filename>} show differences since the last commit
+ \lstitem{git diff <revision> <filename>} shows differences in a file between snapshots
+ \lstitem{git diff --cached} show what changes are staged for next commit
+ \lstitem{git checkout <revision>} updates HEAD and current branch. Changes files in working directory to match the revision snapshot (where HEAD now points to). Note that it throws any current uncommited changes
+\end{description}
+
+\subsubsection{Branching and Merging}
+\begin{description}
+ \lstitem{git branch} shows branches in repo
+ \lstitem{git branch <name>} creates a branch. New branch points to the same current location in history (i.e. HEAD and new branch will resolve to same location)
+ \lstitem{git checkout -b <name>} creates a branch and switches to it
+ \begin{itemize}
+  \item Equivalent to \lstinline{git branch <name>; git checkout <name>}
+ \end{itemize}
+ \lstitem{git merge <revision>} merges into current branch
+ \lstitem{git mergetool} use a fancy tool to help resolve merge conflicts
+ \lstitem{git merge --abort} aborts merge and puts you back in previous state before merge
+ \lstitem{git merge --continue} finishes merge after merge conflict is resolved
+ \lstitem{git rebase} rebase set of patches onto a new base
+\end{description}
+
+\begin{description}
+ \item[fast forward]: if you merge a branch that has the the current commit (HEAD) as a predecessor, it will just move the references up to the merged branch (because no other changes required)
+ \item[Merge conflicts]: when you merge parallel branches, Git may get confused if you have contradictory changes
+\end{description}
+
+\begin{itemize}
+ \item For merge conflict, git will add conflict markers in the affected files to show incompatible code between the branches being merged
+\end{itemize}
+
+\subsubsection{Remotes}
+\begin{itemize}
+ \item Remotes used to collaborate with other people
+ \item \lstinline{.git} folder contains entire repo history (objects, references, previous commits)
+ \item Each person maintains their own copy of the git repo and they pass changes around with commits
+ \item Remote repo (ex. GitHub) usually called \lstinline{origin}
+\end{itemize}
+
+\begin{description}
+ \lstitem{git remote}list remotes
+ \lstitem{git remote add <name> <url>} add a remote. Makes local repo aware of remote repo's
+ \lstitem{git push <remote> <local branch>:<remote branch>} send objects to remote, and update remote reference
+ \lstitem{git branch --set-upstream-to=<remote>/<remote branch>} set up correspondence between local and remote branch. Can then use shortened form \lstinline{git push}
+ \lstitem{git fetch} retrieve objects/references from a remote
+ \lstitem{git pull} same as \lstinline{git fetch; git merge}
+ \lstitem{git clone} download repository from remote
+\end{description}
+
+\subsubsection{Undo}
+\begin{description}
+ \lstitem{git commit --amend} edit a commit’s contents/message
+ \lstitem{git reset HEAD <file>} unstage a file
+ \lstitem{git checkout -- <file>} discard changes
+\end{description}
+
+\subsubsection{Advanced Git}
+\begin{description}
+ \lstitem{git config} customize Git; can also directly edit \lstinline{~/.gitconfig}
+ \lstitem{git clone --shallow} clone without entire version history (faster). Useful for big projects with many commits
+ \lstitem{git add -p} interactive staging
+ \lstitem{git rebase -i} interactive rebasing
+ \lstitem{git blame} show who last edited which line
+ \lstitem{git stash} temporarily remove modifications to working directory
+ \lstitem{git stash pop} restore changes from \lstinline{git stash}
+ \lstitem{git bisect} binary search history (e.g. failed unit tests)
+ \lstitem{.gitignore} file used to specify intentionally untracked files to ignore
+\end{description}
 
 
 \end{document}
