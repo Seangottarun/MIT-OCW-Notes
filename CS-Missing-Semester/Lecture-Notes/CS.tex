@@ -1781,5 +1781,115 @@ alias ll
  \lstitem{.gitignore} file used to specify intentionally untracked files to ignore
 \end{description}
 
+\section{Metaprogramming}
+
+\subsection{Build Systems}
+
+\begin{description}
+ \item[Build system]: automates building process to convert inputs (dependencies) to outputs (targets) using specified rules
+       \lstitem{make} most common build system on UNIX. Good for simple to medium complexity
+       \lstitem{cmake} another build system that is opinionated and optimized for specific tasks
+       \lstitem{Makefile} files used to specify dependencies, targets, and rules for \lstinline{make}
+\end{description}
+
+\begin{itemize}
+ \item Build system aims to do minimal work
+ \item i.e. if a dependency has not changed, it will not rebuild the associated targets
+\end{itemize}
+
+\begin{lstlisting}
+  # first directive
+  paper.pdf: paper.tex plot-data.png
+    pdflatex paper.tex
+
+  # second directive
+  plot-%.png: %.dat plot.py
+    ./plot.py -i $*.dat -o $@
+\end{lstlisting}
+
+\begin{description}
+ \item[Directive]: rule for producing target (left-hand side of colon \lstinline{:})  using the dependencies (right-hand side of colon \lstinline{:})
+ \item[Target]: desired output (ex. pdf, mp4)
+ \item[Dependency]: software that is required to built the target
+ \item[Rule]: specifies how to get target from dependencies (ex. run a \lstinline{python} file or \lstinline{pdflatex})
+\end{description}
+
+\begin{itemize}
+ \item The indented block in each directive is a sequence of programs to produce the target from the dependencies
+ \item Note: first directive in \lstinline{make} defines teh default goal (what is built when you run \lstinline{make} with no arguments)
+ \item Can also build specific targets with arguments: \lstinline{make plot-data.png}
+ \item Note: \lstinline{Makefile} requires tabs for the rules; spaces will not work
+\end{itemize}
+
+\begin{description}
+ \lstitem{\%} wildcard that specifies "patterns" in a rule and matches the same string on the left and on the right
+ \lstitem{\$*} special variable that matches \lstinline{%}
+ \lstitem{\$@} special variable for target
+\end{description}
+
+\begin{itemize}
+ \item ex. if the target \lstinline{plot-foo.png} is requested, \lstinline{make} will look for the dependencies \lstinline{foo.dat} and \lstinline{plot.py}
+ \item Note: if your \lstinline{Makefile} is super complicated, it probably means you should use \lstinline{cmake} or something else
+ \item Can use \lstinline{make} at the top level and use it to call opinionated build systems like \lstinline{cmake}
+\end{itemize}
+
+\subsection{Versioning}
+\begin{itemize}
+ \item Versions are usually numerical and are used to ensure that software keeps working
+ \item Helps users to determine what is compatible/incompatible when choosing which version of a dependency to install
+\end{itemize}
+
+\subsubsection{Semantic Versioning}
+
+\begin{description}
+ \item[Semantic versioning]: common version format of \textbf{major.minor.patch}
+\end{description}
+
+\begin{itemize}
+ \item Semantic versioning rules
+       \begin{enumerate}
+        \item if API is \textbf{unchanged}, increase the \textbf{patch} version
+        \item if API is changed (\textbf{backwards-compatible}), increase the \textbf{minor} version (reset patch version to 0)
+        \item if API is changed (\textbf{non-backwards-compatible}), increase \textbf{major} version (reset minor and patch version to 0)
+       \end{enumerate}
+ \item Specify dependencies with major and minor version numbers
+ \item Can use any version of dependency with the same major and same or higher minor version
+ \item Usually patch updates are for security fixes; the software will still run, but you might still want to update it
+ \item The best type of dependency is when you depend on version X.0.0 because you can use any minor or patch version from major version X
+ \item Python 2 and Python 3 are an example of a major version bump (incompatible code)
+\end{itemize}
+
+\subsubsection{Lock files}
+
+\begin{description}
+ \item[lock file]: file that lists the exact version you are currently depending on of each dependency. Dependencies are then only updated when you run the update program
+ \item[vendoring]: explicitly copy all the code of your dependencies in your own project. Gives you total control over any changes, but makes updating difficult
+\end{description}
+
+\begin{itemize}
+ \item Lock files are useful because they avoid unnecessary recompiles, having reproducible builds, and avoid automatically updating to potentially faulty versions
+\end{itemize}
+
+\subsection{Continuous integration systems}
+\begin{description}
+ \item[Continuous integration (CI)]: software (cloud build system) that runs whenver code changes
+\end{description}
+
+\begin{itemize}
+ \item Continuous integration can be general or specific to certain tasks (ex. run test suite after a code push)
+ \item ex. dependabot is CI tool that scans a repository for newer versions of dependencies
+ \item ex. GitHub pages is another CI action that runs the Jekyll static site generator on every push to \lstinline{master} and loads the built site on a particular domain
+ \item CI software usually give badges that you can add to README
+\end{itemize}
+
+\subsection{Testing}
+\begin{description}
+ \item[Test suite]: collective term for all the tests
+ \item[Unit test]: a "micro-test" that tests a specific feature in isolation
+ \item[Integration test]: a "macro-test" that tests if different features/components work together properly
+ \item[Regression test]: test that implements a specific pattern that previously caused a bug to ensure that the bug does not reappear
+ \item[Mocking]: replace a function, module, or type with a dummy implementation to avoid testing unrelated functionality
+\end{description}
+
 
 \end{document}
