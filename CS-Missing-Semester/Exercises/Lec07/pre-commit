@@ -1,0 +1,6 @@
+#!/bin/bash
+
+if [ "$(make paper.pdf)" != 0 ];
+then
+    exit 1 # exit with error if make command fails
+fi
