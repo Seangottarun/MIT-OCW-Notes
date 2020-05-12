@@ -1,67 +1,92 @@
 # Shell Commands used for Exercise 7
 
-1. Most makefiles provide a target called `clean`. This isn’t intended to produce a file called `clean`, but instead to clean up any files that can be re-built by make. Think of it as a way to “undo” all of the build steps. Implement a `clean` target for the `paper.pdf` Makefile above. You will have to make the target phony. You may find the git ls-files subcommand useful. A number of other very common make targets are listed here.
+## Debugging
 
-```makefile
-clean:
-  rm paper.aux paper.fdb_latexmk paper.fls paper.log paper.out paper.synctex.gz paper.toc paper.xdv
-```
-
-2. Take a look at the various ways to specify version requirements for dependencies in Rust’s build system. Most package repositories support similar syntax. For each one (caret, tilde, wildcard, comparison, and multiple), try to come up with a use-case in which that particular kind of requirement makes sense.
-
-```makefile
-# caret
-# an update is allowed as long as it doesn't modify the left-most nonzero digit
-# Useful if you want to have at least a certain minor version without
-# updating to the next major version (which has breaking changes)
-^1.2.3  :=  >=1.2.3, <2.0.0
-^1.2    :=  >=1.2.0, <2.0.0
-^1      :=  >=1.0.0, <2.0.0
-^0.2.3  :=  >=0.2.3, <0.3.0
-^0.2    :=  >=0.2.0, <0.3.0
-^0.0.3  :=  >=0.0.3, <0.0.4
-^0.0    :=  >=0.0.0, <0.1.0
-^0      :=  >=0.0.0, <1.0.0
-
-
-# tilde
-# An update is allowed for the last specified digit (major, minor, patch) and
-# all smaller updates (minor or patch)
-# Useful if you don't want to install too many updates (stricter control than caret)
-~1.2.3  := >=1.2.3, <1.3.0
-~1.2    := >=1.2.0, <1.3.0
-~1      := >=1.0.0, <2.0.0
-
-
-# wildcard
-# Can update to any version that fits wildcard pattern
-# Useful if you don't really care too much about the updates since you have a
-# really low dependency (ex. you rely on version X.0.0)
-*     := >=0.0.0
-1.*   := >=1.0.0, <2.0.0
-1.2.* := >=1.2.0, <1.3.0
-
-
-# comparison
-# Manually specify a range
-# Useful to quickly specify a minimum version or maximum major version
->= 1.2.0
-> 1
-< 2
-= 1.2.3
-
-# multiple
-# Useful for supporting older code where you need old code that's not too old
-# or too new
->= 1.2, < 1.5
-```
-
-3. Git can act as a simple CI system all by itself. In `.git/hooks` inside any git repository, you will find (currently inactive) files that are run as scripts when a particular action happens. Write a `pre-commit` hook that runs `make paper.pdf` and refuses the commit if the `make` command fails. This should prevent any commit from having an unbuildable version of the paper.
+1. Use `journalctl` on Linux or `log show` on macOS to get the super user accesses and commands in the last day. If there aren’t any you can execute some harmless commands such as `sudo ls` and check again.
 
 ```bash
-# see pre-commit file
+log show --last 1d | rg sudo
 ```
 
-4. Set up a simple auto-published page using `GitHub Pages`. Add a `GitHub Action` to the repository to run `shellcheck` on any shell files in that repository (here is one way to do it). Check that it works!
+2. Do this hands on `pdb` tutorial to familiarize yourself with the commands. For a more in depth tutorial read this.
 
-5. Build your own GitHub action to run `proselint` or `write-good` on all the `.md` files in the repository. Enable it in your repository, and check that it works by filing a pull request with a typo in it.
+3. Install `shellcheck` and try checking the following script. What is wrong with the code? Fix it. Install a linter plugin in your editor so you can get your warnings automatically.
+
+```bash
+#!/bin/sh
+## Example: a typical script with several problems
+for f in $(ls *.m3u)
+do
+  grep -qi hq.*mp3 $f \
+    && echo -e 'Playlist $f contains a HQ file in mp3 format'
+done
+```
+
+```bash
+shellcheck example.sh
+```
+4. (Advanced) Read about reversible debugging and get a simple example working using `rr` or `RevPDB`.
+
+
+## Profiling
+
+5. Here are some sorting algorithm implementations. Use `cProfile` and `line_profiler` to compare the runtime of insertion sort and quicksort. What is the bottleneck of each algorithm? Use then `memory_profiler` to check the memory consumption, why is insertion sort better? Check now the inplace version of quicksort. Challenge: Use `perf` to look at the cycle counts and cache hits and misses of each algorithm.
+
+```bash
+python3 -m cProfile sorts.py
+kernprof -l -v sorts.py
+# bottleneck for insertion sort is the while loop
+# bottleneck for quicksort is creating the left and right arrays
+```
+
+6. Here’s some (arguably convoluted) Python code for computing Fibonacci numbers using a function for each number.
+
+```python
+#!/usr/bin/env python
+def fib0(): return 0
+
+def fib1(): return 1
+
+s = """def fib{}(): return fib{}() + fib{}()"""
+
+if __name__ == '__main__':
+
+    for n in range(2, 10):
+        exec(s.format(n, n-1, n-2))
+    # from functools import lru_cache
+    # for n in range(10):
+    #     exec("fib{} = lru_cache(1)(fib{})".format(n, n))
+    print(eval("fib9()"))
+```    
+
+Put the code into a file and make it executable. Install `pycallgraph`. Run the code as is with `pycallgraph graphviz -- ./fib.py` and check the `pycallgraph.png` file. How many times is `fib0` called?. We can do better than that by memoizing the functions. Uncomment the commented lines and regenerate the images. How many times are we calling each `fibN` function now?
+
+```bash
+pycallgraph graphviz -- ./fib.py
+# fib0 is called 21 + 13 = 34 times
+# fibN is now called once
+```
+
+7. A common issue is that a port you want to listen on is already taken by another process. Let’s learn how to discover that process pid. First execute `python -m http.server 4444` to start a minimal web server listening on port `4444`. On a separate terminal run `lsof | grep LISTEN` to print all listening processes and ports. Find that process pid and terminate it by running `kill <PID>`.
+
+```bash
+python -m http.server 4444
+lsof | grep LISTEN
+kill 3723
+```
+
+8. Limiting processes resources can be another handy tool in your toolbox. Try running `stress -c 3` and visualize the CPU consumption with `htop`. Now, execute `taskset --cpu-list 0,2 stress -c 3` and visualize it. Is `stress` taking three CPUs? Why not? Read `man taskset`. Challenge: achieve the same using cgroups. Try limiting the memory consumption of `stress -m`.
+
+```bash
+stress -c 3
+htop
+task --cpu-list 0,2 stress -c 3
+# stress is not taking 3 CPUs because this taskset command only schedules the
+# stress program to run on processors #0 and #2
+```
+
+9. (Advanced) The command `curl ipinfo.io` performs a HTTP request an fetches information about your public IP. Open Wireshark and try to sniff the request and reply packets that `curl` sent and received. (Hint: Use the `http` filter to just watch HTTP packets).
+
+```bash
+curl ipinfo.io
+```
