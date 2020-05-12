@@ -1781,6 +1781,317 @@ alias ll
  \lstitem{.gitignore} file used to specify intentionally untracked files to ignore
 \end{description}
 
+
+\section{Debugging and Profiling}
+
+\subsection{Printf debugging and logging}
+\begin{description}
+ \item[printf debugging]: put print statements in code
+ \item[logging]: create logs when some events happen. Can define severity levels (ex. INFO, DEBUG, WARN, ERROR, etc) and record when events/errors occur
+\end{description}
+\begin{itemize}
+ \item Printf debugging can give a lot of output (not always desirable)
+ \item Logging allows you to filter output based on severity level
+ \item Logging can also be stored in files, sockets, or remote servers instead of STDOUT
+ \item Most programs write their logs under \lstinline{/var/log}
+\end{itemize}
+
+\begin{description}
+ \item[system log]: centralized log used in most Linux systems
+       \lstitem{systemd} a Linux system daemon (runs in background) that controls many things like when services are enabled and running. Stores its log in \lstinline{/var/log/journal} in a specialized format
+       \lstitem{journalctl} display logs from \lstinline{systemd}
+       \lstitem{/var/log/system.log} centralized log used in macOS
+       \lstitem{log show} displays system log in macOS
+       \lstitem{dmesg}: UNIX command ot access kernel log
+       \lstitem{logger} shell program to write to system logs
+       lstitem{lnav}: CLI tool to help navigate log files
+\end{description}
+
+\begin{lstlisting}
+  # Write to system log
+  logger "Hello Logs"
+
+  # Check log on macOS
+  log show --last 1m | grep Hello
+
+  # Check log on Linux
+  journalctl --since "1m ago" | grep Hello
+\end{lstlisting}
+
+\subsection{Debuggers}
+\begin{description}
+ \item[debugger]: program that lets you interact with the execution of a program to find issues
+       \lstitem{pdb}: Python Debugger
+       \lstitem{ipdb}: improved \lstinline{pdb} using \lstinline{IPython} with tab completion, syntax highlighting, better tracebacks, and better introspection but same \lstinline{pdb} interface
+\end{description}
+
+\begin{description}
+ \lstitem{gdb} debugger optimized for C-like language debugging that lets you probe any process and get its current machine state (registers, stack, program counter)
+ \lstitem{pwndbg} better version of \lstinline{gdb}
+ \lstitem{lldb} another better version of \lstinline{gdb}
+\end{description}
+
+
+\begin{itemize}
+ \item Debugger features
+       \begin{enumerate}
+        \item Halt execution of the program when it reaches a certain line
+        \item Step through the program one instruction at a time
+        \item Inspect values of variables after the program crashed
+        \item Conditionally halt the execution when a given condition is met
+       \end{enumerate}
+ \item Most programming languages have their own debugger
+\end{itemize}
+
+\subsubsection{Python Debugger (pdb) commands}
+\begin{itemize}
+ \item \textbf{l}(ist): Displays 11 lines around the current line or continue the previous listing
+ \item \textbf{s}(tep): Execute the current line, stop at the first possible occasion
+ \item \textbf{restart}: restart execution from beginning
+ \item \textbf{n}(ext): Continue execution until the next line in the current function is reached or it returns
+ \item \textbf{c}(ontinue): Continue until you reach the issue
+ \item \textbf{b}(reak): Set a breakpoint (depending on the argument provided)
+ \item \textbf{p}(rint): Evaluate the expression in the current context and print its value (ex. \lstinline{p arr} prints value of the array \lstinline{arr}). There’s also \lstinline{pp} to display using \lstinline{pprint} instead.
+ \item \textbf{p locals()}: Prrints all current values
+ \item \textbf{r}(eturn): Continue execution until the current function returns
+ \item \textbf{q}(uit): Quit the debugger
+\end{itemize}
+
+\begin{lstlisting}
+  python3 -m pdb script.py # run python debugger
+\end{lstlisting}
+
+\subsection{Debugging binary files}
+
+\begin{itemize}
+ \item Can even debug a binary file
+ \item Whenever programs need to perform actions that only the kernel can, they make \textbf{System Calls} (syscalls)
+\end{itemize}
+
+\begin{description}
+ \lstitem{strace} track syscalls in Linux
+ \lstitem{dtrace} track syscalls in macOS or BSD
+ \lstitem{dtruss} wrapper for \lstinline{dtrace} that has an interface similar to \lstinline{strace}
+ \lstitem{lstat} a syscall that checks properties of files
+\end{description}
+
+\begin{lstlisting}
+  # analyzing ls using strace on Linux
+  sudo strace -e lstat ls -l > /dev/null
+  4
+  # analyzing ls using dtruss on macOS
+  sudo dtruss -t lstat64_extended ls -l > /dev/null
+\end{lstlisting}
+
+\begin{description}
+ \lstitem{tcpdump}: network packet analyzer that lets you read contents of network packets and filter them based on different criteria
+\end{description}
+
+\begin{itemize}
+ \item Chrome/Firefox developer tools are useful for web development
+       \begin{enumerate}
+        \item Source code: inspect HTML/CSS/JS source code of any website
+        \item Live HTML, CSS, JS modification: change the website content, styles and behavior to test
+        \item Javascript shell: execute commands using the JS REPL
+        \item Network: analyze the requests timeline.
+        \item Storage: Look into the Cookies and local application storage.
+       \end{enumerate}
+\end{itemize}
+
+\subsection{Static Analysis}
+\begin{description}
+ \item[static analysis]: take source code and analyze it using the language rules to find bugs
+       \lstitem{pyflakes} python static analysis tool
+       \lstitem{mypy} python tool that does type checking
+       \lstitem{shellcheck} static analysis tool for shell scripts
+ \item[code linting] using static analysis tools within editor or IDE
+ \item[code formatters] autoformat code to be consistent with common styles/patterns for the language
+\end{description}
+
+\subsection{Profiling}
+\begin{description}
+ \item[profiler] software used to analyze code to find parts that take the most time and/or resources (for optimization)
+\end{description}
+
+\subsubsection{Timing}
+\begin{description}
+ \item[Real time]: elapsed time from start to finish. Includes time taken by other processes and time taken while blocked (ex. waiting for I/O or network)
+ \item[User time]: time spent in CPU running user code
+ \item[Sys time]: time spent in CPU running kernel code
+\end{description}
+
+\begin{itemize}
+ \item Usually, \textbf{User + Sys} tells you how much time a process actualy spent in the CPU
+\end{itemize}
+
+\begin{lstlisting}
+  time curl https://missing.csail.mit.edu &> /dev/null`
+  real    0m2.561s
+  user    0m0.015s
+  sys     0m0.012s
+  # have a slow connection so request takes 2 seconds but actually
+  # only used 15ms of CPU user time and 12ms of kernel CPU time
+\end{lstlisting}
+
+\subsubsection{CPU profilers}
+\begin{description}
+ \item[tracing profiler]: keeps a record of very function call the program makes
+ \item[sampling profiler]: probes your program periodically (usually every millisecond) and records the program's stack. Then presents aggregate statistics of the most time consuming tasks
+\end{description}
+\begin{itemize}
+ \item CPU profilers are either tracing profilers or sampling profilers
+ \item Sampling profilers are useful because they have less overhead
+\end{itemize}
+
+\begin{description}
+ \lstitem{cProfile} Python tracing profiler
+\end{description}
+
+\begin{lstlisting}
+python -m cProfile -s tottime grep.py 1000
+
+[omitted program output]
+
+ ncalls  tottime  percall  cumtime  percall filename:line(function)
+     8000    0.266    0.000    0.292    0.000 {built-in method io}
+     8000    0.153    0.000    0.894    0.000 grep.py:5(grep)
+    93000    0.030    0.000    0.141    0.000 re.py:231(compile)
+    17000    0.019    0.000    0.029    0.000 codecs.py:318(decode)
+        1    0.017    0.017    0.911    0.911 grep.py:3(<module>)
+
+[omitted lines]
+\end{lstlisting}
+
+\begin{description}
+ \item[line profiler]: displays profiling information per line of code
+       \lstitem{kernprof} Python line profiler
+\end{description}
+
+\begin{lstlisting}
+$ kernprof -l -v a.py
+Wrote profile results to urls.py.lprof
+Timer unit: 1e-06 s
+
+Total time: 0.636188 s
+File: a.py
+Function: get_urls at line 5
+
+Line #  Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+5                                           @profile
+6                                           def get_urls():
+7       1     613909.0 613909.0    96.5  response=requests.get(url)
+9       1          2.0      2.0     0.0  urls = []
+10      25        685.0     27.4    0.1  for url in s.find('a'):
+11      24         33.0      1.4    0.0  urls.append(url)
+\end{lstlisting}
+
+\subsubsection{Memory profilers}
+\begin{description}
+ \item[Valgrind] tool to identify memory leaks in C, C++
+\end{description}
+
+\begin{itemize}
+ \item Note: even in garbage collected languages like Python, it is still useful to use a memory profiler becauses as long as you have pointers ot objects in memory, they won't be garbage collected.
+\end{itemize}
+
+\begin{lstlisting}
+  $ python -m memory_profiler example.py
+  Line #    Mem usage  Increment   Line Contents
+  ==============================================
+     3                           @profile
+     4      5.97 MB    0.00 MB   def my_func():
+     5     13.61 MB    7.64 MB       a = [1] * (10 ** 6)
+     6    166.20 MB  152.59 MB       b = [2] * (2 * 10 ** 7)
+     7     13.61 MB -152.59 MB       del b
+     8     13.61 MB    0.00 MB       return a
+\end{lstlisting}
+
+\subsection{Event Profiling}
+\begin{description}
+ \lstitem{perf} reports system events related to your programs. Useful to detect poor cache locality, high amounts of pagefaults or livelocks.
+ \lstitem{perf list} list events that can be traced with perf
+ \lstitem{perf stat COMMAND ARG1 ARG2} gets counts of different events related to a process or command
+ \lstitem{perf record COMMAND ARG1 ARG2}: records the run of a command and saves the statistical data into a file called \lstinline{perf.data}
+ \lstinline{perf report}: formats and prints the data collected in \lstinline{perf.data}
+\end{description}
+
+\subsection{Profiler Visualization}
+\begin{description}
+ \item[Flame graph]: displays a hierarchy of function calls along the Y axis and time taken proportional to the X axis
+ \item[Call graphs/control flow graphs] display the relationships between subroutines within a program by including functions as nodes and function calls between them as directed edges. Useful for studying flow of a program
+       \lstitem{pycallgraph} Python library to generate call graphs
+\end{description}
+
+\subsection{Resource Monitoring}
+\subsubsection{General monitoring}
+\begin{description}
+ \lstitem{htop} shows different stas for currently running processes on the system
+ \lstitem{dstat} computes real-time resource metrics for different subsystems like I/O, networking, CPU utilization, context switches, etc
+\end{description}
+
+\subsubsection{I/O operations}
+\begin{description}
+ \lstitem{iotop} displays live I/O usage information and is handy to check if a process is doing heavy I/O disk operations
+\end{description}
+
+\subsubsection{Disk Usage}
+\begin{description}
+ \lstitem{df -h} displays metrics per partitions
+ \lstitem{du -h} displays disk usage per file for the current directory
+ \lstitem{ncdu} interactive version of \lstinline{du} that lets you navigate folders and delete stuff as you navigate
+\end{description}
+
+\subsubsection{Memory Usage}
+\begin{description}
+ \lstitem{free} displays total moutn fo free and used memory in the system
+\end{description}
+
+\subsubsection{Open Files}
+\begin{description}
+ \lstitem{lsof} lists info about files opened by processes
+\end{description}
+
+\subsubsection{Network Connections and Config}
+\begin{description}
+ \lstitem{ss} lets you monitor incoming and outgoing network packets statistics as well as interface statistics. Commonly used to figurr out what process is using a given port in a machine
+ \lstitem{ip} displays routing, network devices and interfaces
+\end{description}
+
+\subsubsection{Network Usage}
+\begin{description}
+ \lstitem{nethog} interactive CLI tool for monitoring network usage
+\end{description}
+
+\subsection{Benchmarking}
+\begin{itemize}
+ \item Benchmarking is used to compare software to see which one is better for specific use cases
+\end{itemize}
+
+\begin{description}
+ \lstitem{hyperfine} benchmarking tool for ommand line programs
+\end{description}
+
+\begin{lstlisting}
+  $ hyperfine --warmup 3 'fd -e jpg' 'find . -iname "*.jpg"'
+  Benchmark #1: fd -e jpg
+  Time (mean +- STDEV):      51.4 ms +-   2.9 ms
+  [User: 121.0 ms, System: 160.5 ms]
+  Range (min ... max):    44.2 ms ...  60.1 ms    56 runs
+
+  Benchmark #2: find . -iname "*.jpg"
+  Time (mean +- STDEV):      1.126 s +-  0.101 s
+  [User: 141.1 ms, System: 956.1 ms]
+  Range (min ... max):    0.975 s ...  1.287 s    10 runs
+
+  Summary
+  'fd -e jpg' ran
+   21.89 +- 2.33 times faster than 'find . -iname "*.jpg"'
+\end{lstlisting}
+
+
+
+
 \section{Metaprogramming}
 
 \subsection{Build Systems}
