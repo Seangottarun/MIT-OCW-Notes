@@ -2427,6 +2427,126 @@ verify(msg: array<byte>, signature: array<byte>, publickey) -> bool
 \end{enumerate}
 
 
+\section{Miscellaneous}
+
+\subsection{Daemons}
+\begin{description}
+ \item[Daemon]: series of processes that are always running the background. Often has a name ending with \lstinline{d}
+       \lstitem{sshd} SSH daemon listens to SSH requrests and authenticates users
+       \lstitem{systemd} system daemon in Linux that runs and sets up smaller daemon processes (ex. netowrk, screen, etc)
+       \lstitem{systemctl status} list current running daemons
+\end{description}
+
+\begin{itemize}
+ \item \lstinline{systemctl} command used to interact with \lstinline{systemd} in order to \lstinline{enable}, \lstinline{disable}, \lstinline{start}, \lstinline{stop}, \lstinline{restart}, or check \lstinline{status} of service/daemons
+\end{itemize}
+
+\begin{lstlisting}
+# Create custom daemon to run simple Python app
+
+# /etc/systemd/system/myapp.service
+[Unit]
+Description=My Custom App
+After=network.target
+
+[Service]
+User=foo
+Group=foo
+WorkingDirectory=/home/foo/projects/mydaemon
+ExecStart=/usr/bin/local/python3.7 app.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+\end{lstlisting}
+
+\begin{description}
+ \lstitem{cron} daemon used by system to perform scheduled tasks. Can use \lstinline{cron} to run a program at a given frequency without making a custom daemon
+\end{description}
+
+\subsection{FUSE}
+\begin{description}
+ \item[FUSE]: Filesystem in User Space; allows filesystems to be implemented by a user space
+\end{description}
+
+\begin{itemize}
+ \item UNIX systems only allow kernel to perform filesystem calls
+ \item FUSE then allows user to implement arbitrary filesystem calls
+ \item ex. FUSE can be used so that whenever you perform an operation in a virtual filesystem, that operation is forwarded through SSH to a remote machine, performed there, and the output is returned back to you
+ \item This allows local programs to see the file as if it was in your computer while in reality it's on a remote server
+\end{itemize}
+
+\subsubsection{Examples of FUSE filesystems}
+\begin{description}
+ \lstitem{sshfs} open locally remote files/folder through an SSH connection
+ \lstitem{rclone} mount cloud storage services like Dropbox, Google Drive, Amazon S3, or Google Cloud storage and open data locally
+ \lstitem{gocryptfs} encrypted overlay system; files are stored encrypted but once the filesystem is mounted they appear as plaintext in the mountpoint
+ \lstitem{kbfs} distributed filesystem with end-to-end encryption. You can have private, shared and public folders.
+ \lstitem{borgbackup} mount your deduplicated, compressed and encrypted backups for ease of browsing
+\end{description}
+
+\subsection{APIs}
+\begin{description}
+ \lstitem{curl} fetch URL and give you response
+ \lstitem{jq} JSON query tool
+\end{description}
+\begin{itemize}
+ \item Most online APIs are structured URLs
+ \item Often rooted at \lstinline{api.service.com} where the path and query parameters indicate which data you want to read or what action you want to perform
+ \item Usually responses are formatted as JSON, which you can then pipe through a tool like \lstinline{jq} to view and manipulate
+ \item Some APIs require authentication (usually OAuth) where you send a secret token with the request
+ \item Note: the tokens "act as you" so they should be kept secret to avoid other people impersonating you
+\end{itemize}
+
+\subsection{Common command-line flags/patterns}
+\begin{itemize}
+ \item Most tools have a \lstinline{--help} flag to display brief instructions
+ \item Destructive tools usually have a "dry run" flag where they only print what they would have done, but not actually do the change
+ \item Also have an "interactive" \lstinline{-i} flag to prompt user
+ \item Can use \lstinline{--version} or \lstinline{-V} to view the program version (useful for bug reporting)
+ \item Usually have a \lstinline{--verbose} or \lstinline{-v} flag to produce more output (useful for debugging)
+ \item The \lstinline{--quiet} flag makes the program only print stuff for errors
+ \item Often, a dash \lstinline{-} in place of a file name means STDIN/STDOUT
+ \item Possible destructive tools are generally not recursive by default but support a "recursive" flag \lstinline{-r}
+ \item To pass somehting that looks like a flag as a normal argument, use double dashes \lstinline{--} to tell the program to stop processing flags and options
+\end{itemize}
+
+\subsection{VPNs}
+\begin{itemize}
+ \item Best case: VPN lets you "change your internet service provider"
+ \item All your traffic will look like it's coming from the VPN provider instead of your "real location and the network you are connected to will only see encrypted traffic
+ \item Note: VPNs just shift your trust from your current ISP to the VPN host
+ \item Tradeoff may be worthwhile on an untrusted public network, but still a risk
+ \item Also, most of your sensitive traffic is already encrypted through HTTPs or TLS
+ \item i.e. network operator can only see what servers you access, but nothing in your data
+ \item VPN providers can also be malicious/opportunist and log or sell your data
+       "\end{itemize}
+
+\subsection{Booting + Live USBs}
+\begin{description}
+ \item[BIOS]: Basic Input/Output System; firmware used to initialize hardware during booting process and to provide runtime services for OS and programs (first software to run)
+ \item[Unified Extensible Firmware Interface (UEFI)]: specification for software interface between OS and platform firmware. UEFI replaces legacy IBO interface. Can support remote diagnostics and computer repair even with no OS installed
+ \item[Live USBs] USB flash drive containing an OS. Helpful to recover data or fix the OS when operating system no longer boots (use live USB for other OS and mount old hard drive to access files)
+\end{description}
+
+\begin{itemize}
+ \item When machine boots up, before the OS is loaded, the BIOS/UEFI initializes the system
+ \item Can enter specific key combo to configure BIOS/UEFI and change hardware-related settings
+ \item Also have key combos to enter boot menu to boot from alternative devices (ex. live USB) instead of hard drive
+\end{itemize}
+
+\subsection{Docker, Vagrant, VMs, Cloud, Openstack}
+\begin{description}
+ \item[Virtual machines]: emulator for a whole computer system (including OS). Useful for isolated environment to test, develop, or explore (run potentially malicious code)
+ \item[vagrant] tool to define machine configs (OS, services, packages, etc) in code, and then instantiate VMs with \lstinline{vagrant up}
+ \item[Docker] tool like \lstinline{vagrant} but uses containers instead of VMs.
+\end{description}
+
+\begin{itemize}
+ \item Can also rent VMs on the cloud
+ \item Gives you instant access to a cheap always-on public IP address with lots of CPU, disk, RAM, and/or GPU
+\end{itemize}
+
 
 
 
