@@ -2202,5 +2202,236 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
  \item[Mocking]: replace a function, module, or type with a dummy implementation to avoid testing unrelated functionality
 \end{description}
 
+\section{Security and Cryptography}
+
+\subsection{Entropy}
+\begin{description}
+ \item[Entropy]: measure of randomness. Useful to determine strength of a password
+\end{description}
+
+\begin{itemize}
+ \item Entropy is measured in bits
+ \item Time required to brute force a password is proportional to its bits of entropy
+ \item For random uniform selection from a set of possible outcomes, entropy is calculated as
+       \begin{align}
+        \text{Entropy} = log_2(\text{\# of possibilities})
+       \end{align}
+ \item ex. fair coin flip has $\text{Entropy} = log_2(2) = 1$ bit of entropy
+ \item ex. dice roll (6-sided die) has $\text{Entropy} = log_2(6) \approx 2.58$ bit of entropy
+ \item Heuristic: $\sim 40$ bits of entropy is pretty good for online guessing and $\sim 80$ bits of entropy is pretty resistant to offline guessing
+\end{itemize}
+
+\subsection{Hash Functions}
+\begin{description}
+ \item[Cryptographic hash function (CHF)]: maps data of arbitrary size to a fixed size
+\end{description}
+
+\begin{lstlisting}
+  hash(value: array<byte>) -> vector<byte, N>  (for some fixed N)
+\end{lstlisting}
+
+
+\begin{itemize}
+ \item ex. SHA-1 is a hash function used in Git. It maps arbitary-sized inputs to 160-bit outputs (40 hexadecimal characters)
+\end{itemize}
+
+\begin{description}
+ \lstitem{sha1sum} apply SHA-1 hash to an input
+\end{description}
+
+\begin{lstlisting}
+$ printf 'hello' | sha1sum
+aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d
+$ printf 'hello' | sha1sum
+aaf4c61ddcc5e8a2dabede0f3b482cd9aea9434d
+$ printf 'Hello' | sha1sum
+f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0
+
+# Note: the SHA-1 hash is deterministic (same output for same input)
+# and very sensitive to small changes (i.e. collision resistant)
+\end{lstlisting}
+
+\subsubsection{Properties of Cryptographic Hash Functions}
+\begin{itemize}
+ \item A hash function is a hard-to-invert random-looking (but deterministic) function with these properties
+       \begin{itemize}
+        \item \textbf{Deterministic}: same input always generates same output
+        \item \textbf{Non-invertible}: hard to find an input \lstinline{m} such that \lstinline{hash(m) = h} for some desired output \lstinline{h}
+        \item \textbf{Target collision resistant}: given an input \lstinline{m_1}, it’s hard to find a different input \lstinline{m_2} such that \lstinline{hash(m_1) = hash(m_2)}
+        \item \textbf{Collision resistant}: hard to find two inputs \lstinline{m_1} and \lstinline{m_2} such that \lstinline{hash(m_1) = hash(m_2)} (note that this is a strictly stronger property than target collision resistance)
+       \end{itemize}
+\end{itemize}
+
+
+\subsection{Applications of Cryptographic Hash Functions}
+\subsubsection{Content-addressed storage (Git)}
+\begin{itemize}
+ \item Hash is a "summary of a file"
+ \item To avoid collisions (commits, files, other objects are all addressable with hashes), you use a cryptographic hash function because it is collision resistant
+ \item i.e. won't have the same hash pointing to 2 different commits
+\end{itemize}
+
+\subsubsection{File Content Summary/Download Verification}
+\begin{itemize}
+ \item Software is often downloaded from untrusted mirrors (ex. Linux ISOs)
+ \item The official sites usually post hashes along with the download links (pointing to third-party mirrors) so that the hash can be checked after downloading the file
+\end{itemize}
+
+\subsubsection{Commitment schemes}
+\begin{itemize}
+ \item Commitment schemes used when you want to commit to a particular value but reveal the value itself later
+ \item Ex. for a fair coin toss "in my head" without a trusted share coin that both parties can see
+ \item Coin flipper can choose a value \lstinline{r = random()} and then share \lstinline{h = sha256(r)}
+ \item Guesser then guesses heads or tails based on if \lstinline{r} is even or odd
+ \item After guesser calls, the flipper reveals the value \lstinline{r} and guesser verifies that cheating hasn't occurred by checking \lstinline{h == sha256(r)}
+ \item Since hash function is noninvertible, it is also hard for the guesser to cheat by inverting the hash \lstinline{h}
+\end{itemize}
+
+\subsection{Key Derivation Functions (KDFs)}
+\begin{description}
+ \item[Key Derivation Functions (KDFs)]: deliberately slow to slow down offline brute-force attacks. Often for producing fixed-length output for use as keys in other cryptographic algorithms
+ \item[PBKDF2]: Passowrd Base Key Derivation Function 2
+ \item[Plain text]: message to be encrypted
+ \item[Cypher text]: encrypted message
+\end{description}
+
+\subsubsection{Applications of Key Derivation functions}
+\begin{enumerate}
+ \item Producing keys from passphrases for use in other cryptographic algorithms (ex. symmetric cryptography)
+ \item Storing login credentials
+       \begin{itemize}
+        \item Storing plaintext passwords is bad if database is comprised
+        \item Instead generate and store both a random salt \lstinline{salt = random()} and  \lstinline{KDF(password + salt)}
+        \item Then verify login temps by re-computing the KDF given the entered password and stored salt
+        \item Fights against rainbow tables where people store the hashes of previously used passwords
+       \end{itemize}
+\end{enumerate}
+
+\subsection{Symmetric Cryptography}
+\begin{lstlisting}
+keygen() -> key  (this function is randomized)
+
+encrypt(plaintext: array<byte>, key) -> array<byte> (ciphertext)
+decrypt(ciphertext: array<byte>, key) -> array<byte>  (plaintext)
+\end{lstlisting}
+
+\subsubsection{Properties of keygen(), encrypt(), decrypt() - Symmetric Cryptography}
+\begin{enumerate}
+ \item Invertibility: given the output (ciphertext), it is hard to determine the input (plaintext) without the key
+ \item Correctness: \lstinline{decrypt(encrypt(m, k), k) = m}
+\end{enumerate}
+
+\subsubsection{Symmetric Cryptography Applications}
+\begin{itemize}
+ \item File encryption for storage in an untrusted cloud service
+ \item Use KDFs to encrypt a file with a passphrase
+ \item i.e. generate \lstinline{key = KDF(passphrase)} and then store \lstinline{encrypt(file, key)}
+\end{itemize}
+
+\subsection{Asymmetric Cryptography}
+\begin{description}
+ \item[Private key]: meant to be kept secret (used to unlock file)
+ \item[Public key]: meant to be publicly shared and won't affect security (used to unlock file)
+\end{description}
+
+\begin{lstlisting}
+keygen() -> (publickey, privatekey)  # this function is randomized
+
+encrypt(plaintxt: array<byte>, publickey) -> array<byte> (ciphertxt)
+decrypt(ciphertxt: array<byte>, privatekey) -> array<byte> (plaintxt)
+
+sign(msg: array<byte>, privatekey) -> array<byte> (signature)
+verify(msg: array<byte>, signature: array<byte>, publickey) -> bool
+# bool indicates whether or not the signature is valid
+\end{lstlisting}
+
+\subsubsection{Properties of keygen(), encrypt(), decrypt() - Asymmetric Cryptography}
+\begin{itemize}
+ \item Invertibility: given the output (ciphertext), it's hard to determine the input (plaintext) without the private key
+ \item Decryption correctness: \lstinline{decrypt(encrypt(msg, public key), private key) = msg}
+ \item Hard to forge: for any message, without the private key, it's hard to produce a signature such that \lstinline{verify(message, signature, public key)}
+ \item Verification correctness: \lstinline{verify(message, sign(message, private key), public key) = true}
+\end{itemize}
+
+
+\subsubsection{Applications of Asymmetric Cryptography}
+\begin{itemize}
+ \item PGP email encryption: people can have public keys posted online (in a PGP keyserver, or on Keybase) and then anyone can send them encrypted email
+ \item Private messaging (Signal and Keybase): use asymmetric keys to establish private communication channels
+ \item Signing software (Git): have GPG-signed commits and tags with a posted public key so anyone can verify authnticity of downloaded software
+\end{itemize}
+
+\subsection{Symmetric vs Asymmetric Cryptography}
+\begin{itemize}
+ \item For symmetric cryptography, there needs to be an initial exchange of keys (may or may not be possible)
+       \begin{itemize}
+        \item Because you need the same key to unlock and lock
+       \end{itemize}
+ \item But asymmetric cryptography avoids this problem because you can freely share the public key in an unsafe channel
+       \begin{itemize}
+        \item Because the key to lock (public key) is separete form the key to unlock (private key)
+       \end{itemize}
+\end{itemize}
+
+\subsection{Key distribution}
+\begin{itemize}
+ \item For asymmetric cryptography, you need to reliably distribute public keys and map public keys to real-world identities
+ \item i.e. figure out if person is pretending to be someone else and giving you the wrong public key
+ \item Signal uses "trust on first use" (assume person is who they say they are until proven wrong) and supports out-of-band public key exchange (i.e. verify public keys in person)
+ \item PGP uses "web of trust" where you have trusted introducers and you share certifying signatures along with your public key (i.e. hope that the receiver trusts one of those signatures that are"vouching" for you)
+\end{itemize}
+
+\subsection{Cryptography Case Studies}
+
+\subsubsection{Password Managers}
+\begin{itemize}
+ \item Password managers use unique, randomly generated high-entorpy passwords for all your accounts
+ \item Passwords are saved in one place and ecnrypted with a symmetric cipher with a key produced from a passphrase using a KDF
+ \item This allows you to avoid password reuse (less impact when websites get compromised), use high-entropy passwords, and only requires you to remember a single high-entropy password
+\end{itemize}
+
+\subsubsection{Two-factor authentication (2FA)}
+\begin{itemize}
+ \item 2FA requires you to use a passphrase along with a 2FA authenticator in order to protect against stolen passowrds and phishing attacks
+ \item i.e. something extra to verify that it's "actually you" and not someone who happens to know the passphrase
+\end{itemize}
+
+\subsubsection{Full disk encryption}
+\begin{itemize}
+ \item Entire disk on computer is encrypted with a symmetric cipher with a key protected by a passphrase
+\end{itemize}
+
+\subsubsection{Private messaging}
+\begin{itemize}
+ \item End-to-end security provided using asymmetric key encryption
+ \item For public keys, either authenticate public keys out-of-band or trust social proofs
+\end{itemize}
+
+\subsubsection{SSH}
+\begin{enumerate}
+ \item User runs \lstinline{ssh-keygen} to generate an asymmetric key pair \lstinline{public_key, private_key}
+       \begin{itemize}
+        \item Public key is stored as plaintext
+        \item Private key is encrypted on disk
+        \item User also provides a passphrase which is fed into a key derivation function to produce a key which is then used to encrypt the private key with a symmetric cipher
+       \end{itemize}
+ \item Client's public key is stored on \lstinline{.ssh/authorized_keys} on the server
+ \item During use, a conneting client can prove its identity using asymmetric signatures with challenge response
+       \begin{enumerate}
+        \item Server picks a random number and sends it to the client
+        \item Client signs this message and sends the signature back to the server
+        \item Server checks the signature against the public key on record
+        \item This proves that the client has the private key corresponding to the public key that in the server's \lstinline{.ssh/authorized_keys} file
+       \end{enumerate}
+ \item User is given remote access
+\end{enumerate}
+
+
+
+
+
+
+
+
 
 \end{document}
