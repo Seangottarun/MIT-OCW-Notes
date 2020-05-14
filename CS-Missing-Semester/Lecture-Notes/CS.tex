@@ -2547,11 +2547,61 @@ WantedBy=multi-user.target
  \item Gives you instant access to a cheap always-on public IP address with lots of CPU, disk, RAM, and/or GPU
 \end{itemize}
 
+\section{Q \& A}
+
+\subsection{What is the difference between source script.sh and ./script.sh?}
+\begin{itemize}
+ \item In both cases, \lstinline{script.sh} will be read and executed in a session
+ \item For \lstinline{source script.sh}, the current bash session will run \lstinline{script.sh}
+ \item For \lstinline{./script.sh}, your current bash session starts a new instance of bash that will run the commands in \lstinline{script.sh}
+ \item Thus, any changes or variables defined will persist in the current session for \lstinline{source script.sh} (ex. defining bash functions)
+ \item But with \lstinline{./script.sh}, the new session will return control back to the parent session
+\end{itemize}
+
+\subsection{What are the places where various packages and tools are stored and how does referencing them work? What even is /bin or /lib?}
+\begin{itemize}
+ \item All programs you run in the terminal are found in the directories listed in your \lstinline{PATH} environment variable
+ \item Use \lstinline{which} or \lstinline{type} to check where the shell finds a specific program
+\end{itemize}
+
+\subsubsection{Conventions for file locations}
+\begin{description}
+ \lstitem{/bin} essential command binaries
+ \lstitem{/sbin} essential system binaries, usually to be run by root
+ \lstitem{/dev} device files, special files that often are interfaces to hardware devices
+ \lstitem{/etc} host-specific system-wide configuration files
+ \lstitem{/home} home directories for users in the system
+ \lstitem{/lib} common libraries for system programs
+ \lstitem{/opt} optional application software
+ \lstitem{/sys} contains information and configuration for the system (covered in the first lecture)
+ \lstitem{/tmp} temporary files (also /var/tmp). Usually deleted between reboots.
+ \lstitem{/usr/} read only user data
+ \lstitem{/usr/bin} non-essential command binaries
+ \lstitem{/usr/sbin} non-essential system binaries, usually to be run by root
+ \lstitem{/usr/local/bi}n binaries for user compiled programs
+ \lstitem{/var} variable files like logs or caches
+\end{description}
+
+\subsection{Should I apt-get install a python-whatever, or pip install whatever package?}
+\begin{itemize}
+ \item i.e. when should I use system package manager vs a language-specific package manager to install software?
+ \item Short answer: it depends, but consider the following
+ \item Common packages will be available in both, but the language-specific tool is probably more up to date
+ \item When using system package manager, libraries will be installed system wide
+       \begin{itemize}
+        \item This may be an issue for development when you need different version of a library
+        \item Most programming languages provide an isolated or virtual environment for installing different version of libraries without conflicts
+       \end{itemize}
+ \item Some of these packages might come with binaries or might need to be compiled
+\end{itemize}
 
 
-
-
-
-
+\subsection{What is the difference between Docker and a Virtual Machine?}
+\begin{itemize}
+ \item Docker is based on containers
+ \item Containers differ from virtual machines because virtual machines execute an entire OS stack (including the kernel), while containers share the kernel with the host to save resources
+ \item The container instead uses an isolation mechanism to run a program that thinks it has its own hardware but is actually sharing the hardware and kernel with the host
+ \item Tradeoff: containers have lower overhead but weaker isolation and only work if host runs on same kernel
+\end{itemize}
 
 \end{document}
