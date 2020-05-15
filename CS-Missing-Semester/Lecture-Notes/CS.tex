@@ -36,41 +36,41 @@
   emph={addgroup,adduser,alias,
   ant,
   apropos,apt-get,aptitude,aspell,awk,
-  basename,bash,bc,bg,break,builtin,bzip2,cal,case,cat,cd,cfdisk,chgrp,
-  chkconfig,chmod,chown,chroot,cksum,clear,cmp,comm,command,continue,
-  cp,cron,crontab,csplit,cut,date,dc,dd,ddrescue,declare,df,diff,diff3,
-  dig,dir,dircolors,dirname,dirs,dmesg,du,echo,egrep,eject,enable,env,
+  basename,bash,bc,bg,borgbackup,break,builtin,bzip2,cal,case,cat,cd,cfdisk,chgrp,
+  chkconfig,chmod,chown,chroot,cksum,clear,cmake,cmp,comm,command,continue,convert,
+  cp,cron,crontab,csplit,curl,cut,date,dc,dd,ddrescue,declare,df,diff,diff3,
+  dig,dir,dircolors,dirname,dirs,dmesg,dstat,dtrace,dtruss,du,echo,egrep,eject,enable,env,
   ethtool,eval,exec,exit,expand,expect,export,expr,false,fdformat,
-  fdisk,fg,fgrep,file,find,fmt,fold,for,format,free,fsck,ftp,function,
+  fdisk,ffmpeg,fg,fgrep,file,find,fmt,fold,for,format,free,fsck,ftp,function,
   fuser,gawk,getopts,
-  git,
+  git,gocryptfs,
   grep,groups,gzip,
   gunzip,
-  ,hash,head,help,history,hostname,
-  id,if,ifconfig,ifdown,ifup,import,install,
+  ,hash,head,help,history,hostname,htop,hyperfine,
+  id,if,ifconfig,ifdown,ifup,import,install,iotop,ip,
   java, java6, java_cur
-  join,kill,killall,less,
-  let,ln,local,locate,logname,logout,look,lpc,lpr,lprint,lprintd,
-  lprintq,lprm,ls,lsof,make,man,mkdir,mkfifo,mkisofs,mknod,mmv,more,
-  mount,mtools,mtr,mv,
-  mysql,
+  join,journalctl,jq,jupyter,notebook,kbfs,kernprof,kill,killall,less,
+  let,ln,lnav,local,locate,logger,log,show,logname,logout,look,lpc,lpr,lprint,lprintd,
+  lprintq,lprm,ls,lsof,lstat,make,man,mkdir,mkfifo,mkisofs,mknod,mmv,more,mosh,
+  mount,mtools,mtr,mv,mypy,
+  mysql,ncdu,nethog,
   netstat,nice,nl,nohup,notify-send,
   noweb,noweave,
   nslookup,op,
-  open,passwd,paste,pathchk,ping,pkill,popd,pr,printcap,printenv,
-  printf,ps,pushd,pwd,quota,quotacheck,quotactl,ram,rcp,read,
-  readarray,readonly,reboot,remsync,rename,renice,return,rev,rm,rmdir,
-  rsync,scp,screen,sdiff,sed,select,seq,set,sftp,shift,shopt,shutdown,
-  sleep,slocate,sort,source,split,ssh,strace,su,sudo,sum,
+  open,passwd,paste,pathchk,pdflatex,perf,pgrep,ping,pkill,popd,pr,printcap,printenv,
+  printf,ps,pushd,pwd,pyflakes,python, python3,quota,quotacheck,quotactl,ram,rclone,rcp,read,
+  readarray,readonly,reboot,remsync,rename,renice,return,rev,rg,rm,rmdir,
+  rsync,rustup,scp,screen,sdiff,sed,select,seq,set,sftp,sha1sum,shellcheck,shift,shopt,shutdown,
+  sleep,slocate,sort,source,split,ss,ssh,sshfs,strace,su,sudo,sum,
   svn, svn2git,
-  symlink,sync,
-  tail,tar,tee,test,time,times,top,touch,tr,traceroute,trap,true,
+  symlink,sync,systemctl,
+  tail,tar,tcpdump,tee,test,time,times,tldr,tmux,top,touch,tr,traceroute,trap,tree,true,
   tsort,tty,type,ulimit,umask,umount,unalias,uname,unexpand,uniq,
   units,
   unrar,
-  unset,unshar,until,useradd,usermod,users,uudecode,uuencode,
-  vdir,vi,vmstat,watch,wc,Wget,whereis,which,while,who,whoami,write,
-  zcat, xdg, version},
+  unset,unshar,until,useradd,usermod,users,uudecode,uuencode,vagrant,valgrind,
+  vdir,version,vi,vmstat,watch,wc,wget,whereis,which,while,who,whoami,write,xargs, xdg,
+  zcat,zsh},
 }
 
 % Display tildes nicely
@@ -189,15 +189,15 @@ which echo # tells you where file for command is located (ex. echo)
 \begin{itemize}
  \item Flags and options specified after the program name
  \item The short form is usually with single slashes \lstinline{-<char>} and the long form is usually with double dashes \lstinline{--<word>}
- \item ex. \lstinline{-v} and \lstinline{--version} tell you the version of the program
+ \item ex. \lstinline{-V} and \lstinline{--version} tell you the version of the program
  \item ex. \lstinline{-h} and \lstinline{--help} give you a quick help guide for the program
  \item Running command with \lstinline{--help} flag gives you the \lstinline{usage} in the following format
 \end{itemize}
 
 \begin{lstlisting}
-  usage: ls [OPTION] ... [FILE] ...
-  # [] means optional
-  # ... means 1 or more of the previous thing
+usage: ls [OPTION] ... [FILE] ...
+# [] means optional
+# ... means 1 or more of the previous thing
 \end{lstlisting}
 
 \begin{description}
@@ -210,9 +210,9 @@ which echo # tells you where file for command is located (ex. echo)
  \item Get file permissions by running \lstinline{ls -a}
  \item Permissions specified in 3 groups of 3 (r, w, x)
        \begin{enumerate}
-        \item 1st group of 3 permissions is for owner of file
-        \item 2nd group of 3 permissions is for the group of people owning the file
-        \item 3rd group of 3 permissions is for everyone else
+        \item 1\textsuperscript{st} group of 3 permissions is for owner of file
+        \item 2\textsuperscript{nd} group of 3 permissions is for the group of people owning the file
+        \item 3\textsuperscript{rd} group of 3 permissions is for everyone else
        \end{enumerate}
  \item Note: if you have write access on a file but read access on a directory, you cannot directly delete a file (can only empty it)
 \end{itemize}
@@ -222,7 +222,7 @@ which echo # tells you where file for command is located (ex. echo)
  \item[-] don't have that permission
  \item[r] read access
  \item[w] write access
- \item[x] execute acess
+ \item[x] execute access
 \end{description}
 
 \textbf{For folders:}
@@ -270,7 +270,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  echo hello > hello.txt # writes string "hello" into file hello.txt
+echo hello > hello.txt # writes string "hello" into file hello.txt
 \end{lstlisting}
 
 \begin{description}
@@ -301,8 +301,8 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  sudo echo 500 > brightness
-  # does not work because brightness doesn't know about sudo
+sudo echo 500 > brightness
+# does not work because brightness doesn't know about sudo
 \end{lstlisting}
 
 \begin{description}
@@ -320,7 +320,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  tail -n5 # gives you the last 5 lines of a file
+tail -n5 # gives you the last 5 lines of a file
 \end{lstlisting}
 
 \begin{description}
@@ -328,8 +328,8 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  echo 1000 | sudo tee brightness # changes brightness
-  # Note: this can be run without using superuser terminal
+echo 1000 | sudo tee brightness # changes brightness
+# Note: this can be run without using superuser terminal
 \end{lstlisting}
 
 \begin{description}
@@ -338,29 +338,30 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{description}
- \lstitem{source} reads and executes commands from the file specified as its argument in the current shell environment. Useful to load functions, variables and configuration files into shell scripts. It has a synonym in \lstinline{.} (period).
+ \lstitem{source} reads and executes commands from the file specified as its argument in the \textit{current shell environment}. Useful to load functions, variables and configuration files into shell scripts. Its synonym is \lstinline{.} (period).
 \end{description}
 
 \begin{lstlisting}
-  . filename [arguments]
-  source filename [arguments]
+. filename [arguments]
+source filename [arguments]
 \end{lstlisting}
 
 \begin{lstlisting}
-  # Note that ./ and source are not the same
-  ./script
-  # runs the script as an executable file, launching a new shell to
-  # run it
+# Note that ./ and source are not the same
 
-  source script
-  # reads and executes commands from filename in the current shell
-  # environment
-  # Note: ./script is not . script, but . script == source script
+./script
+# runs the script as an executable file, launching a new shell to
+# run it
+
+source script
+# reads and executes commands from filename in the current shell
+# environment
+# Note: ./script is not . script, but . script == source script
 \end{lstlisting}
 
 \subsection{Executable and UNIX Shebang}
 \begin{description}
- \item[shebang: ] a character sequence involving \lstinline{#!} at the beginning of a script
+ \item[shebang]: a character sequence involving \lstinline{#!} at the beginning of a script
 \end{description}
 
 \begin{itemize}
@@ -368,12 +369,12 @@ which echo # tells you where file for command is located (ex. echo)
 \end{itemize}
 
 \begin{lstlisting}
-  #!/bin/sh
-  curl --head --silent https://missing.csail.mit.edu
+#!/bin/sh
+curl --head --silent https://missing.csail.mit.edu
 
-  # First line indicates that program loader should run the
-  # program /bin/sh, passing path/to/script (name of this file)
-  # as the first argument.
+# First line indicates that program loader should run the
+# program /bin/sh, passing path/to/script (name of this file)
+# as the first argument
 \end{lstlisting}
 
 \section{Shell Tools and Scripting}
@@ -381,44 +382,44 @@ which echo # tells you where file for command is located (ex. echo)
 \subsection{Defining Variables}
 
 \begin{lstlisting}
-  foo=bar # make var foo store the value bar
-  echo $foo # OUTPUT: bar (the value of the foo)
-  foo = bar # will not work bec of spaces
-  # interprets as foo being the command with = and bar being args
-  # Note: spaces reserved in bash for separating CLI args
+foo=bar # make var foo store the value bar
+echo $foo # OUTPUT: bar (the value of the foo)
+foo = bar # will not work bec of spaces
+# interprets as foo being the command with = and bar being args
+# Note: spaces reserved in bash for separating CLI args
 \end{lstlisting}
 
 \subsection{Defining Strings}
 
 \begin{lstlisting}
-  echo "Hello" # OUTPUT: Hello
-  echo 'World' # OUTPUT: World (literal string for '')
-  # Note: for literal strings, double "" and single quotes ''
-  # are equivalent
+echo "Hello" # OUTPUT: Hello
+echo 'World' # OUTPUT: World (literal string for '')
+# Note: for literal strings, double "" and single quotes ''
+# are equivalent
 \end{lstlisting}
 
 \begin{lstlisting}
-  echo "value is $foo" # OUTPUT: value is bar
-  # variable $foo will be expanded in string for double quotes ""
-  echo 'value is $foo' # OUTPUT: value is $foo
-  # outputs string characters as displayed for single quotes ''
-  # doesn't expand $foo
+echo "value is $foo" # OUTPUT: value is bar
+# variable $foo will be expanded in string for double quotes ""
+echo 'value is $foo' # OUTPUT: value is $foo
+# outputs string characters as displayed for single quotes ''
+# doesn't expand $foo
 \end{lstlisting}
 
 \subsection{Defining Functions}
 \begin{lstlisting}
-  # mcd.sh, a command to make a new dir and switch to it
-  mcd () {
-    mkdir -p "$1" # $1 is a special var for 1st CLI arg
-    cd "$1"
-  }
+# mcd.sh, a command to make a new dir and switch to it
+mcd () {
+  mkdir -p "$1" # $1 is a special var for 1st CLI arg
+  cd "$1"
+}
 \end{lstlisting}
 
 \begin{lstlisting}
-  source mcd.sh # executes the script mcd.sh
-  # new mcd function has been defined in shell
-  # can now do
-  mcd test
+source mcd.sh # executes the script mcd.sh
+# new mcd function has been defined in shell
+# can now do
+mcd test
 \end{lstlisting}
 
 \subsection{Special Bash Variables}
@@ -435,9 +436,9 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  mkdir /mnt/new # Permission denied
-  sudo !! # becomes equivalent to
-  sudo mkdir /mnt/new
+mkdir /mnt/new # Permission denied
+sudo !! # becomes equivalent to
+sudo mkdir /mnt/new
 \end{lstlisting}
 
 \subsection{Commands and Exit Codes}
@@ -453,15 +454,15 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  echo "Hello" # OUTPUT: Hello
-  echo $? # OUTPUT: 0
+echo "Hello" # OUTPUT: Hello
+echo $? # OUTPUT: 0
 \end{lstlisting}
 
 \begin{lstlisting}
-  grep foobar mcd.sh # no output
-  echo $? # OUTPUT: 1
-  # bash tried to search for foobar string in mcd script but it
-  # wasn't there (an error occurred)
+grep foobar mcd.sh # no output
+echo $? # OUTPUT: 1
+# bash tried to search for foobar string in mcd script but it
+# wasn't there (an error occurred)
 \end{lstlisting}
 
 \subsection{Boolean Logic}
@@ -471,10 +472,10 @@ which echo # tells you where file for command is located (ex. echo)
 \end{itemize}
 
 \begin{lstlisting}
-  true
-  echo $? # OUTPUT: 0
-  false
-  echo $? # OUTPUT: 1
+true
+echo $? # OUTPUT: 0
+false
+echo $? # OUTPUT: 1
 \end{lstlisting}
 
 \subsection{Logical Operators}
@@ -483,21 +484,21 @@ which echo # tells you where file for command is located (ex. echo)
 \end{itemize}
 
 \begin{description}
- \lstitem{||}: \textbf{OR operator}; executes 1\textsuperscript{st} commmand and if it fails, it executes the (i.e. 1st command did not have a 0 error code) 2\textsuperscript{nd} command
- \lstitem{&&}: \textbf{AND operator}; will only execute the 2\textsuperscript{nd} command if the 1\textsuperscript{st} one runs w/out error codes (i.e. 1st command had a 0 error code)
+ \lstitem{||}: \textbf{OR operator}; executes 1\textsuperscript{st} commmand and if it fails, it executes the (i.e. 1\textsuperscript{st} command did not have a 0 error code) 2\textsuperscript{nd} command
+ \lstitem{&&}: \textbf{AND operator}; will only execute the 2\textsuperscript{nd} command if the 1\textsuperscript{st} one runs w/out error codes (i.e. 1\textsuperscript{st} command had a 0 error code)
 \end{description}
 
 \begin{lstlisting}
-  false || echo "oops fail" # OUTPUT: oops fail
-  # bash ran 2nd command bec the 1st command has an error code of 1
-  true || echo "Will not be printed" # no output
-  # bash didn't run the 2nd command bec the 1st command has an
-  # error code of 0
+false || echo "oops fail" # OUTPUT: oops fail
+# bash ran 2nd command bec the 1st command has an error code of 1
+true || echo "Will not be printed" # no output
+# bash didn't run the 2nd command bec the 1st command has an
+# error code of 0
 \end{lstlisting}
 
 \begin{lstlisting}
-  true && echo "Things went well" # OUTPUT: Things went well
-  false && echo "This will not print"
+true && echo "Things went well" # OUTPUT: Things went well
+false && echo "This will not print"
 \end{lstlisting}
 
 \begin{description}
@@ -505,7 +506,7 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  false; echo "This always prints" # OUTPUT: This always prints
+false; echo "This always prints" # OUTPUT: This always prints
 \end{lstlisting}
 
 \subsection{Command Substitution}
@@ -519,13 +520,13 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  foo=$(pwd) # gets output of pwd and stores it in foo variable
-  echo $foo
+foo=$(pwd) # gets output of pwd and stores it in foo variable
+echo $foo
 \end{lstlisting}
 
 \begin{lstlisting}
-  echo "We are in $(pwd)" # OUTPUT: We are in /Users/admin/Documents
-  # Note: $(pwd) is expanded because we are using double quotes ""
+echo "We are in $(pwd)" # OUTPUT: We are in /Users/admin/Documents
+# Note: $(pwd) is expanded because we are using double quotes ""
 \end{lstlisting}
 
 \subsection{Process Substitution}
@@ -539,11 +540,11 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  cat <(ls) <(ls ..) # OUTPUT: prints files in current dir and then
-  # files in parent dir
-  # ls-ing both current and parent directories and then storing
-  #output in temp file using process substitution <(cmd)
-  # cat then reads the output of the temp file
+cat <(ls) <(ls ..) # OUTPUT: prints files in current dir and then
+# files in parent dir
+# ls-ing both current and parent directories and then storing
+#output in temp file using process substitution <(cmd)
+# cat then reads the output of the temp file
 \end{lstlisting}
 
 \begin{description}
@@ -553,23 +554,23 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  #!/bin/bash
+#!/bin/bash
 
-  echo "Starting program at $(date)" # Date will be substituted
+echo "Starting program at $(date)" # Date will be substituted
 
-  echo "Running program $0 with $# arguments with pid $$"
+echo "Running program $0 with $# arguments with pid $$"
 
-  for file in $@; do
-      grep foobar $file > /dev/null 2> /dev/null
-      # When pattern is not found, grep has exit status 1
-      # We redirect STDOUT and STDERR to a null register since we do
-      # not care about them
-      if [[ $? -ne 0 ]]; then
-          echo "File $file does not have any foobar, adding one"
-          echo "# foobar" >> "$file"
-          # appends # foobar to end of file as a comment
-      fi
-  done
+for file in $@; do
+    grep foobar $file > /dev/null 2> /dev/null
+    # When pattern is not found, grep has exit status 1
+    # We redirect STDOUT and STDERR to a null register since we do
+    # not care about them
+    if [[ $? -ne 0 ]]; then
+        echo "File $file does not have any foobar, adding one"
+        echo "# foobar" >> "$file"
+        # appends # foobar to end of file as a comment
+    fi
+done
 \end{lstlisting}
 
 \begin{itemize}
@@ -585,33 +586,33 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  ls *.sh # lists all files with .sh extension
+ls *.sh # lists all files with .sh extension
 \end{lstlisting}
 
 \begin{lstlisting}
-  # given files foo, foo1, foo2, foo10 and bar
-  rm foo? # deletes foo1 and foo2
-  rm foo* # deletes all except for bar
+# given files foo, foo1, foo2, foo10 and bar
+rm foo? # deletes foo1 and foo2
+rm foo* # deletes all except for bar
 \end{lstlisting}
 
 \begin{lstlisting}
-  convert image.png image.jpg
-  convert image.{png,jpg} # equivalent to above line
-  # Remember: NO SPACES or else bash treats them as separate args
+convert image.png image.jpg
+convert image.{png,jpg} # equivalent to above line
+# Remember: NO SPACES or else bash treats them as separate args
 \end{lstlisting}
 
 \begin{lstlisting}
-  touch foo{,1,2,10}
-  touch foo foo1 foo2 foo10
+touch foo{,1,2,10}
+touch foo foo1 foo2 foo10
 \end{lstlisting}
 
 \begin{lstlisting}
-  # can also combine everything and at multiple levels
-  touch project{1,2}/src/test{1,2,3}.py
+# can also combine everything and at multiple levels
+touch project{1,2}/src/test{1,2,3}.py
 
-  # globbing techniques can also be combined like this
-  mv *{.py,.sh} folder
-  # Will move all *.py and *.sh files
+# globbing techniques can also be combined like this
+mv *{.py,.sh} folder
+# Will move all *.py and *.sh files
 \end{lstlisting}
 
 \begin{description}
@@ -619,9 +620,9 @@ which echo # tells you where file for command is located (ex. echo)
 \end{description}
 
 \begin{lstlisting}
-  touch {foo,bar}/{a..j}
-  # expands into foo/a to foo/j and same with bar/a and bar/j
-  diff <(ls foo) <(ls bar) # compares output of 2 ls commands
+touch {foo,bar}/{a..j}
+# expands into foo/a to foo/j and same with bar/a and bar/j
+diff <(ls foo) <(ls bar) # compares output of 2 ls commands
 \end{lstlisting}
 
 \subsection{Bash and Python Scripting}
@@ -635,29 +636,29 @@ which echo # tells you where file for command is located (ex. echo)
 \end{itemize}
 
 \begin{lstlisting}
-  #!/usr/local/bin/python
-  # above line tells shell to use python as the interpreter
-  import sys
-  for arg in reversed(sys.argv[1:]):
-    print(arg)
+#!/usr/local/bin/python
+# above line tells shell to use python as the interpreter
+import sys
+for arg in reversed(sys.argv[1:]):
+  print(arg)
 \end{lstlisting}
 
 \begin{lstlisting}
-  # can run above python file script.py as executable in shell
-  ./script.py a b c # a,b,c are arguments passed to the script
+# can run above python file script.py as executable in shell
+./script.py a b c # a,b,c are arguments passed to the script
 \end{lstlisting}
 
 \begin{lstlisting}
-  # to avoid assuming where python is located, we can use the
-  # env command in python file
+# to avoid assuming where python is located, we can use the
+# env command in python file
 
-  #!/usr/local/bin/env python
-  # give python as argument to env command
-  # output of env (location of python) becomes the interpreter
-  # specified by the shebang
-  import sys
-  for arg in reversed(sys.argv[1:]):
-    print(arg)
+#!/usr/local/bin/env python
+# give python as argument to env command
+# output of env (location of python) becomes the interpreter
+# specified by the shebang
+import sys
+for arg in reversed(sys.argv[1:]):
+  print(arg)
 \end{lstlisting}
 
 \begin{description}
@@ -695,21 +696,21 @@ which echo # tells you where file for command is located (ex. echo)
 \end{itemize}
 
 \begin{lstlisting}
-  # Find all directories named src
-  find . -name src -type d
-  # Find all python files with a folder named test in their path
-  find . -path '**/test/**/*.py' -type f
-  # Find all files modified in the last day
-  find . -mtime -1
-  # Find all zip files with size in range 500k to 10M
-  find . -size +500k -size -10M -name '*.tar.gz'
+# Find all directories named src
+find . -name src -type d
+# Find all python files with a folder named test in their path
+find . -path '**/test/**/*.py' -type f
+# Find all files modified in the last day
+find . -mtime -1
+# Find all zip files with size in range 500k to 10M
+find . -size +500k -size -10M -name '*.tar.gz'
 \end{lstlisting}
 
 \begin{lstlisting}
-  # Delete all files with .tmp extension
-  find . -name '*.tmp' -exec rm {} \;
-  # Find all PNG files and convert them to JPG
-  find . -name '*.png' -exec convert {} {.}.jpg \;
+# Delete all files with .tmp extension
+find . -name '*.tmp' -exec rm {} \;
+# Find all PNG files and convert them to JPG
+find . -name '*.png' -exec convert {} {.}.jpg \;
 \end{lstlisting}
 
 \subsection{Searching Within Files}
@@ -726,14 +727,14 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{description}
 
 \begin{lstlisting}
-  # Find all python files where I used the requests library
-  rg -t py 'import requests'
-  # Find all files (including hidden files) without a shebang line
-  rg -u --files-without-match "^#!"
-  # Find all matches of foo and print the following 5 lines
-  rg foo -A 5
-  # Print statistics of matches (# of matched lines and files )
-  rg --stats PATTERN
+# Find all python files where I used the requests library
+rg -t py 'import requests'
+# Find all files (including hidden files) without a shebang line
+rg -u --files-without-match "^#!"
+# Find all matches of foo and print the following 5 lines
+rg foo -A 5
+# Print statistics of matches (# of matched lines and files )
+rg --stats PATTERN
 \end{lstlisting}
 
 \subsection{Searching Previous Shell History}
@@ -741,19 +742,19 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \begin{description}
  \lstitem{up arrow}: goes through previous commands line by line. Inefficient for very old commands
  \lstitem{history}: command that prints out most recent commands
- \lstitem{ctrl r}: backwards search fo previous command history and execute in place. Repetitive typing of \lstinline{ctrl r}  will give you next previous command
+ \lstitem{ctrl r}: backwards search of previous command history and execute in place. Repetitive typing of \lstinline{ctrl r}  will give you next previous command
 \end{description}
 
 \begin{lstlisting}
-  history 1 # prints all results since beginning of time
-  history 1 | grep convert
-  # search all history for commands using convert
+history 1 # prints all results since beginning of time
+history 1 | grep convert
+# search all history for commands using convert
 \end{lstlisting}
 
 
 \subsection{Directory Structure}
 \begin{description}
- \lstitem{tree}: pretty prints the directory structure
+ \lstitem{tree} pretty prints the directory structure
 \end{description}
 
 \section{Vim Text Editor}
@@ -803,7 +804,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \begin{description}
  \lstitem{:q} quit (close window)
  \lstitem{:qa} close all windows and quit
- \lstitem{:w} save ("write")
+ \lstitem{:w} save (``write'')
  \lstitem{:wq} save and quit
  \lstitem{:e {name of file}} open file for editing
  \lstitem{:ls} show open buffers
@@ -814,7 +815,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 
 \subsection{Movement Commands}
 \begin{itemize}
- \item Spend most of the time in normal mode using movement commands (aka "nouns") to navigate the buffer
+ \item Spend most of the time in normal mode using movement commands (aka ``nouns'') to navigate the buffer
  \item Movements in Vim are also called “nouns”, because they refer to chunks of text.
 \end{itemize}
 
@@ -844,7 +845,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 
 \subsection{Editing}
 \begin{itemize}
- \item Vim's editing commands are also called "verbs" because verbs act on nouns
+ \item Vim's editing commands are also called ``verbs'' because verbs act on nouns
 \end{itemize}
 
 \begin{description}
@@ -856,8 +857,8 @@ Useful \lstinline{grep} and \lstinline{rg} flags
  \lstitem{d0} delete to beginning of line
  \lstitem{c\{motion\}} change {motion}; like \lstinline|d{motion}| followed by \lstinline{i}
  \lstitem{cw} change word
- \lstitem{x} delete character (equal do \lstitem{dl})
- \lstitem{s} substitute character (equal to \lstitem{xi})
+ \lstitem{x} delete character (equal to \lstinline{dl})
+ \lstitem{s} substitute character (equal to \lstinline{xi})
  \lstitem{u} undo
  \lstitem{<C-r>} redo
  \lstitem{y} to copy / “yank”
@@ -885,7 +886,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \subsection{Modifiers}
 \begin{itemize}
  \item Can use modifiers to change meaning of a noun (movment command)
- \item ex. the \lstinline{i} modifier means "inner" or "inside" and the \lstinline{a} modifier means "around"
+ \item ex. the \lstinline{i} modifier means ``inner'' or ``inside'' and the \lstinline{a} modifier means ``around''
 \end{itemize}
 
 \begin{description}
@@ -924,26 +925,26 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{itemize}
 
 \begin{lstlisting}
-  # Read server logs to see who is trying to log in
-  # This command uses pipes to stream a remote file through grep
-  # on local computer
-  ssh myserver journalctl | grep sshd
+# Read server logs to see who is trying to log in
+# This command uses pipes to stream a remote file through grep
+# on local computer
+ssh myserver journalctl | grep sshd
 
-  # This does filtering on the server and then displays data locally
-  # with the pager
-  ssh myserver 'journalctl | grep sshd | grep "Disconnected from"'
-   | less
+# This does filtering on the server and then displays data locally
+# with the pager
+ssh myserver 'journalctl | grep sshd | grep "Disconnected from"'
+ | less
 \end{lstlisting}
 
 \subsection{RegEx}
 
 \begin{lstlisting}
-  ssh myserver journalctl
-   | grep sshd
-   | grep "Disconnected from"
-   | sed 's/.*Disconnected from //'
-  # This uses the s substitution command for sed with regex (regular
-  # expressions)
+ssh myserver journalctl
+ | grep sshd
+ | grep "Disconnected from"
+ | sed 's/.*Disconnected from //'
+# This uses the s substitution command for sed with regex (regular
+# expressions)
 \end{lstlisting}
 
 \begin{description}
@@ -971,29 +972,29 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{description}
 
 \begin{lstlisting}
-  /.*Disconnected from /
-  # matches any text starting with any number of characters
-  # (.*) followed by the literal string "Disconnected from "
+/.*Disconnected from /
+# matches any text starting with any number of characters
+# (.*) followed by the literal string "Disconnected from "
 \end{lstlisting}
 
 \begin{itemize}
- \item Note: \lstinline{*} and \lstinline{+} are by default "greedy" (will match as many occurrences as possible)
+ \item Note: \lstinline{*} and \lstinline{+} are by default ``greedy'' (will match as many occurrences as possible)
  \item To avoid that, suffix \lstinline{*} and \lstinline{+}  with \lstinline{?} like \lstinline{*?} or \lstinline{+?} (not supported in \lstinline{sed})
  \item Recommended: use a regex debugger online to make sure the regex does what you want
  \item Recommended: use \lstinline{^} and \lstinline{$} to specify the beginning and end of the line to prevent users from doing weird stuff
 \end{itemize}
 
 \begin{lstlisting}
-  | sed -E 's/.*Disconnected from (invalid |authenticating )?user
-  .* [^ ]+ port [0-9]+( \[preauth\])?$//'
-  # matches any text starting with any number of characters (.*)
-  # followed by the literal string "Disconnected from "
-  # then matches any of the user variants followed by matching any
-  # single word ([^ ]+), i.e. any non-empty sequence of
-  # nonspace characters, then the word "port" with some digits, then
-  # possibly the suffix [preauth], and finally the end of the line
-  # Note: square brackets [] are special characters in regex
-  # so we have to escape them
+| sed -E 's/.*Disconnected from (invalid |authenticating )?user
+.* [^ ]+ port [0-9]+( \[preauth\])?$//'
+# matches any text starting with any number of characters (.*)
+# followed by the literal string "Disconnected from "
+# then matches any of the user variants followed by matching any
+# single word ([^ ]+), i.e. any non-empty sequence of
+# nonspace characters, then the word "port" with some digits, then
+# possibly the suffix [preauth], and finally the end of the line
+# Note: square brackets [] are special characters in regex
+# so we have to escape them
 \end{lstlisting}
 
 \begin{itemize}
@@ -1005,11 +1006,11 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{description}
 
 \begin{lstlisting}
-  | sed -E 's/.*Disconnected from (invalid |authenticating )?user
-  (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
-  # does same matching as before but replaces each line with
-  # the 2nd capture group \2
-  # i.e. any text after user (.*), which is the username
+| sed -E 's/.*Disconnected from (invalid |authenticating )?user
+(.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
+# does same matching as before but replaces each line with
+# the 2nd capture group \2
+# i.e. any text after user (.*), which is the username
 \end{lstlisting}
 
 \subsection{Useful Data Wrangling Commands}
@@ -1019,7 +1020,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
  \lstitem{sort} sorts lines of input (in ascending order by default)
  \lstitem{uniq} outputs the unique lines for a sorted list of lines
  \lstitem{uniq -c} outputs unique lines for a sorted list of lines with the number of occurrences
- \lstitem{sort -nk1,1} sorts numerically (\lstinline{n}), for a white space separated column (\lstinline{k}), starting and ending at the 1st column (\lstinline{1,1})
+ \lstitem{sort -nk1,1} sorts numerically (\lstinline{n}), for a white space separated column (\lstinline{k}), starting and ending at the 1\textsuperscript{st} column (\lstinline{1,1})
  \lstitem{awk} column based stream editor; operates on whitespaced separated columns
  \lstitem{paste} paste lines together with a delimiter
  \lstitem{bc} basic calculator; takes input from STDIN (use pipes)
@@ -1028,53 +1029,53 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{description}
 
 \begin{lstlisting}
-  ssh myserver journalctl
-   | grep sshd
-   | grep "Disconnected from"
-   | sed -E 's/.*Disconnected from (invalid |authenticating )?user
-    (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
-   | sort | uniq -c
+ssh myserver journalctl
+ | grep sshd
+ | grep "Disconnected from"
+ | sed -E 's/.*Disconnected from (invalid |authenticating )?user
+  (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
+ | sort | uniq -c
 
-  # takes usernames from before and sorts them (ascending
-  # alphabetically), but only keeps the unique ones and adds
-  # a count of occurrences
+# takes usernames from before and sorts them (ascending
+# alphabetically), but only keeps the unique ones and adds
+# a count of occurrences
 \end{lstlisting}
 
 \begin{lstlisting}
-  ssh myserver journalctl
-   | grep sshd
-   | grep "Disconnected from"
-   | sed -E 's/.*Disconnected from (invalid |authenticating )?user
-    (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
-   | sort | uniq -c
-   | sort -nk1,1 | tail -n10
+ssh myserver journalctl
+ | grep sshd
+ | grep "Disconnected from"
+ | sed -E 's/.*Disconnected from (invalid |authenticating )?user
+  (.*) [^ ]+ port [0-9]+( \[preauth\])?$/\2/'
+ | sort | uniq -c
+ | sort -nk1,1 | tail -n10
 
-  # takes the alphabetically sorted list of unique usernames
-  # then sorts them again numerically based on the number of
-  # occurrences by using sort -nk1,1
-  # i.e. sort by only the first whitespace-separated column up to
-  # the 1st column
-  # tail then gives the last ones (the most common ones since sort
+# takes the alphabetically sorted list of unique usernames
+# then sorts them again numerically based on the number of
+# occurrences by using sort -nk1,1
+# i.e. sort by only the first whitespace-separated column up to
+# the 1st column
+# tail then gives the last ones (the most common ones since sort
   # is ascending)
 \end{lstlisting}
 
 \begin{lstlisting}
-  rustup toolchain list | grep nightly | grep -vE "nightly-x86"
-   | sed 's/-x86.*//' | xargs rustup toolchain uninstall
-  # uses xargs to pass certain versions as arguments to the rust
-  # uninstallation program
+rustup toolchain list | grep nightly | grep -vE "nightly-x86"
+ | sed 's/-x86.*//' | xargs rustup toolchain uninstall
+# uses xargs to pass certain versions as arguments to the rust
+# uninstallation program
 \end{lstlisting}
 
 
 \begin{lstlisting}
-  ffmpeg -loglevel panic -i /dev/video0 -frames 1 -f image2 -
-   | convert - -colorspace gray -
-   | gzip
-   | ssh mymachine 'gzip -d | tee copy.jpg | env DISPLAY=:0 feh -'
-  # pipes useful to binary data
-  # here we used ffmpeg to capture webcam image, convert it
-  # to grayscale, compress it, send it to a remote machine over SSH,
-  # decompress it there, make a copy, and then display it locally
+ffmpeg -loglevel panic -i /dev/video0 -frames 1 -f image2 -
+ | convert - -colorspace gray -
+ | gzip
+ | ssh mymachine 'gzip -d | tee copy.jpg | env DISPLAY=:0 feh -'
+# pipes useful to binary data
+# here we used ffmpeg to capture webcam image, convert it
+# to grayscale, compress it, send it to a remote machine over SSH,
+# decompress it there, make a copy, and then display it locally
 \end{lstlisting}
 
 \section{Command-line Environment}
@@ -1086,7 +1087,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{itemize}
 
 \begin{description}
- \lstitem{sleep} takes an integer argument specify the number of seconds that the process will "sleep"
+ \lstitem{sleep} takes an integer argument specify the number of seconds that the process will ``sleep''
  \lstitem{ctrl-C} \^{}C stops execution of a process  by sending a SIGINT signal to tell the process to stop itself. The process is then ended.
  \lstitem{ctrl-Z} \^{}Z suspends the terminal by sending the process a SIGTSTP signal. The process is then stopped and put in the background, but its execution can be continued later
  \lstitem{ctrl-\\} quits execution of a process by sending a SIGQUIT signal
@@ -1113,45 +1114,45 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{itemize}
 
 \begin{description}
- \item[handler] captures signal and adds extra behaviour
- \item[orphan process] when a process has other small children processes that it started, using SIGKILL to kill the 1st parent process will leave the child process still running (but without the parent). May lead to weird behaviour.
+ \item[handler]: captures signal and adds extra behaviour
+ \item[orphan process]: when a process has other small children processes that it started, using SIGKILL to kill the 1\textsuperscript{st} parent process will leave the child process still running (but without the parent). May lead to weird behaviour.
 \end{description}
 
 
 \begin{lstlisting}[language=python]
-  #!/usr/bin/env python
-  import signal, time
+#!/usr/bin/env python
+import signal, time
 
-  def handler(signum, time):
-    print("\nI got a SIGINT, but I am not stopping")
-    # handler captures SIGINT and ignores it
-    # i.e no longer stops execution and continues running
+def handler(signum, time):
+  print("\nI got a SIGINT, but I am not stopping")
+  # handler captures SIGINT and ignores it
+  # i.e no longer stops execution and continues running
 
-  signal.signal(signal.SIGINT, handler)
-  i = 0
-  while True:
-    time.sleep(.1)
-    print("\r{}".format(i), end="")
-    i += 1
+signal.signal(signal.SIGINT, handler)
+i = 0
+while True:
+  time.sleep(.1)
+  print("\r{}".format(i), end="")
+  i += 1
 
-  # to actually stop this program, we need to use a SIGQUIT signal
-  # by typing ctrl-\
+# to actually stop this program, we need to use a SIGQUIT signal
+# by typing ctrl-\
 \end{lstlisting}
 
 \begin{lstlisting}
-  # if we run that program and send SIGINT twice, nothing happens
-  # it only stops when we give it SIGQUIT
+# if we run that program and send SIGINT twice, nothing happens
+# it only stops when we give it SIGQUIT
 
-  $ python sigint.py
-  24^C
-  I got a SIGINT, but I am not stopping
-  26^C
-  I got a SIGINT, but I am not stopping
-  30^\[1]    39913 quit       python sigint.py
+$ python sigint.py
+24^C
+I got a SIGINT, but I am not stopping
+26^C
+I got a SIGINT, but I am not stopping
+30^\[1]    39913 quit       python sigint.py
 \end{lstlisting}
 
 \begin{itemize}
- \item \lstinline{SIGINT} is like a "user-initiated happy termination" while \lstinline{SIGQUIT} is like a "user-initiated unhappy termination" (both can be caught or ignored)
+ \item \lstinline{SIGINT} is like a ``user-initiated happy termination'' while \lstinline{SIGQUIT} is like a ``user-initiated unhappy termination'' (both can be caught or ignored)
  \item \lstinline{SIGTERM} terminates the process, gracefully or not, but allows it a chance to clean up (can be caught or ignored)
  \item \lstinline{SIGKILL} kills the process immediately and is a last resort (process cannot catch signal or clean up)
 \end{itemize}
@@ -1175,48 +1176,48 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \end{itemize}
 
 \begin{lstlisting}
-  # example of jobs and foreground/background processes
-  $ sleep 1000
-  ^Z
-  [1]  + 18653 suspended  sleep 1000
+# example of jobs and foreground/background processes
+$ sleep 1000
+^Z
+[1]  + 18653 suspended  sleep 1000
 
-  $ nohup sleep 2000 &
-  [2] 18745
-  appending output to nohup.out
+$ nohup sleep 2000 &
+[2] 18745
+appending output to nohup.out
 
-  $ jobs
-  [1]  + suspended  sleep 1000
-  [2]  - running    nohup sleep 2000
+$ jobs
+[1]  + suspended  sleep 1000
+[2]  - running    nohup sleep 2000
 
-  $ bg %1 # run process 1 in the background
-  [1]  - 18653 continued  sleep 1000
+$ bg %1 # run process 1 in the background
+[1]  - 18653 continued  sleep 1000
 
-  $ jobs
-  [1]  - running    sleep 1000
-  [2]  + running    nohup sleep 2000
+$ jobs
+[1]  - running    sleep 1000
+[2]  + running    nohup sleep 2000
 
-  $ kill -STOP %1 # stop process 1
-  [1]  + 18653 suspended (signal)  sleep 1000
+$ kill -STOP %1 # stop process 1
+[1]  + 18653 suspended (signal)  sleep 1000
 
-  $ jobs
-  [1]  + suspended (signal)  sleep 1000
-  [2]  - running    nohup sleep 2000
+$ jobs
+[1]  + suspended (signal)  sleep 1000
+[2]  - running    nohup sleep 2000
 
-  $ kill -SIGHUP %1
-  [1]  + 18653 hangup     sleep 1000
+$ kill -SIGHUP %1
+[1]  + 18653 hangup     sleep 1000
 
-  $ jobs
-  [2]  + running    nohup sleep 2000
+$ jobs
+[2]  + running    nohup sleep 2000
 
-  $ kill -SIGHUP %2
+$ kill -SIGHUP %2
 
-  $ jobs
-  [2]  + running    nohup sleep 2000
+$ jobs
+[2]  + running    nohup sleep 2000
 
-  $ kill %2
-  [2]  + 18745 terminated  nohup sleep 2000
+$ kill %2
+[2]  + 18745 terminated  nohup sleep 2000
 
-  $ jobs
+$ jobs
 
 \end{lstlisting}
 
@@ -1235,7 +1236,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 
 \subsubsection{Sessions}
 \begin{description}
- \item[session] an independent workspace with one or more windows
+ \item[session]: an independent workspace with one or more windows
        \lstitem{tmux} starts a new session
        \lstitem{tmux new -s NAME} starts a session with that name
        \lstitem{tmux ls} lists the current sessions
@@ -1246,7 +1247,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 \subsubsection{Windows}
 
 \begin{description}
- \item[window] equivalent to tabs in editors or browsers
+ \item[window]: equivalent to tabs in editors or browsers
        \lstitem{C-b> c} creates a new window. To close it you can just terminate the shells doing \lstinline{<C-d>}
        \lstitem{<C-b> N} go to the N th window
        \lstitem{<C-b> p} goes to the previous window
@@ -1257,7 +1258,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 
 \subsubsection{Panes}
 \begin{description}
- \item[pane] like vim splits, pane lets you have multiple shells in the same visual display
+ \item[pane]: like vim splits, pane lets you have multiple shells in the same visual display
        \lstitem{<C-b> "} split the current pane horizontally
        \lstitem{<C-b> \%} split the current pane vertically
        \lstitem{<C-b> <direction>} move to the pane in the specified direction. Direction here means arrow keys.
@@ -1268,7 +1269,7 @@ Useful \lstinline{grep} and \lstinline{rg} flags
 
 \subsection{Aliases}
 \begin{description}
- \item[shell alias] a short form for another command that your shell will replace automatically for you
+ \item[shell alias]: a short form for another command that your shell will replace automatically for you
        \lstitem{alias alias_name="command_to_alias arg1 arg2"} command to create an alias. Note no spaces around equal sign \lstinline{=} because \lstinline{alias} only takes a single argument
 \end{description}
 
@@ -1311,13 +1312,13 @@ alias ll
 \subsection{Dotfiles}
 
 \begin{description}
- \item[dotfile] plain-text file whose file name starts with a \lstinline{.} (so that they are hidden in the directory listing \lstinline{ls} by default). Used to configure many programs (ex. \lstinline{~/.vimrc})
- \item[symlink] symbolic link a path to another path using \lstinline{ln}. Kinda like a pointer where you can specify one path that links to the path where the file actually is
+ \item[dotfile]: plain-text file whose file name starts with a \lstinline{.} (so that they are hidden in the directory listing \lstinline{ls} by default). Used to configure many programs (ex. \lstinline{~/.vimrc})
+ \item[symlink]: symbolic link a path to another path using \lstinline{ln}. Kinda like a pointer where you can specify one path that links to the path where the file actually is
 \end{description}
 
 \begin{lstlisting}
-  # create a symlink
-  ln -s path/to/file/you/want /symbolic/path/you/want
+# create a symlink
+ln -s path/to/file/you/want /symbolic/path/you/want
 \end{lstlisting}
 
 \begin{itemize}
@@ -1337,13 +1338,13 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  if [[ "$(uname)" == "Linux" ]]; then {do_something}; fi
+if [[ "$(uname)" == "Linux" ]]; then {do_something}; fi
 
-  # Check before using shell-specific features
-  if [[ "$SHELL" == "zsh" ]]; then {do_something}; fi
+# Check before using shell-specific features
+if [[ "$SHELL" == "zsh" ]]; then {do_something}; fi
 
-  # You can also make it machine-specific
-  if [[ "$(hostname)" == "myServer" ]]; then {do_something};
+# You can also make it machine-specific
+if [[ "$(hostname)" == "myServer" ]]; then {do_something};
 \end{lstlisting}
 
 \begin{itemize}
@@ -1351,8 +1352,8 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  [include]
-    path = ~/.gitconfig_local
+[include]
+  path = ~/.gitconfig_local
 \end{lstlisting}
 
 \begin{itemize}
@@ -1361,10 +1362,10 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  # Test if ~/.aliases exists and source it
-  if [ -f ~/.aliases ]; then
-    source ~/.aliases
-  fi
+# Test if ~/.aliases exists and source it
+if [ -f ~/.aliases ]; then
+  source ~/.aliases
+fi
 \end{lstlisting}
 
 \subsection{Remote Machines}
@@ -1374,13 +1375,13 @@ alias ll
 \end{description}
 
 \begin{lstlisting}
-  # ssh into a server by running either
-  ssh user@IP # ssh as user into server specified by this IP
-  ssh user@URL # ssh as user into server specified by  this URL
+# ssh into a server by running either
+ssh user@IP # ssh as user into server specified by this IP
+ssh user@URL # ssh as user into server specified by  this URL
 
-  # Examples
-  ssh foo@bar.mit.edu # user is foo, server is the URL
-  ssh foobar@192.168.1.42 # user is foobar, server is the IP
+# Examples
+ssh foo@bar.mit.edu # user is foo, server is the URL
+ssh foobar@192.168.1.42 # user is foobar, server is the IP
 \end{lstlisting}
 
 \subsubsection{Executing Commands}
@@ -1390,14 +1391,14 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  # execute ls in the home folder of foobar
-  ssh foobar@server ls
+# execute ls in the home folder of foobar
+ssh foobar@server ls
 
-  # grep locally the remote output of ls
-  ssh foobar@server ls | grep PATTERN
+# grep locally the remote output of ls
+ssh foobar@server ls | grep PATTERN
 
-  # grep remotely the local output of ls
-  ls | ssh foobar@server grep PATTERN
+# grep remotely the local output of ls
+ls | ssh foobar@server grep PATTERN
 \end{lstlisting}
 
 \subsubsection{SSH Keys}
@@ -1416,7 +1417,7 @@ alias ll
 \end{description}
 
 \begin{lstlisting}
-  ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519
+ssh-keygen -o -a 100 -t ed25519 -f ~/.ssh/id_ed25519
 \end{lstlisting}
 
 \begin{itemize}
@@ -1424,8 +1425,8 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  # check if you have a passphrase and valid it
-  ssh-keygen -y -f /path/to/key
+# check if you have a passphrase and valid it
+ssh-keygen -y -f /path/to/key
 \end{lstlisting}
 
 \subsubsection{Key based authentication}
@@ -1434,13 +1435,13 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  # copy over your public key to .ssh/authorized_keys
-  # on the remote server
-  cat .ssh/id_ed25519.pub
-    | ssh foobar@remote 'cat >> ~/.ssh/authorized_keys'
+# copy over your public key to .ssh/authorized_keys
+# on the remote server
+cat .ssh/id_ed25519.pub
+  | ssh foobar@remote 'cat >> ~/.ssh/authorized_keys'
 
-  # can also use ssh-copy-id if available
-  ssh-copy-id -i .ssh/id_ed25519.pub foobar@remote
+# can also use ssh-copy-id if available
+ssh-copy-id -i .ssh/id_ed25519.pub foobar@remote
 \end{lstlisting}
 
 \subsubsection{Copying files over SSH}
@@ -1451,12 +1452,12 @@ alias ll
 \end{description}
 
 \begin{lstlisting}
-  # Copy a local file into a remote server file called serverfile
-  # using ssh+tee
-  cat localfile | ssh remote_server tee serverfile.
+# Copy a local file into a remote server file called serverfile
+# using ssh+tee
+cat localfile | ssh remote_server tee serverfile.
 
-  # Copy a local file into a remote server file
-  scp path/to/local_file remote_host:path/to/remote_file
+# Copy a local file into a remote server file
+scp path/to/local_file remote_host:path/to/remote_file
 \end{lstlisting}
 
 \subsubsection{Port Forwarding}
@@ -1477,11 +1478,11 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  # Execute jupyter notebook in remote server (listens to port 8888)
-  # Want to interact with jupyter notebook locally so forward
-  # the local port 9999 to the remote port 8888
-  ssh -L 9999:localhost:8888 foobar@remote_server
-  # Then navigate to localhost:9999 on local machine to use notebook
+# Execute jupyter notebook in remote server (listens to port 8888)
+# Want to interact with jupyter notebook locally so forward
+# the local port 9999 to the remote port 8888
+ssh -L 9999:localhost:8888 foobar@remote_server
+# Then navigate to localhost:9999 on local machine to use notebook
 \end{lstlisting}
 
 \subsubsection{Local Port Forwarding}
@@ -1553,30 +1554,30 @@ alias ll
 \end{description}
 
 \begin{lstlisting}
-  <root> (tree) # top level directory
-  |
-  +- foo (tree)
-  |  |
-  |  + bar.txt (blob, contents = "hello world")
-  |
-  +- baz.txt (blob, contents = "git is wonderful")
+<root> (tree) # top level directory
+|
++- foo (tree)
+|  |
+|  + bar.txt (blob, contents = "hello world")
+|
++- baz.txt (blob, contents = "git is wonderful")
 \end{lstlisting}
 
 \subsubsection{Git's model of history}
 \begin{itemize}
  \item Git models history as a directed acyclic graph (DAG) of snapshots
- \item i.e. each snapshot in Git refers to a set of "parents" (older snapshots before it)
+ \item i.e. each snapshot in Git refers to a set of ``parents'' (older snapshots before it)
  \item Snapshots can have multiple parents (a set of parents) because a snapshot might descend from multiple parents
  \item ex. combining (merging) two parallel branches of development (2 parents)
 \end{itemize}
 
 
 \begin{lstlisting}
-  # example of branching (newer commits on the right)
-  o <-- o <-- o <-- o
-            ^
-             \
-              --- o <-- o
+# example of branching (newer commits on the right)
+o <-- o <-- o <-- o
+          ^
+           \
+            --- o <-- o
 \end{lstlisting}
 
 \begin{itemize}
@@ -1587,16 +1588,16 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  # merging parallel branches in Git
-  o <-- o <-- o <-- o <---- o
-            ^            /
-             \          v
-              --- o <-- o
+# merging parallel branches in Git
+o <-- o <-- o <-- o <---- o
+          ^            /
+           \          v
+            --- o <-- o
 \end{lstlisting}
 
 \begin{itemize}
  \item Git commits are immutable
- \item i.e. "edits" to the commit history actually add new commits instead of changing old commits
+ \item i.e. ``edits'' to the commit history actually add new commits instead of changing old commits
  \item References are then updated to point to new ones
 \end{itemize}
 
@@ -1604,30 +1605,30 @@ alias ll
 \subsubsection{Data Model in pseudocode}
 
 \begin{lstlisting}[language=c++]
-  // a file is a bunch of bytes
-  type blob = array<byte>
+// a file is a bunch of bytes
+type blob = array<byte>
 
-  // a directory contains named files and directories
-  type tree = map<string, tree | file>
+// a directory contains named files and directories
+type tree = map<string, tree | file>
 
-  // a commit has parents, metadata, and the top-level tree
-  type commit = struct {
-    parent: array<commit>
-    author: string
-    message: string
-    snapshot: tree
-  }
+// a commit has parents, metadata, and the top-level tree
+type commit = struct {
+  parent: array<commit>
+  author: string
+  message: string
+  snapshot: tree
+}
 \end{lstlisting}
 
 
 \subsubsection{Objects and content-addressing}
 \begin{description}
- \item[object] a blob, tree, or commit
+ \item[object]: a blob, tree, or commit
 \end{description}
 
 \begin{lstlisting}[language=c++]
-  type object = blob | tree | commit
-  // these objects are all content-addressed and given a SHA-1 hash
+type object = blob | tree | commit
+// these objects are all content-addressed and given a SHA-1 hash
 \end{lstlisting}
 
 \begin{itemize}
@@ -1635,14 +1636,14 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  objects = map<string, object>
+objects = map<string, object>
 
-  def store(object):
-    id = sha1(object)
-    objects[id] = object
+def store(object):
+  id = sha1(object)
+  objects[id] = object
 
-  def load(id):
-    return objects[id]
+def load(id):
+  return objects[id]
 \end{lstlisting}
 
 \begin{itemize}
@@ -1662,7 +1663,7 @@ alias ll
 \begin{description}
  \item[references]: human-readable pointers to commits (mutable)
        \lstitem{master}: a reference that usually points to the latest commit in the main development branch. Created by default when you init a git repo
-       \lstitem{HEAD}: a reference that points to "where we currently are" in history. Allows you compare current position with other snapshots in history
+       \lstitem{HEAD}: a reference that points to ``where we currently are'' in history. Allows you compare current position with other snapshots in history
 \end{description}
 
 \begin{itemize}
@@ -1671,24 +1672,24 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  references = map<string, string>
+references = map<string, string>
 
-  def update_reference(name, id):
-    references[name] = id
+def update_reference(name, id):
+  references[name] = id
 
-  def read_reference(name):
-    return references[name]
+def read_reference(name):
+  return references[name]
 
-  def load_reference(name_or_id):
-    if name_or_id in references:
-        return load(references[name_or_id])
-    else:
-        return load(name_or_id)
+def load_reference(name_or_id):
+  if name_or_id in references:
+      return load(references[name_or_id])
+  else:
+      return load(name_or_id)
 \end{lstlisting}
 
 \subsubsection{Repositories}
 \begin{description}
- \item[repository] data storing \lstinline{objects} and \lstinline{references}
+ \item[repository]: data storing \lstinline{objects} and \lstinline{references}
 \end{description}
 
 \begin{itemize}
@@ -1698,7 +1699,7 @@ alias ll
 
 \subsection{Staging Area}
 \begin{description}
- \item[staging area] allows you to specify which code changes should be included in the next commit
+ \item[staging area]: allows you to specify which code changes should be included in the next commit
 \end{description}
 
 \subsection{Git Command-Line Interface}
@@ -1736,7 +1737,7 @@ alias ll
 
 \begin{description}
  \item[fast forward]: if you merge a branch that has the the current commit (HEAD) as a predecessor, it will just move the references up to the merged branch (because no other changes required)
- \item[Merge conflicts]: when you merge parallel branches, Git may get confused if you have contradictory changes
+ \item[merge conflicts]: when you merge parallel branches, Git may get confused if you have contradictory changes
 \end{description}
 
 \begin{itemize}
@@ -1802,20 +1803,20 @@ alias ll
        \lstitem{journalctl} display logs from \lstinline{systemd}
        \lstitem{/var/log/system.log} centralized log used in macOS
        \lstitem{log show} displays system log in macOS
-       \lstitem{dmesg}: UNIX command ot access kernel log
+       \lstitem{dmesg} UNIX command to access kernel log
        \lstitem{logger} shell program to write to system logs
-       lstitem{lnav}: CLI tool to help navigate log files
+       \lstitem{lnav} CLI tool to help navigate log files
 \end{description}
 
 \begin{lstlisting}
-  # Write to system log
-  logger "Hello Logs"
+# Write to system log
+logger "Hello Logs"
 
-  # Check log on macOS
-  log show --last 1m | grep Hello
+# Check log on macOS
+log show --last 1m | grep Hello
 
-  # Check log on Linux
-  journalctl --since "1m ago" | grep Hello
+# Check log on Linux
+journalctl --since "1m ago" | grep Hello
 \end{lstlisting}
 
 \subsection{Debuggers}
@@ -1858,7 +1859,7 @@ alias ll
 \end{itemize}
 
 \begin{lstlisting}
-  python3 -m pdb script.py # run python debugger
+python3 -m pdb script.py # run python debugger
 \end{lstlisting}
 
 \subsection{Debugging binary files}
@@ -1876,15 +1877,15 @@ alias ll
 \end{description}
 
 \begin{lstlisting}
-  # analyzing ls using strace on Linux
-  sudo strace -e lstat ls -l > /dev/null
-  4
-  # analyzing ls using dtruss on macOS
-  sudo dtruss -t lstat64_extended ls -l > /dev/null
+# analyzing ls using strace on Linux
+sudo strace -e lstat ls -l > /dev/null
+4
+# analyzing ls using dtruss on macOS
+sudo dtruss -t lstat64_extended ls -l > /dev/null
 \end{lstlisting}
 
 \begin{description}
- \lstitem{tcpdump}: network packet analyzer that lets you read contents of network packets and filter them based on different criteria
+ \lstitem{tcpdump} network packet analyzer that lets you read contents of network packets and filter them based on different criteria
 \end{description}
 
 \begin{itemize}
@@ -1904,33 +1905,33 @@ alias ll
        \lstitem{pyflakes} python static analysis tool
        \lstitem{mypy} python tool that does type checking
        \lstitem{shellcheck} static analysis tool for shell scripts
- \item[code linting] using static analysis tools within editor or IDE
- \item[code formatters] autoformat code to be consistent with common styles/patterns for the language
+ \item[code linting]: using static analysis tools within editor or IDE
+ \item[code formatters]: autoformat code to be consistent with common styles/patterns for the language
 \end{description}
 
 \subsection{Profiling}
 \begin{description}
- \item[profiler] software used to analyze code to find parts that take the most time and/or resources (for optimization)
+ \item[profiler]: software used to analyze code to find parts that take the most time and/or resources (for optimization)
 \end{description}
 
 \subsubsection{Timing}
 \begin{description}
- \item[Real time]: elapsed time from start to finish. Includes time taken by other processes and time taken while blocked (ex. waiting for I/O or network)
- \item[User time]: time spent in CPU running user code
- \item[Sys time]: time spent in CPU running kernel code
+ \item[real time]: elapsed time from start to finish. Includes time taken by other processes and time taken while blocked (ex. waiting for I/O or network)
+ \item[user time]: time spent in CPU running user code
+ \item[sys time]: time spent in CPU running kernel code
 \end{description}
 
 \begin{itemize}
- \item Usually, \textbf{User + Sys} tells you how much time a process actualy spent in the CPU
+ \item Usually, \textbf{user + sys} tells you how much time a process actualy spent in the CPU
 \end{itemize}
 
 \begin{lstlisting}
-  time curl https://missing.csail.mit.edu &> /dev/null`
-  real    0m2.561s
-  user    0m0.015s
-  sys     0m0.012s
-  # have a slow connection so request takes 2 seconds but actually
-  # only used 15ms of CPU user time and 12ms of kernel CPU time
+time curl https://missing.csail.mit.edu &> /dev/null`
+real    0m2.561s
+user    0m0.015s
+sys     0m0.012s
+# have a slow connection so request takes 2 seconds but actually
+# only used 15ms of CPU user time and 12ms of kernel CPU time
 \end{lstlisting}
 
 \subsubsection{CPU profilers}
@@ -1988,7 +1989,7 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 
 \subsubsection{Memory profilers}
 \begin{description}
- \item[Valgrind] tool to identify memory leaks in C, C++
+ \lstitem{valgrind} tool to identify memory leaks in C, C++
 \end{description}
 
 \begin{itemize}
@@ -1996,15 +1997,15 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 \end{itemize}
 
 \begin{lstlisting}
-  $ python -m memory_profiler example.py
-  Line #    Mem usage  Increment   Line Contents
-  ==============================================
-     3                           @profile
-     4      5.97 MB    0.00 MB   def my_func():
-     5     13.61 MB    7.64 MB       a = [1] * (10 ** 6)
-     6    166.20 MB  152.59 MB       b = [2] * (2 * 10 ** 7)
-     7     13.61 MB -152.59 MB       del b
-     8     13.61 MB    0.00 MB       return a
+$ python -m memory_profiler example.py
+Line #    Mem usage  Increment   Line Contents
+==============================================
+   3                           @profile
+   4      5.97 MB    0.00 MB   def my_func():
+   5     13.61 MB    7.64 MB       a = [1] * (10 ** 6)
+   6    166.20 MB  152.59 MB       b = [2] * (2 * 10 ** 7)
+   7     13.61 MB -152.59 MB       del b
+   8     13.61 MB    0.00 MB       return a
 \end{lstlisting}
 
 \subsection{Event Profiling}
@@ -2018,8 +2019,8 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 
 \subsection{Profiler Visualization}
 \begin{description}
- \item[Flame graph]: displays a hierarchy of function calls along the Y axis and time taken proportional to the X axis
- \item[Call graphs/control flow graphs] display the relationships between subroutines within a program by including functions as nodes and function calls between them as directed edges. Useful for studying flow of a program
+ \item[flame graph]: displays a hierarchy of function calls along the Y axis and time taken proportional to the X axis
+ \item[call graphs/control flow graphs]: display the relationships between subroutines within a program by including functions as nodes and function calls between them as directed edges. Useful for studying flow of a program
        \lstitem{pycallgraph} Python library to generate call graphs
 \end{description}
 
@@ -2044,7 +2045,7 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 
 \subsubsection{Memory Usage}
 \begin{description}
- \lstitem{free} displays total moutn fo free and used memory in the system
+ \lstitem{free} displays total mount fo free and used memory in the system
 \end{description}
 
 \subsubsection{Open Files}
@@ -2054,7 +2055,7 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 
 \subsubsection{Network Connections and Config}
 \begin{description}
- \lstitem{ss} lets you monitor incoming and outgoing network packets statistics as well as interface statistics. Commonly used to figurr out what process is using a given port in a machine
+ \lstitem{ss} lets you monitor incoming and outgoing network packets statistics as well as interface statistics. Commonly used to figure out what process is using a given port in a machine
  \lstitem{ip} displays routing, network devices and interfaces
 \end{description}
 
@@ -2069,27 +2070,25 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 \end{itemize}
 
 \begin{description}
- \lstitem{hyperfine} benchmarking tool for ommand line programs
+ \lstitem{hyperfine} benchmarking tool for command line programs
 \end{description}
 
 \begin{lstlisting}
-  $ hyperfine --warmup 3 'fd -e jpg' 'find . -iname "*.jpg"'
-  Benchmark #1: fd -e jpg
-  Time (mean +- STDEV):      51.4 ms +-   2.9 ms
-  [User: 121.0 ms, System: 160.5 ms]
-  Range (min ... max):    44.2 ms ...  60.1 ms    56 runs
+$ hyperfine --warmup 3 'fd -e jpg' 'find . -iname "*.jpg"'
+Benchmark #1: fd -e jpg
+Time (mean +- STDEV):      51.4 ms +-   2.9 ms
+[User: 121.0 ms, System: 160.5 ms]
+Range (min ... max):    44.2 ms ...  60.1 ms    56 runs
 
-  Benchmark #2: find . -iname "*.jpg"
-  Time (mean +- STDEV):      1.126 s +-  0.101 s
-  [User: 141.1 ms, System: 956.1 ms]
-  Range (min ... max):    0.975 s ...  1.287 s    10 runs
+Benchmark #2: find . -iname "*.jpg"
+Time (mean +- STDEV):      1.126 s +-  0.101 s
+[User: 141.1 ms, System: 956.1 ms]
+Range (min ... max):    0.975 s ...  1.287 s    10 runs
 
-  Summary
-  'fd -e jpg' ran
-   21.89 +- 2.33 times faster than 'find . -iname "*.jpg"'
+Summary
+'fd -e jpg' ran
+ 21.89 +- 2.33 times faster than 'find . -iname "*.jpg"'
 \end{lstlisting}
-
-
 
 
 \section{Metaprogramming}
@@ -2097,7 +2096,7 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 \subsection{Build Systems}
 
 \begin{description}
- \item[Build system]: automates building process to convert inputs (dependencies) to outputs (targets) using specified rules
+ \item[build system]: automates building process to convert inputs (dependencies) to outputs (targets) using specified rules
        \lstitem{make} most common build system on UNIX. Good for simple to medium complexity
        \lstitem{cmake} another build system that is opinionated and optimized for specific tasks
        \lstitem{Makefile} files used to specify dependencies, targets, and rules for \lstinline{make}
@@ -2109,20 +2108,20 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 \end{itemize}
 
 \begin{lstlisting}
-  # first directive
-  paper.pdf: paper.tex plot-data.png
-    pdflatex paper.tex
+# first directive
+paper.pdf: paper.tex plot-data.png
+  pdflatex paper.tex
 
-  # second directive
-  plot-%.png: %.dat plot.py
-    ./plot.py -i $*.dat -o $@
+# second directive
+plot-%.png: %.dat plot.py
+  ./plot.py -i $*.dat -o $@
 \end{lstlisting}
 
 \begin{description}
- \item[Directive]: rule for producing target (left-hand side of colon \lstinline{:})  using the dependencies (right-hand side of colon \lstinline{:})
- \item[Target]: desired output (ex. pdf, mp4)
- \item[Dependency]: software that is required to built the target
- \item[Rule]: specifies how to get target from dependencies (ex. run a \lstinline{python} file or \lstinline{pdflatex})
+ \item[directive]: rule for producing target (left-hand side of colon \lstinline{:})  using the dependencies (right-hand side of colon \lstinline{:})
+ \item[target]: desired output (ex. pdf, mp4)
+ \item[dependency]: software that is required to built the target
+ \item[rule]: specifies how to get target from dependencies (ex. run a \lstinline{python} file or \lstinline{pdflatex})
 \end{description}
 
 \begin{itemize}
@@ -2133,7 +2132,7 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 \end{itemize}
 
 \begin{description}
- \lstitem{\%} wildcard that specifies "patterns" in a rule and matches the same string on the left and on the right
+ \lstitem{\%} wildcard that specifies ``patterns'' in a rule and matches the same string on the left and on the right
  \lstitem{\$*} special variable that matches \lstinline{%}
  \lstitem{\$@} special variable for target
 \end{description}
@@ -2153,7 +2152,7 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 \subsubsection{Semantic Versioning}
 
 \begin{description}
- \item[Semantic versioning]: common version format of \textbf{major.minor.patch}
+ \item[semantic versioning]: common version format of \textbf{major.minor.patch}
 \end{description}
 
 \begin{itemize}
@@ -2183,7 +2182,7 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 
 \subsection{Continuous integration systems}
 \begin{description}
- \item[Continuous integration (CI)]: software (cloud build system) that runs whenver code changes
+ \item[Continuous Integration (CI)]: software (cloud build system) that runs whenver code changes
 \end{description}
 
 \begin{itemize}
@@ -2195,18 +2194,18 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 
 \subsection{Testing}
 \begin{description}
- \item[Test suite]: collective term for all the tests
- \item[Unit test]: a "micro-test" that tests a specific feature in isolation
- \item[Integration test]: a "macro-test" that tests if different features/components work together properly
- \item[Regression test]: test that implements a specific pattern that previously caused a bug to ensure that the bug does not reappear
- \item[Mocking]: replace a function, module, or type with a dummy implementation to avoid testing unrelated functionality
+ \item[test suite]: collective term for all the tests
+ \item[unit test]: a ``micro-test'' that tests a specific feature in isolation
+ \item[integration test]: a ``macro-test'' that tests if different features/components work together properly
+ \item[regression test]: test that implements a specific pattern that previously caused a bug to ensure that the bug does not reappear
+ \item[mocking]: replace a function, module, or type with a dummy implementation to avoid testing unrelated functionality
 \end{description}
 
 \section{Security and Cryptography}
 
 \subsection{Entropy}
 \begin{description}
- \item[Entropy]: measure of randomness. Useful to determine strength of a password
+ \item[entropy]: measure of randomness. Useful to determine strength of a password
 \end{description}
 
 \begin{itemize}
@@ -2223,11 +2222,11 @@ Line #  Hits         Time  Per Hit   % Time  Line Contents
 
 \subsection{Hash Functions}
 \begin{description}
- \item[Cryptographic hash function (CHF)]: maps data of arbitrary size to a fixed size
+ \item[cryptographic hash function (CHF)]: maps data of arbitrary size to a fixed size
 \end{description}
 
 \begin{lstlisting}
-  hash(value: array<byte>) -> vector<byte, N>  (for some fixed N)
+hash(value: array<byte>) -> vector<byte, N>  (for some fixed N)
 \end{lstlisting}
 
 
@@ -2266,7 +2265,7 @@ f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0
 \subsection{Applications of Cryptographic Hash Functions}
 \subsubsection{Content-addressed storage (Git)}
 \begin{itemize}
- \item Hash is a "summary of a file"
+ \item Hash is a ``summary of a file''
  \item To avoid collisions (commits, files, other objects are all addressable with hashes), you use a cryptographic hash function because it is collision resistant
  \item i.e. won't have the same hash pointing to 2 different commits
 \end{itemize}
@@ -2280,7 +2279,7 @@ f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0
 \subsubsection{Commitment schemes}
 \begin{itemize}
  \item Commitment schemes used when you want to commit to a particular value but reveal the value itself later
- \item Ex. for a fair coin toss "in my head" without a trusted share coin that both parties can see
+ \item Ex. for a fair coin toss ``in my head'' without a trusted share coin that both parties can see
  \item Coin flipper can choose a value \lstinline{r = random()} and then share \lstinline{h = sha256(r)}
  \item Guesser then guesses heads or tails based on if \lstinline{r} is even or odd
  \item After guesser calls, the flipper reveals the value \lstinline{r} and guesser verifies that cheating hasn't occurred by checking \lstinline{h == sha256(r)}
@@ -2291,8 +2290,8 @@ f7ff9e8b7bb2e09b70935a5d785e0cc5d9d0abf0
 \begin{description}
  \item[Key Derivation Functions (KDFs)]: deliberately slow to slow down offline brute-force attacks. Often for producing fixed-length output for use as keys in other cryptographic algorithms
  \item[PBKDF2]: Passowrd Base Key Derivation Function 2
- \item[Plain text]: message to be encrypted
- \item[Cypher text]: encrypted message
+ \item[plain text]: message to be encrypted
+ \item[cypher text]: encrypted message
 \end{description}
 
 \subsubsection{Applications of Key Derivation functions}
@@ -2330,8 +2329,8 @@ decrypt(ciphertext: array<byte>, key) -> array<byte>  (plaintext)
 
 \subsection{Asymmetric Cryptography}
 \begin{description}
- \item[Private key]: meant to be kept secret (used to unlock file)
- \item[Public key]: meant to be publicly shared and won't affect security (used to unlock file)
+ \item[private key]: meant to be kept secret (used to unlock file)
+ \item[public key]: meant to be publicly shared and won't affect security (used to unlock file)
 \end{description}
 
 \begin{lstlisting}
@@ -2358,7 +2357,7 @@ verify(msg: array<byte>, signature: array<byte>, publickey) -> bool
 \begin{itemize}
  \item PGP email encryption: people can have public keys posted online (in a PGP keyserver, or on Keybase) and then anyone can send them encrypted email
  \item Private messaging (Signal and Keybase): use asymmetric keys to establish private communication channels
- \item Signing software (Git): have GPG-signed commits and tags with a posted public key so anyone can verify authnticity of downloaded software
+ \item Signing software (Git): have GPG-signed commits and tags with a posted public key so anyone can verify authenticity of downloaded software
 \end{itemize}
 
 \subsection{Symmetric vs Asymmetric Cryptography}
@@ -2377,8 +2376,8 @@ verify(msg: array<byte>, signature: array<byte>, publickey) -> bool
 \begin{itemize}
  \item For asymmetric cryptography, you need to reliably distribute public keys and map public keys to real-world identities
  \item i.e. figure out if person is pretending to be someone else and giving you the wrong public key
- \item Signal uses "trust on first use" (assume person is who they say they are until proven wrong) and supports out-of-band public key exchange (i.e. verify public keys in person)
- \item PGP uses "web of trust" where you have trusted introducers and you share certifying signatures along with your public key (i.e. hope that the receiver trusts one of those signatures that are"vouching" for you)
+ \item Signal uses ``trust on first use'' (assume person is who they say they are until proven wrong) and supports out-of-band public key exchange (i.e. verify public keys in person)
+ \item PGP uses ``web of trust'' where you have trusted introducers and you share certifying signatures along with your public key (i.e. hope that the receiver trusts one of those signatures that are ``vouching'' for you)
 \end{itemize}
 
 \subsection{Cryptography Case Studies}
@@ -2393,7 +2392,7 @@ verify(msg: array<byte>, signature: array<byte>, publickey) -> bool
 \subsubsection{Two-factor authentication (2FA)}
 \begin{itemize}
  \item 2FA requires you to use a passphrase along with a 2FA authenticator in order to protect against stolen passowrds and phishing attacks
- \item i.e. something extra to verify that it's "actually you" and not someone who happens to know the passphrase
+ \item i.e. something extra to verify that it's ``actually you'' and not someone who happens to know the passphrase
 \end{itemize}
 
 \subsubsection{Full disk encryption}
@@ -2416,7 +2415,7 @@ verify(msg: array<byte>, signature: array<byte>, publickey) -> bool
         \item User also provides a passphrase which is fed into a key derivation function to produce a key which is then used to encrypt the private key with a symmetric cipher
        \end{itemize}
  \item Client's public key is stored on \lstinline{.ssh/authorized_keys} on the server
- \item During use, a conneting client can prove its identity using asymmetric signatures with challenge response
+ \item During use, a connecting client can prove its identity using asymmetric signatures with challenge response
        \begin{enumerate}
         \item Server picks a random number and sends it to the client
         \item Client signs this message and sends the signature back to the server
@@ -2432,8 +2431,8 @@ verify(msg: array<byte>, signature: array<byte>, publickey) -> bool
 \subsection{Daemons}
 \begin{description}
  \item[Daemon]: series of processes that are always running the background. Often has a name ending with \lstinline{d}
-       \lstitem{sshd} SSH daemon listens to SSH requrests and authenticates users
-       \lstitem{systemd} system daemon in Linux that runs and sets up smaller daemon processes (ex. netowrk, screen, etc)
+       \lstitem{sshd} SSH daemon listens to SSH requests and authenticates users
+       \lstitem{systemd} system daemon in Linux that runs and sets up smaller daemon processes (ex. network, screen, etc)
        \lstitem{systemctl status} list current running daemons
 \end{description}
 
@@ -2466,7 +2465,7 @@ WantedBy=multi-user.target
 
 \subsection{FUSE}
 \begin{description}
- \item[FUSE]: Filesystem in User Space; allows filesystems to be implemented by a user space
+ \item[Filesystem in User Space (FUSE)]: allows filesystems to be implemented by a user space
 \end{description}
 
 \begin{itemize}
@@ -2495,38 +2494,38 @@ WantedBy=multi-user.target
  \item Often rooted at \lstinline{api.service.com} where the path and query parameters indicate which data you want to read or what action you want to perform
  \item Usually responses are formatted as JSON, which you can then pipe through a tool like \lstinline{jq} to view and manipulate
  \item Some APIs require authentication (usually OAuth) where you send a secret token with the request
- \item Note: the tokens "act as you" so they should be kept secret to avoid other people impersonating you
+ \item Note: the tokens ``act as you'' so they should be kept secret to avoid other people impersonating you
 \end{itemize}
 
 \subsection{Common command-line flags/patterns}
 \begin{itemize}
  \item Most tools have a \lstinline{--help} flag to display brief instructions
- \item Destructive tools usually have a "dry run" flag where they only print what they would have done, but not actually do the change
- \item Also have an "interactive" \lstinline{-i} flag to prompt user
+ \item Destructive tools usually have a ``dry run'' flag where they only print what they would have done, but not actually do the change
+ \item Also have an ``interactive'' \lstinline{-i} flag to prompt user
  \item Can use \lstinline{--version} or \lstinline{-V} to view the program version (useful for bug reporting)
  \item Usually have a \lstinline{--verbose} or \lstinline{-v} flag to produce more output (useful for debugging)
  \item The \lstinline{--quiet} flag makes the program only print stuff for errors
  \item Often, a dash \lstinline{-} in place of a file name means STDIN/STDOUT
- \item Possible destructive tools are generally not recursive by default but support a "recursive" flag \lstinline{-r}
- \item To pass somehting that looks like a flag as a normal argument, use double dashes \lstinline{--} to tell the program to stop processing flags and options
+ \item Possible destructive tools are generally not recursive by default but support a ``recursive'' flag \lstinline{-r}
+ \item To pass something that looks like a flag as a normal argument, use double dashes \lstinline{--} to tell the program to stop processing flags and options
 \end{itemize}
 
 \subsection{VPNs}
 \begin{itemize}
- \item Best case: VPN lets you "change your internet service provider"
- \item All your traffic will look like it's coming from the VPN provider instead of your "real location and the network you are connected to will only see encrypted traffic
+ \item Best case: VPN lets you ``change your internet service provide''
+ \item All your traffic will look like it's coming from the VPN provider instead of your ``real location'' and the network you are connected to will only see encrypted traffic
  \item Note: VPNs just shift your trust from your current ISP to the VPN host
  \item Tradeoff may be worthwhile on an untrusted public network, but still a risk
  \item Also, most of your sensitive traffic is already encrypted through HTTPs or TLS
  \item i.e. network operator can only see what servers you access, but nothing in your data
  \item VPN providers can also be malicious/opportunist and log or sell your data
-       "\end{itemize}
+\end{itemize}
 
 \subsection{Booting + Live USBs}
 \begin{description}
- \item[BIOS]: Basic Input/Output System; firmware used to initialize hardware during booting process and to provide runtime services for OS and programs (first software to run)
+ \item[Basic Input/Output System (BIOS)]: firmware used to initialize hardware during booting process and to provide runtime services for OS and programs (first software to run)
  \item[Unified Extensible Firmware Interface (UEFI)]: specification for software interface between OS and platform firmware. UEFI replaces legacy IBO interface. Can support remote diagnostics and computer repair even with no OS installed
- \item[Live USBs] USB flash drive containing an OS. Helpful to recover data or fix the OS when operating system no longer boots (use live USB for other OS and mount old hard drive to access files)
+ \item[live USBs]: USB flash drive containing an OS. Helpful to recover data or fix the OS when operating system no longer boots (use live USB for other OS and mount old hard drive to access files)
 \end{description}
 
 \begin{itemize}
@@ -2537,8 +2536,8 @@ WantedBy=multi-user.target
 
 \subsection{Docker, Vagrant, VMs, Cloud, Openstack}
 \begin{description}
- \item[Virtual machines]: emulator for a whole computer system (including OS). Useful for isolated environment to test, develop, or explore (run potentially malicious code)
- \item[vagrant] tool to define machine configs (OS, services, packages, etc) in code, and then instantiate VMs with \lstinline{vagrant up}
+ \item[virtual machines]: emulator for a whole computer system (including OS). Useful for isolated environment to test, develop, or explore (run potentially malicious code)
+       \lstitem{vagrant} tool to define machine configs (OS, services, packages, etc) in code, and then instantiate VMs with \lstinline{vagrant up}
  \item[Docker] tool like \lstinline{vagrant} but uses containers instead of VMs.
 \end{description}
 
@@ -2578,7 +2577,7 @@ WantedBy=multi-user.target
  \lstitem{/usr/} read only user data
  \lstitem{/usr/bin} non-essential command binaries
  \lstitem{/usr/sbin} non-essential system binaries, usually to be run by root
- \lstitem{/usr/local/bi}n binaries for user compiled programs
+ \lstitem{/usr/local/bin} binaries for user compiled programs
  \lstitem{/var} variable files like logs or caches
 \end{description}
 
