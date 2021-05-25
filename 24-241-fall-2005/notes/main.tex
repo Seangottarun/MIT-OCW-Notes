@@ -4,21 +4,81 @@
 \usepackage{amsthm}
 \usepackage{amssymb}
 \usepackage{enumitem}
+\usepackage{thmtools}
 \usepackage{hyperref}
+
+\let\emptyset\varnothing
 
 \newcounter{descriptcount}
 \newlist{enumdescription}{description}{2}
 \setlist[enumdescription,1]{%
-	before={\setcounter{descriptcount}{0}%
-			\renewcommand*\thedescriptcount{\arabic{descriptcount}.}}
-	,font=\bfseries\stepcounter{descriptcount}\thedescriptcount~
-	% ,font=\normalfont\stepcounter{descriptcount}\thedescriptcount~
+    before={\setcounter{descriptcount}{0}%
+        \renewcommand*\thedescriptcount{\arabic{descriptcount}.}}
+    ,font=\bfseries\stepcounter{descriptcount}\thedescriptcount~
 }
 \setlist[enumdescription,2]{%
-	before={\setcounter{descriptcount}{0}%
-			\renewcommand*\thedescriptcount{\roman{descriptcount}.}}
-	,font=\bfseries\stepcounter{descriptcount}\thedescriptcount~
+    before={\setcounter{descriptcount}{0}%
+        \renewcommand*\thedescriptcount{\roman{descriptcount}.}}
+    ,font=\bfseries\stepcounter{descriptcount}\thedescriptcount~
 }
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{example}{Example}[section]
+\newtheorem{axiom}{Axiom}[section]
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+% Customize \listoftheorems to only show theorem name
+\makeatletter
+\def\ll@theorem{%
+    \protect\numberline{\csname the\thmt@envname\endcsname}%
+    \ifx\@empty\thmt@shortoptarg
+        \thmt@thmname
+    \else
+        \thmt@shortoptarg
+    \fi}
+\def\l@thmt@theorem{}
+\makeatother
+
+\makeatletter
+\def\ll@definition{%
+    \protect\numberline{\csname the\thmt@envname\endcsname}%
+    \ifx\@empty\thmt@shortoptarg
+        \thmt@thmname
+    \else
+        \thmt@shortoptarg
+    \fi}
+\def\l@thmt@definition{}
+\makeatother
+
+\makeatletter
+\def\ll@axiom{%
+    \protect\numberline{\csname the\thmt@envname\endcsname}%
+    \ifx\@empty\thmt@shortoptarg
+        \thmt@thmname
+    \else
+        \thmt@shortoptarg
+    \fi}
+\def\l@thmt@axiom{}
+\makeatother
+
+\makeatletter
+\def\ll@example{%
+    \protect\numberline{\csname the\thmt@envname\endcsname}%
+    \ifx\@empty\thmt@shortoptarg
+        \thmt@thmname
+    \else
+        \thmt@shortoptarg
+    \fi}
+\def\l@thmt@example{}
+\makeatother
 
 \begin{document}
 \title{24.241 Logic I}
@@ -27,9 +87,26 @@
 \maketitle
 
 \tableofcontents
+\listoftheorems[ignoreall, show={theorem}]
+\begingroup					% Temporarily disable \clearpage to show both lists on one page
+    \let\clearpage\relax    % http://tex.stackexchange.com/a/14511/104449
+    \renewcommand{\listtheoremname}{List of Definitions}
+    \listoftheorems[ignoreall, show={definition}]
+\endgroup
+\begingroup					% Temporarily disable \clearpage to show both lists on one page
+    \let\clearpage\relax    % http://tex.stackexchange.com/a/14511/104449
+    \renewcommand{\listtheoremname}{List of Axioms}
+    \listoftheorems[ignoreall, show={axiom}]
+\endgroup
+\begingroup					% Temporarily disable \clearpage to show both lists on one page
+    \let\clearpage\relax    % http://tex.stackexchange.com/a/14511/104449
+    \renewcommand{\listtheoremname}{List of Examples}
+    \listoftheorems[ignoreall, show={example}]
+\endgroup
 
 \pagebreak
 
 \input{lec1.tex}
+\input{lec2.tex}
 
 \end{document}

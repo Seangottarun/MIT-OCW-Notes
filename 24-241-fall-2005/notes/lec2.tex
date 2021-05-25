@@ -1,0 +1,315 @@
+\section{Sets and Functions}
+\subsection{Sets}
+\begin{description}
+	\item[set] A set is a collection defined by its elements. Synonymous with class or group.
+\end{description}
+\begin{itemize}
+	\item Members of a set are not required to be related
+\end{itemize}
+
+\begin{axiom}[Axiom of Extensionality]
+	For any sets $A \text{ and } B, A=B \iff A \text{ and } B$ have exactly the same
+	elements
+	\label{axiom:AoE}
+\end{axiom}
+
+\begin{itemize}
+	\item Can name sets by
+	      \begin{enumerate}
+		      \item listing elements
+		            \begin{itemize}
+			            \item By \nameref{axiom:AoE}, when naming sets by listing elements, order and
+			                  repetition don't matter
+		            \end{itemize}
+		      \item Naming some feature all of its elements share that nothing
+		            else has
+		            \begin{itemize}
+			            \item Ex. $\{x| x \text{ is an inner planet}\}$
+		            \end{itemize}
+	      \end{enumerate}
+\end{itemize}
+
+\begin{definition}[Set Membership $\in$]
+	The symbol $\in$ indicates set membership. For any $a,a \in \{x| x \text{ is }
+		\rule{1cm}{0.15mm}\} \iff a \text{ is } \rule{1cm}{0.15mm}$
+	\begin{itemize}
+		\item E.x. $\text{Mercury} \in \{x | x \text{ is an inner planet} \}
+			      \iff \text{ Mercury is an inner planet}$
+	\end{itemize}
+\end{definition}
+
+\begin{description}
+	\item[naive comprehension principle] Given any condition expressible by a
+		formula $\phi(x)$, it is possible to form the set of all sets meeting
+		that condition, denoted by $\{x| \phi(x)\}$
+		\begin{itemize}
+			\item n.b. naive comprehension principle cannot be upheld with full
+			      generality
+		\end{itemize}
+	\item[Russel's paradox] naive comprehension principle allows formation
+		of a \textit{set of all non-self-membered sets}, $\{x| x \not\in x\}$
+\end{description}
+\begin{align*}
+	\{x| x \text{ is a set that isn't an element of itself}\} \in
+	\{x| x \text{ is a set that isn't an element of itself}\} \\
+	\iff \{x|
+	x \text{
+		is a set that isn't an element of itself}\}
+\end{align*}
+\begin{itemize}
+	\item A central challenge of $20^{th}$ century was to restrict the naive
+	      comprehension principle so as to avoid Russell's paradox while meeting
+	      math's needs
+\end{itemize}
+
+\subsection{Set Operations: Subset, Union, Intersection, Difference}
+\begin{definition}[Subset $\subseteq$]
+	For any sets $A$ and $B$, $A$ is a \textit{subset} of B $\iff$ its elements are
+	all elements of B. I.e. $A \subseteq B \iff A = \{x | x \in B\}$
+\end{definition}
+\textbf{Subset properties}
+\begin{enumerate}
+	\item If $A \subseteq B$ and $B \subseteq C$, then $A \subseteq C$
+	\item $A \subseteq A$
+	\item $A=B \iff A \subseteq B$ and $B \subseteq A$
+\end{enumerate}
+
+\begin{definition}[Null set (empty set) $\emptyset$]
+	The \textit{null set} or \textit{empty set}, $\emptyset$, is the
+	set that has no elements. $\emptyset \subseteq A$ for every set $A$
+\end{definition}
+
+\begin{definition}[Union of sets $\cup$]
+	For any sets $A$ and $B$, the \textit{union} of $A$ and $B$ is $A \cup B =
+		\{x| x \in A \text{ or } x \in B \text{ or both}\}$
+\end{definition}
+
+\textbf{Union properties}
+\begin{enumerate}
+	\item $A \cup B = B \cup A$
+	\item $(A \cup B) \cup C = A \cup (B \cup C)$
+	\item $A \cup A = A$
+	\item $A \subseteq B \iff A \cup B  = B$
+\end{enumerate}
+
+\begin{definition}[Intersection of sets $\cap$]
+	For any sets $A$ and $B$, the \textit{intersection} of $A$ and $B$ is defined as $A
+		\cap B = \{x| x \in A \text{ and } x \not\in B\}$
+\end{definition}
+
+\textbf{Intersection properties}
+\begin{enumerate}
+	\item $A \cap B = B \cap A$
+	\item $(A \cap B) \cap C = A \cap (B \cap C)$
+	\item $A \cap A$
+	\item $A \subseteq B \iff A \cap B = A$
+	\item $(A \cap B) \cup C = (A \cup C) \cap (B \cup C)$
+	\item $(A \cup B) \cap C = (A \cap C) \cup (B \cap C)$
+\end{enumerate}
+
+\begin{definition}[Difference of sets $\setminus$]
+	For any sets $A$ and $B$, the \textit{difference} of $A$ and $B$ is defined
+	as $A \setminus B = \{x | x \in A
+		\text{ and } x \in B\}$
+\end{definition}
+
+\textbf{Difference Properties}
+\begin{enumerate}
+	\item $A \setminus A = \emptyset$
+	\item $(A \cup B) \setminus C = (A \setminus C) \cup (B \setminus C)$
+	\item $A \setminus (B \cup C) = (A \setminus B) \cap (A \setminus C)$
+	\item $(A \cap B) \setminus C = (A \setminus C) \cap (B \setminus C)$
+	\item $A \setminus (B \cap C) = (A \setminus B) \cup (A \setminus C)$
+	\item $(A \setminus B) \setminus C = A \setminus (B \cup C)$
+	\item $A \setminus (B \setminus C) = (A \setminus B) \cup (A \cap (B \cap
+		      C))$
+	\item $(A \setminus B) \cup (A \cap B) = A$
+	\item $(A \setminus B) \cap (A \cap B) = \emptyset$
+	\item $(A \setminus B) \cup (B \setminus A) = (A \cup B) \setminus (A
+		      \cap B)$
+	\item $(A \setminus B) \cap (B \setminus A) = \emptyset$
+\end{enumerate}
+
+\begin{definition}[Union of set of sets $\bigcup$]
+	If $\mathcal{F}$ is a set of sets, the \textit{union} of
+	$\mathcal{F}$ is $\bigcup \mathcal{F} = \{x | x \text{ is an element of at
+			least  one element of } \mathcal{F}\}$
+\end{definition}
+\begin{itemize}
+	\item $\therefore A \cup B = \bigcup \{A, B\}$
+\end{itemize}
+
+\begin{definition}[Intersection of set of sets $\bigcap$]
+	If $\mathcal{F}$ is a nonempty set of sets, the \textit{intersection} of
+	$\mathcal{F}$ is $\bigcap \mathcal{F} = \{ x | x \text{ is an element of every
+			element of } \mathcal{F}\}$
+\end{definition}
+\begin{itemize}
+	\item $\therefore A \cap B = \bigcap \{A,B\}$
+	\item We have for a $\mathcal{F}$ a nonempty set of sets and $C$ a set
+\end{itemize}
+\begin{enumerate}
+	\item $(\bigcup \mathcal{F}) \setminus C = \bigcup \{A \setminus C | A \in
+		      \mathcal{F}\}$
+	\item $(\bigcap \mathcal{F}) \setminus C = \bigcap \{A \setminus C | A \in
+		      \mathcal{F}\}$
+	\item $C \setminus (\bigcup \mathcal{F}) = \bigcap \{ C \setminus A | A \in
+		      \mathcal{F}\}$
+	\item $C \setminus(\bigcap \mathcal{F}) = \bigcup \{ C \setminus A | A \in
+		      \mathcal{F}\}$
+\end{enumerate}
+
+\subsection{Ordered Pairs}
+\begin{definition}[Unordered pair $\{a,b\}$]
+	For given individuals $a$ and $b$, the set $\{a, b\}$ is the \textit{unordered
+		pair} formed by $a$ and $b$.
+\end{definition}
+\begin{itemize}
+	\item Called unordered because $\{a,b\} = \{b,a\}$
+\end{itemize}
+
+\begin{definition}[Ordered pair $\langle a,b\rangle $]
+	For given $a$ and $b$, we form the ordered pair $\langle a,b\rangle $ so that (unless
+	$a=b$ ), $\langle a,b\rangle  \neq \langle b,a\rangle $
+\end{definition}
+
+\begin{theorem}[Law of Ordered Pairs]
+	For any $a,b,c,d$ $\langle a,b\rangle  = \langle c,d\rangle  \iff a=c \text{ and } b=d$
+	\label{thm:LOP}
+\end{theorem}
+\begin{itemize}
+	\item Notion of ordered pairs useful in geometry where we associate a point $P$
+	      with an ordered pair $\langle x,y\rangle $
+	\item Set theorists sometimes define ordered pairs as $\langle a,b\rangle  =
+		      \{\{a\},\{a,b\}\}$
+	      \begin{itemize}
+		      \item Allows \nameref{thm:LOP} to be derived from
+		            \nameref{axiom:AoE}
+	      \end{itemize}
+	\item Ordered triple $\langle a,b,c\rangle  = \langle \langle a,b\rangle ,c\rangle $
+	\item Ordered quadruple $\langle a,b,c,d \rangle = \langle \langle a,b,c\rangle ,d\rangle  = \langle \langle \langle a,b\rangle ,c\rangle ,d\rangle $
+	\item Define 1-tuple as $\langle a\rangle  = a$ for convenience
+\end{itemize}
+
+\begin{definition}[Ordered $n+1$ tuple]
+	The ordered $n+1$ tuple $\langle a_1, a_2, \dots, a_n, a_{n+1} \rangle$ is the ordered
+	pair where the 1st element is the ordered $n$ tuple $\langle a_1, a_2, \dots
+		a_n \rangle$
+	and the 2nd element is $a_{n+1}$
+\end{definition}
+
+\subsection{Functions}
+\begin{definition}[Cartesian product $A \times B$]
+	For sets $A \text{ and } B$, the \textit{Cartesian product} $A \times B$ is
+	$A \times B = \{\langle a,b \rangle | a \in A \text{ and } b \in B\}$
+\end{definition}
+\begin{itemize}
+	\item n.b. Cartesian product of 2 sets is a set of ordered pairs
+	\item Cartesian product forms a table (set of rows times a set of
+	      columns) where each cell contains ordered pairs of the form $\langle
+		      \text{row value}, \text{column value} \rangle$
+\end{itemize}
+
+\begin{definition}[Function $f: A \to B$]
+	A subset $f$ of $A \times B$ is said to be a \textit{function} from $A$ to
+	$B$ (symbolically, $f: A \to B$). For each element $a$ of $A$, there is exactly
+	1 element $b$ of $B$ with $\langle a,b \rangle \in f$
+\end{definition}
+\begin{itemize}
+	\item n.b function is a set of ordered pairs
+	\item n.b. output of $f$ uniquely determined by input
+	\item if $f: A \to B$ and
+	      $\langle a,b \rangle \in f$, we write $f(a) = b$
+\end{itemize}
+
+\begin{definition}[Function composition $g \circ f = g(f(x))$]
+	If $f:A \to B$ and $g: B \to C$, the \textit{composition} $g \circ f$ is the
+	function $A \to C$ given by $g \circ f(a) = g(f(a))$. If $h: C \to D$, we have
+	$(h \circ g) \circ f = h \circ (g \circ f)$
+\end{definition}
+\begin{itemize}
+	\item n.b. Read composition from inside to outside; for $g \circ f(x) =
+		      g(f(x))$, the function $f$ is applied first
+\end{itemize}
+
+\begin{definition}[Injective (one-one)]
+	A function $f: A \to: B$ is \textit{one-one} or \textit{injective} whenever
+	we have $f(x) = f(y)$, we have $x=y$. I.e. never get same output for 2
+	different inputs.
+\end{definition}
+
+\begin{definition}[Domain $\mathcal{D}$ and Range $\mathcal{R}$]
+	If $f$ is a function from $A$ to $B$, then the set of inputs is the \textit{domain}
+	of $f$, $\mathcal{D}$, and the \textit{range} of $f$ is the set of all $b \in B$
+	such that for some $a \in A, f(a) = b$ (i.e. the range of $f$ is the set of
+	outputs).
+\end{definition}
+
+\begin{definition}[Surjective (onto)]
+	If the range of $f$ is all of $B$, $f$ is \textit{onto} or
+	\textit{surjective}. I.e. function can reach all of $B$.
+\end{definition}
+
+\begin{definition}[Bijective (one-to-one correspondence)]
+	If $f$ is both injective and surjective, it is \textit{bijective} or a
+	\textit{one-one correspondence}
+\end{definition}
+
+\begin{definition}[Inverse $f^{-1}$]
+	If $f$ is a bijection: $A \to B$, the \textit{inverse} $f^{-1}$ is
+	the bijection $B \to A$ given by $f^{-1} = \{ \langle b,a \rangle | \langle
+		a,b \rangle \in f\}$
+\end{definition}
+\begin{definition}[Identity map $ID_A$]
+	The \textit{identity map} on $A$, $ID_A = \{\langle a,a, \rangle
+		| a \in A\}$ is a bijection from $A$ to itself.
+	We also have $f^{-1} \circ f = ID_A$ and $f \circ f^{-1} = ID_B$.
+\end{definition}
+
+\subsubsection{Examples of Functions in Set Notation}
+\begin{itemize}
+	\item Where $\mathbb{R}$ is the set of real numbers, $\{\langle x, x^3
+		      \rangle\}$ is a bijection $\mathbb{R} \to \mathbb{R}$. The function
+	      $\{\langle x, x^3 - 6x^2 + 11x - 6 \rangle | x \in \mathbb{R}\}$ is
+	      \textit{surjective} but isn't \textit{one-one} because inputs 1,2,3
+	      all give output 0.
+	\item Arctangent function $\{\langle x,y \rangle | -\frac{\pi}{2} < y <
+		      \frac{\pi}{2} \text{ and } x = \tan(y)\}$ is \textit{injective} but
+	      not \textit{surjective} because its an increasing function whose range
+	      is the set of numbers between $-\frac{\pi}{2}$ and $\frac{\pi}{2}$
+	\item Function $\{\langle x,x^2 \rangle | x \in \mathbb{R}\}$ is neither
+	      \textit{injective} nor \textit{surjective}. Not \textit{injective}
+	      because gives output 4 for both inputs 2, -2. Not \textit{surjective}
+	      because none of the negative numbers are in its range.
+	\item Cartesian products and functions for $B = \{a,b\}$ and $G = \{x,y,z\}$
+	      \[
+		      B \times B = \{ \langle a,a \rangle, \langle a,b \rangle, \langle
+		      b,a \rangle, \langle b,b \rangle \} \text{ is a 4 element set} .\]
+	      \[
+		      B \times G = \{ \langle a,x \rangle, \langle a,y \rangle, \langle
+		      a,z \rangle, \langle b,x \rangle, \langle b,y \rangle, \langle b,z
+		      \rangle \} \text{ is a 6 element set}
+		      .\]
+	      \[
+		      G \times B = \{ \langle x,a \rangle, \langle x,b \rangle, \langle
+		      y,a \rangle, \langle y,b \rangle, \langle z,a \rangle, \langle z,b
+		      \rangle \} \text{ is a 6 element set}
+		      .\]
+	      \[
+		      G \times G = \{ \langle x,x \rangle, \langle x,y \rangle, \langle
+		      x,z \rangle, \langle y,x \rangle, \langle y,y \rangle, \langle y,z
+		      \rangle, \langle z,x \rangle, \langle z,y \rangle, \langle z,z
+		      \rangle\} \text{ is a 6 element set}
+		      .\]
+	      4 functions from $B$ to $B$
+	      \begin{align*}
+		      \{ \langle a,a \rangle, \langle b, a \rangle \} & \; \text{ not injective nor
+		      surjective}                                                                   \\
+		      \{ \langle a,a \rangle, \langle b,b \rangle \}  & \; \text{
+		      bijective}                                                                    \\
+		      \{ \langle a,b \rangle, \langle b,a \rangle \}  & \; \text{
+		      bijective}                                                                    \\
+		      \{ \langle a,b \rangle, \langle b,b \rangle \}  & \; \text{ not
+			      injective nor surjective}
+	      \end{align*}
+\end{itemize}
