@@ -1,0 +1,277 @@
+\section{Sentential Calculus Intro}
+\begin{description}
+	\item[logic] science of \textit{valid} argument
+	\item[valid argument] argument in which it isn't possible for the
+		premises to be true and the conclusion false.
+\end{description}
+
+\subsection{Formal language}
+\begin{itemize}
+	\item Study formal languages simpler than English but rich enough to have
+	      many common features
+	\item Determine which arguments in formal language valid
+	\item Then translate English $\to$ formal language such that if translated
+	      argument valid in formal language, the English argument must be
+	      valid too
+	\item Can show an English argument is valid by providing translation into
+	      demonstrably valid argument in formal language
+\end{itemize}
+
+\begin{description}
+	\item[sentenial calculus (SC)] deals with propositions and relations between
+		propositions including construction of arguments based on them
+		\begin{itemize}
+			\item Models how compound English sentences are built from simple
+			      English sentences
+			\item Sentences in SC built up by \textit{atomic sentences} using
+			      \textit{connectives} (equivalent to conjunctions FANBOYS)
+		\end{itemize}
+\end{description}
+
+\subsubsection{Connectives}
+\begin{enumdescription}
+	\item[Logical AND ($\land$)] true if both true
+	\[
+		\begin{array}{|c c|c|}
+			A & B & A \land B \\
+			\hline
+			T & T & T         \\
+			T & F & F         \\
+			F & T & F         \\
+			F & F & F
+		\end{array}
+	\]
+	\item[Logical OR ($\lor$)] true if at least one is true
+	\[
+		\begin{array}{|c c|c|}
+			A & B & A \lor B \\
+			\hline
+			T & T & T        \\
+			T & F & T        \\
+			F & T & T        \\
+			F & F & F
+		\end{array}
+	\]
+	\item[Logical NOT ($\lnot$)] true if false
+	\[
+		\begin{array}{|c c|c|c|}
+			A & B & \lnot A & \lnot B \\
+			\hline
+			T & T & F       & F       \\
+			T & F & F       & T       \\
+			F & T & T       & F       \\
+			F & F & T       & T
+		\end{array}
+	\]
+	\item[if $\dots$ then OR only if ($\to$)] true if both true or antecedent
+	$A$ is false
+	\[
+		\begin{array}{|c c|c|}
+			A & B & A \to B \\
+			\hline
+			T & T & T       \\
+			T & F & F       \\
+			F & T & T       \\
+			F & F & T
+		\end{array}
+	\]
+	\begin{itemize}
+		\item n.b English \textit{if $\dots$ then} is
+		      \[
+			      \begin{array}{|c c|c|}
+				      A & B & \text{if $A$, then $B$ } \\
+				      \hline
+				      T & T & T                        \\
+				      T & F & F                        \\
+				      F & T & \rule{1cm}{0.15mm}       \\
+				      F & F & \rule{1cm}{0.15mm}
+			      \end{array}
+		      \]
+		\item Logicians arbitrarily filled in blanks; \textit{if $\dots$
+			      then} statements in logic considered true if antecedent $A$ doesn't
+		      occur
+	\end{itemize}
+	\item[if and only if ($\leftrightarrow$)] true if both or neither are true
+	(i.e. they match up)
+	\[
+		\begin{array}{|c c|c|}
+			A & B & A \leftrightarrow B \\
+			\hline
+			T & T & T                   \\
+			T & F & F                   \\
+			F & T & F                   \\
+			F & F & T
+		\end{array}
+	\]
+\end{enumdescription}
+\begin{itemize}
+	\item ex. combinations of connectives
+	      \[
+		      \begin{array}{|c c|c|c|c|}
+			      A & B & A \land \lnot B & \lnot (A \land B) & \lnot (A \lor B) \\
+			      \hline
+			      T & T & F               & F                 & F                \\
+			      T & F & T               & T                 & F                \\
+			      F & T & F               & T                 & F                \\
+			      F & F & F               & T                 & T
+		      \end{array}
+	      \]
+\end{itemize}
+\subsubsection{English equivalent connectives}
+\begin{itemize}
+	\item See Table \ref{tab:eng_connectives} for English equivalents of logical
+	      connectives.
+	\item Here, the formal language sentence $A$ means the same as the English
+	      sentence ``Jack went up the hill''
+	\item Similarly, the formal language sentence B means the same as ``Jill went up
+	      the hill''
+\end{itemize}
+\begin{table}[htbp]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		Connective     & SC sentence           & English sentence                            \\
+		\hline
+		AND            & $A \land B$           & Jack and Jill went up the hill              \\
+		\hline
+		OR             & $A \lor B$            & Jack and/or Jill went up the hill           \\
+		\hline
+		NOT            & $\lnot A$             & Jack didn't go up the hill                  \\
+		\hline
+		NAND           & $\lnot(A \land B)$    & \shortstack{Jack and Jill didn't both go up
+		the hill.                                                                            \\
+		I.e. only one or none of them went up the hill.                                      \\
+			By De Morgan's Rule
+		$\lnot(A \land B) = (\lnot A) \lor (\lnot B)$}                                       \\
+		\hline
+		NOR            & $\lnot(A \lor B)$     & \shortstack{Neither Jack nor Jill went up
+		the hill.                                                                            \\
+		I.e. none of them went up the hill.                                                  \\
+			By De Morgan's Rule $\lnot(A \lor
+		B) = (\lnot A) \land (\lnot B)$)}                                                    \\
+		\hline
+		\shortstack{if $\dots$ then                                                          \\ (aka only if)} & $A \to B$             & \shortstack{If Jack went up the hill, then
+		so did Jill.                                                                         \\
+		Equivalently, Jack went up the hill only if Jill did                                 \\
+			I.e. true if both go up the hill or if Jack doesn't go up the
+		hill.}                                                                               \\
+		\hline
+		if and only if & $A \leftrightarrow B$ & \shortstack{Jack went up the hill if and
+			only if Jill
+		went up the hill.                                                                    \\
+		I.e. True if both or neither of them went up the hill}                               \\
+		\hline
+	\end{tabular}
+	\caption{Mapping between logical connectives and English equivalents}
+	\label{tab:eng_connectives}
+\end{table}
+
+\subsection{SC terminology}
+\begin{definition}[disjunction $\varphi \lor \psi$]
+	A \textit{disjunction} is a sentence of the form $\varphi \lor \psi$ where
+	$\varphi$ and $\psi$ are its \textit{disjuncts}.
+\end{definition}
+\begin{definition}[conjunction $\varphi \land \psi$]
+	A \textit{conjunction} is a sentence of the form $\varphi \land \psi$ where
+	$\varphi$ and $\psi$ are its \textit{conjuncts}.
+\end{definition}
+\begin{definition}[negation $\lnot \varphi$]
+	A \textit{negation} is a sentence of the form $\lnot \varphi$ where
+	$\varphi$ is its \textit{negatum}.
+\end{definition}
+\begin{definition}[conditional $\varphi \to \psi$]
+	A \textit{conditional} is a sentence of the form $\varphi \to \psi$, where
+	$\varphi$ is its \textit{antecedent} and $\psi$ is its \textit{consequent}
+\end{definition}
+\begin{definition}[biconditional $\varphi \leftrightarrow \psi$]
+	A \textit{biconditional} is a sentence of the form $\varphi \leftrightarrow
+		\psi$ where $\varphi$ and $\psi$ are its \textit{components}
+\end{definition}
+\begin{definition}[SC language]
+	An SC \textit{language} is determined by specifying a nonempty set of
+	simple expressions to serve as \textit{atomic sentences}. The sentences of
+	the language, referred to as SC sentences, constitute the smallest class of
+	expression that
+	\begin{enumerate}
+		\item contains the atomic sentences
+		\item contains $\lnot \varphi$ wherever it contains $\varphi$
+		\item contains $(\varphi \lor \psi), (\varphi \land \psi), (\varphi
+			      \to \psi), \text{ and } (\varphi \leftrightarrow \psi)$
+		      wherever it contains both $\varphi$ and $\psi$
+	\end{enumerate}
+\end{definition}
+
+\begin{itemize}
+	\item I.e. if a language \rule{1cm}{0.15mm} is the set of all sets of
+	      expressions that satisfy the 3 conditions,
+	      then an expression is an SC sentence $\iff$ it is a member of every
+	      member
+	      of \rule{1cm}{0.15mm}
+	\item Plain English version of SC sentence definition
+	      \begin{enumerate}
+		      \item Every atomic sentence is an SC sentence
+		      \item Result of writing $\lnot$ in \textit{in front of an SC
+			            sentence} is \textit{always an SC sentence} ($\lnot SC$)
+		      \item Conjunctions, disjunctions, conditionals,
+		            biconditionals of SC
+		            sentences is an SC sentence
+		      \item Nothing is an SC sentence unless it is required to be
+		            by 3 clauses above
+	      \end{enumerate}
+\end{itemize}
+
+\begin{theorem}[Unique Readability]
+	A sentence of an SC language built up from uniquely from sequential letters. I.e.
+	use parentheses to prevent ambiguity.
+\end{theorem}
+\begin{itemize}
+	\item English doesn't have unique readability (sometimes ambiguous)
+\end{itemize}
+\begin{proof}
+	Can represent structure of any given sentence by a finite tree in which each
+	node of the tree is labelled by a sentence. The given sentence is the root of
+	the tree. Whenever a node is labelled by a conjunction, there will be 2 other
+	nodes directly beneath the node, each labelled with one of the conjuncts. Same
+	for disjunctions, conditionals, biconditionals. A negation node has just one
+	node directly beneath it with the negatum.
+	Leaves of trees labelled with atomic sentences.
+
+	Unique readability is proved by showing that each sentence is associated
+	with one and only one labeled tree
+\end{proof}
+
+\begin{example}[Tree for logical sentence $\lnot(A \land (B \land \lnot (\lnot A \land C)))$]
+	\begin{center}
+		% \Tree [.{$\lnot (A \land (B \land \lnot (\lnot A \land C)))$} ]
+		\Tree [.{$\lnot (A \land (B \land \lnot (\lnot A \land C)))$} [
+					.{$(A \land (B \land \lnot (\lnot A \land C)))$} A
+						[.{$(B \land \lnot(\lnot A \land C))$} B
+								[.{$\lnot (\lnot A \land C)$}
+										[.{$(\lnot A \land C)$}
+												[.{$\lnot A$} A ]
+											C ] ]]]]
+		% \Tree [.{$\lnot (A \land (B \land \lnot (\lnot A \land C)))$} [.{$R_*>1$} {$i_M\leq h_*$} ]  ]
+	\end{center}
+	% \begin{center}
+	% 	\Tree[.IP [.NP [.Det \textit{the} ]
+	% 					[.N\1 [.N \textit{package} ]]]
+	% 			[.I\1 [.I \textsc{3sg.Pres} ]
+	% 				[.VP [.V\1 [.V \textit{is} ]
+	% 							[.AP [.Deg \textit{really} ]
+	% 									[.A\1 [.A \textit{simple} ]
+	% 										\qroof{\textit{to use}}.CP ]]]]]]
+	% \end{center}
+\end{example}
+
+\begin{itemize}
+	\item Because of unique readability, we know that every SC sentence fully
+	      falls exactly into 1 of the following 6 categories
+	      \begin{enumerate}
+		      \item atomic sentence
+		      \item conjunction
+		      \item disjunction
+		      \item conditional
+		      \item biconditional
+		      \item negation
+	      \end{enumerate}
+\end{itemize}
